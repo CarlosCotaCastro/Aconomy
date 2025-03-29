@@ -1,0 +1,56 @@
+/node_modules
+/public/hot
+/public/storage
+/public/build
+/storage/*.key
+/vendor
+.env
+.env.backup
+.env.production
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+auth.json
+npm-debug.log
+yarn-error.log
+/.fleet
+/.idea
+/.vscode
+/.phpstorm.meta.php
+_ide_helper.php
+_ide_helper_models.php
+.phpunit.cache/
+
+# Laravel Sail
+docker-compose.override.yml
+
+# Mac OS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Frontend build files
+/resources/js/dist
+
+# ESLint cache
+.eslintcache
+
+# Testing artifacts
+coverage/
+.pest/
+.phpunit.cache/
+
+# Local development files
+*.log
+*.sqlite
+*.sqlite-journal
+
+# Temporary files
+*.swp
+*.swo
+
+# Project specific
+/rules-draft

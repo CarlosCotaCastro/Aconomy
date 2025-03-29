@@ -1,0 +1,229 @@
+import { useState } from 'react';
+import { Link } from '@inertiajs/react';
+import {
+    Box,
+    Tabs,
+    Tab,
+    Typography,
+    Card,
+    CardContent,
+    CardActions,
+    Grid,
+    Button,
+    Chip,
+    Divider,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemAvatar,
+    Avatar,
+} from '@mui/material';
+import {
+    Send as SendIcon,
+    Receipt as ReceiptIcon,
+    CheckCircle as CheckCircleIcon,
+    Cancel as CancelIcon,
+    Pending as PendingIcon,
+    Person as PersonIcon,
+    Category as CategoryIcon,
+} from '@mui/icons-material';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+
+// Helper function to get status icon
+const getStatusIcon = (status) => {
+    switch (status) {
+        case 'pending':
+            return <PendingIcon color="warning" />;
+        case 'approved':
+            return <CheckCircleIcon color="success" />;
+        case 'denied':
+            return <CancelIcon color="error" />;
+        case 'completed':
+            return <CheckCircleIcon color="success" />;
+        default:
+            return <PendingIcon />;
+    }
+};
+
+// Helper function to get status color
+const getStatusColor = (status) => {
+    switch (status) {
+        case 'pending':
+            return 'warning';
+        case 'approved':
+            return 'success';
+        case 'denied':
+            return 'error';
+        case 'completed':
+            return 'success';
+        default:
+            return 'default';
+    }
+};
+
+export default function Index({ outgoingRequests, incomingRequests, auth }) {
+    const [tabValue, setTabValue] = useState(0);
+
+    const handleTabChange = (event, newValue) => {
+        setTabValue(newValue);
+    };
+
+    return (
+        <AuthenticatedLayout>
+            <Box sx={{ mb: 4 }}>
+                <Typography variant="h4" component="h1" gutterBottom>
+                    Borrow Requests
+                </Typography>
+            </Box>
+
+            <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
+                <Tabs value={tabValue} onChange={handleTabChange} aria-label="borrow requests tabs">
+                    <Tab 
+                        icon={<SendIcon />} 
+                        label={`Sent Requests (${outgoingRequests.length})`} 
+                        id="tab-0" 
+                        aria-controls="tabpanel-0" 
+                    />
+                    <Tab 
+                        icon={<ReceiptIcon />} 
+                        label={`Received Requests (${incomingRequests.length})`} 
+                        id="tab-1" 
+                        aria-controls="tabpanel-1" 
+                    />
+                </Tabs>
+            </Box>
+
+            {/* Outgoing Requests */}
+            <Box role="tabpanel" hidden={tabValue !== 0} id="tabpanel-0" aria-labelledby="tab-0">
+                {tabValue === 0 && (
+                    <Grid container spacing={3}>
+                        {outgoingRequests.length > 0 ? (
+                            outgoingRequests.map((request) => (
+                                <Grid item xs={12} sm={6} md={4} key={request.id}>
+                                    <Card>
+                                        <CardContent>
+                                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                                                <Typography variant="h6" component="h2">
+                                                    {request.item.name}
+                                                </Typography>
+                                                <Chip
+                                                    icon={getStatusIcon(request.status)}
+                                                    label={request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+                                                    color={getStatusColor(request.status)}
+                                                    size="small"
+                                                />
+                                            </Box>
+                                            
+                                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                                                <PersonIcon fontSize="small" sx={{ mr: 1 }} />
+                                                <Typography variant="body2">
+                                                    Owner: {request.lender.name}
+                                                </Typography>
+                                            </Box>
+                                            
+                                            {request.message && (
+                                                <Box sx={{ mt: 2, p: 1, bgcolor: 'background.paper', borderRadius: 1 }}>
+                                                    <Typography variant="body2" fontStyle="italic" color="text.secondary">
+                                                        "{request.message}"
+                                                    </Typography>
+                                                </Box>
+                                            )}
+                                        </CardContent>
+                                        <CardActions>
+                                            <Button
+                                                component={Link}
+                                                href={route('borrow-requests.show', request.id)}
+                                                size="small"
+                                            >
+                                                View Details
+                                            </Button>
+                                        </CardActions>
+                                    </Card>
+                                </Grid>
+                            ))
+                        ) : (
+                            <Grid item xs={12}>
+                                <Box sx={{ textAlign: 'center', py: 4 }}>
+                                    <Typography color="text.secondary">
+                                        You haven't sent any borrow requests yet.
+                                    </Typography>
+                                    <Button
+                                        component={Link}
+                                        href={route('groups.index')}
+                                        variant="contained"
+                                        sx={{ mt: 2 }}
+                                    >
+                                        Browse Groups
+                                    </Button>
+                                </Box>
+                            </Grid>
+                        )}
+                    </Grid>
+                )}
+            </Box>
+
+            {/* Incoming Requests */}
+            <Box role="tabpanel" hidden={tabValue !== 1} id="tabpanel-1" aria-labelledby="tab-1">
+                {tabValue === 1 && (
+                    <Grid container spacing={3}>
+                        {incomingRequests.length > 0 ? (
+                            incomingRequests.map((request) => (
+                                <Grid item xs={12} sm={6} md={4} key={request.id}>
+                                    <Card>
+                                        <CardContent>
+                                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                                                <Typography variant="h6" component="h2">
+                                                    {request.item.name}
+                                                </Typography>
+                                                <Chip
+                                                    icon={getStatusIcon(request.status)}
+                                                    label={request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+                                                    color={getStatusColor(request.status)}
+                                                    size="small"
+                                                />
+                                            </Box>
+                                            
+                                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                                                <PersonIcon fontSize="small" sx={{ mr: 1 }} />
+                                                <Typography variant="body2">
+                                                    Requested by: {request.borrower.name}
+                                                </Typography>
+                                            </Box>
+                                            
+                                            {request.message && (
+                                                <Box sx={{ mt: 2, p: 1, bgcolor: 'background.paper', borderRadius: 1 }}>
+                                                    <Typography variant="body2" fontStyle="italic" color="text.secondary">
+                                                        "{request.message}"
+                                                    </Typography>
+                                                </Box>
+                                            )}
+                                        </CardContent>
+                                        <CardActions>
+                                            <Button
+                                                component={Link}
+                                                href={route('borrow-requests.show', request.id)}
+                                                size="small"
+                                                color={request.status === 'pending' ? "primary" : "inherit"}
+                                                variant={request.status === 'pending' ? "contained" : "text"}
+                                            >
+                                                {request.status === 'pending' ? 'Respond to Request' : 'View Details'}
+                                            </Button>
+                                        </CardActions>
+                                    </Card>
+                                </Grid>
+                            ))
+                        ) : (
+                            <Grid item xs={12}>
+                                <Box sx={{ textAlign: 'center', py: 4 }}>
+                                    <Typography color="text.secondary">
+                                        You don't have any incoming borrow requests.
+                                    </Typography>
+                                </Box>
+                            </Grid>
+                        )}
+                    </Grid>
+                )}
+            </Box>
+        </AuthenticatedLayout>
+    );
+} 
