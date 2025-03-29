@@ -86,7 +86,7 @@ export default function Create({ items, potentialBorrowers, auth }) {
             </Box>
 
             <Grid container spacing={3}>
-                <Grid item xs={12} md={8}>
+                <Grid md={8}>
                     <Card
                         sx={{
                             boxShadow: 'rgba(149, 157, 165, 0.1) 0px 8px 24px',
@@ -96,7 +96,7 @@ export default function Create({ items, potentialBorrowers, auth }) {
                         <CardContent sx={{ p: { xs: 3, md: 4 } }}>
                             <form onSubmit={handleSubmit}>
                                 <Grid container spacing={4}>
-                                    <Grid item xs={12}>
+                                    <Grid >
                                         <FormControl 
                                             fullWidth 
                                             error={!!errors.item_id}
@@ -205,7 +205,7 @@ export default function Create({ items, potentialBorrowers, auth }) {
                                         </FormControl>
                                     </Grid>
 
-                                    <Grid item xs={12}>
+                                    <Grid >
                                         <FormControl 
                                             fullWidth 
                                             error={!!errors.borrower_id}
@@ -307,7 +307,7 @@ export default function Create({ items, potentialBorrowers, auth }) {
                                         </FormControl>
                                     </Grid>
 
-                                    <Grid item xs={12}>
+                                    <Grid >
                                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                                             <DatePicker
                                                 label="Date Lent"
@@ -325,7 +325,7 @@ export default function Create({ items, potentialBorrowers, auth }) {
                                         </LocalizationProvider>
                                     </Grid>
 
-                                    <Grid item xs={12}>
+                                    <Grid >
                                         <Button
                                             type="submit"
                                             variant="contained"
@@ -350,7 +350,7 @@ export default function Create({ items, potentialBorrowers, auth }) {
                     </Card>
                 </Grid>
 
-                <Grid item xs={12} md={4}>
+                <Grid md={4}>
                     <Card
                         sx={{
                             boxShadow: 'rgba(149, 157, 165, 0.1) 0px 8px 24px',

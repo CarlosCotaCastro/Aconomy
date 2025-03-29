@@ -5,6 +5,7 @@ import {
     Card,
     CardContent,
     CardActions,
+    CardMedia,
     Grid,
     Typography,
     IconButton,
@@ -35,9 +36,32 @@ export default function Index({ items, auth }) {
 
             <Grid container spacing={3}>
                 {items.map((item) => (
-                    <Grid item xs={12} sm={6} md={4} key={item.id}>
-                        <Card>
-                            <CardContent>
+                    <Grid md={4} sm={6} key={item.id}>
+                        <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                            {item.image_path ? (
+                                <CardMedia
+                                    component="img"
+                                    height="200"
+                                    image={`/storage/${item.image_path}`}
+                                    alt={item.name}
+                                    sx={{ objectFit: 'contain', padding: 1 }}
+                                />
+                            ) : (
+                                <Box 
+                                    sx={{ 
+                                        height: 140, 
+                                        bgcolor: 'rgba(0,0,0,0.05)', 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        justifyContent: 'center' 
+                                    }}
+                                >
+                                    <Typography color="text.secondary">
+                                        No Image
+                                    </Typography>
+                                </Box>
+                            )}
+                            <CardContent sx={{ flexGrow: 1 }}>
                                 <Typography variant="h6" component="h2">
                                     {item.name}
                                 </Typography>
@@ -50,18 +74,18 @@ export default function Index({ items, auth }) {
                             <CardActions>
                                 <Button
                                     component={Link}
+                                    href={route('items.edit', item.id)}
+                                    size="small"
+                                >
+                                    Edit
+                                </Button>
+                                <Button
+                                    component={Link}
                                     href={route('items.show', item.id)}
                                     size="small"
                                 >
                                     View Details
                                 </Button>
-                                <IconButton
-                                    component={Link}
-                                    href={route('items.edit', item.id)}
-                                    size="small"
-                                >
-                                    <EditIcon />
-                                </IconButton>
                                 <IconButton
                                     component={Link}
                                     href={route('items.destroy', item.id)}

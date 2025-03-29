@@ -192,7 +192,7 @@ export default function Show({ group, auth }) {
                                 
                                 <Grid container spacing={2} sx={{ mt: 1 }}>
                                     {searchResults.map((item) => (
-                                        <Grid item xs={12} sm={6} md={4} key={item.id}>
+                                        <Grid md={4} sm={6} key={item.id}>
                                             <Card variant="outlined">
                                                 <CardContent>
                                                     <Typography variant="h6" component="h3" gutterBottom>
@@ -251,7 +251,7 @@ export default function Show({ group, auth }) {
             )}
 
             <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
+                <Grid md={6}>
                     <Card>
                         <CardContent>
                             <Typography variant="h6" gutterBottom>
@@ -284,7 +284,7 @@ export default function Show({ group, auth }) {
                 </Grid>
 
                 {isUserApproved && pendingMembers.length > 0 && (
-                    <Grid item xs={12} md={6}>
+                    <Grid md={6}>
                         <Card>
                             <CardContent>
                                 <Typography variant="h6" gutterBottom>

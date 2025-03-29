@@ -52,7 +52,7 @@ export default function Dashboard({ items = [], groups = [], lendings = [], borr
             </Box>
 
             <Grid container spacing={3}>
-                <Grid item xs={12} md={4}>
+                <Grid md={4} lg={4} sm={12}>
                     <Card sx={{ 
                         height: '100%', 
                         display: 'flex', 
@@ -104,9 +104,17 @@ export default function Dashboard({ items = [], groups = [], lendings = [], borr
                                         }}
                                     >
                                         <ListItemAvatar>
-                                            <Avatar sx={{ bgcolor: 'rgba(82, 113, 255, 0.1)' }}>
-                                                <InventoryIcon sx={{ color: '#5271ff' }} />
-                                            </Avatar>
+                                            {item.image_path ? (
+                                                <Avatar 
+                                                    src={`/storage/${item.image_path}`}
+                                                    variant="rounded"
+                                                    sx={{ width: 40, height: 40 }}
+                                                />
+                                            ) : (
+                                                <Avatar sx={{ bgcolor: 'rgba(82, 113, 255, 0.1)' }}>
+                                                    <InventoryIcon sx={{ color: '#5271ff' }} />
+                                                </Avatar>
+                                            )}
                                         </ListItemAvatar>
                                         <ListItemText
                                             primary={
@@ -166,7 +174,7 @@ export default function Dashboard({ items = [], groups = [], lendings = [], borr
                     </Card>
                 </Grid>
 
-                <Grid item xs={12} md={4}>
+                <Grid md={4} lg={4} sm={12}>
                     <Card sx={{ 
                         height: '100%', 
                         display: 'flex', 
@@ -291,7 +299,7 @@ export default function Dashboard({ items = [], groups = [], lendings = [], borr
                     </Card>
                 </Grid>
 
-                <Grid item xs={12} md={4}>
+                <Grid md={4} lg={4} sm={12}>
                     <Card sx={{ 
                         height: '100%', 
                         display: 'flex', 

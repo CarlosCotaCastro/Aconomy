@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Lending;
 use App\Models\ReturnRequest;
 use App\Notifications\ReturnRequestNotification;
+use App\Notifications\ReturnRequestApprovedNotification;
+use App\Notifications\ReturnRequestRejectedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -49,6 +51,7 @@ class ReturnRequestController extends Controller
         $this->authorize('respond', $returnRequest);
 
         $action = $request->query('action');
+        $reason = $request->input('reason');
 
         if ($action === 'approve') {
             // Mark the request as approved
@@ -62,13 +65,20 @@ class ReturnRequestController extends Controller
                 'returned_at' => now(),
             ]);
 
+            // Send notification to the borrower
+            $returnRequest->lending->borrower->notify(new ReturnRequestApprovedNotification($returnRequest));
+
             return redirect()->route('lendings.index')->with('success', 'Return request approved. The item has been marked as returned.');
         } elseif ($action === 'reject') {
             // Mark the request as rejected
             $returnRequest->update([
                 'status' => 'rejected',
                 'responded_at' => now(),
+                'rejection_reason' => $reason
             ]);
+
+            // Send notification to the borrower
+            $returnRequest->lending->borrower->notify(new ReturnRequestRejectedNotification($returnRequest, $reason));
 
             return redirect()->route('lendings.index')->with('success', 'Return request has been rejected.');
         }

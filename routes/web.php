@@ -8,6 +8,7 @@ use App\Http\Controllers\LendingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReturnRequestController;
 use App\Http\Controllers\BorrowRequestController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -58,6 +59,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/borrow-requests/{borrowRequest}/approve', [BorrowRequestController::class, 'approve'])->name('borrow-requests.approve');
     Route::post('/borrow-requests/{borrowRequest}/deny', [BorrowRequestController::class, 'deny'])->name('borrow-requests.deny');
     Route::post('/borrow-requests/{borrowRequest}/verify-code', [BorrowRequestController::class, 'verifyHandoverCode'])->name('borrow-requests.verify-code');
+    
+    // Notification routes
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/count', [NotificationController::class, 'getUnreadCount'])->name('notifications.count');
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
     
     // Lendings routes
     Route::resource('lendings', LendingController::class);

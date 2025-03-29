@@ -10,21 +10,29 @@ import {
     FormHelperText,
 } from '@mui/material';
 import { CloudUpload as CloudUploadIcon } from '@mui/icons-material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
-export default function Create() {
+export default function Edit({ item }) {
     const [previewUrl, setPreviewUrl] = useState(null);
     
-    const { data, setData, post, processing, errors, reset } = useForm({
-        name: '',
-        description: '',
+    const { data, setData, post, processing, errors } = useForm({
+        name: item.name || '',
+        description: item.description || '',
         image: null,
+        _method: 'PUT',
     });
+
+    useEffect(() => {
+        // Set preview if item has an image
+        if (item.image_path) {
+            setPreviewUrl(`/storage/${item.image_path}`);
+        }
+    }, [item]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post(route('items.store'));
+        post(route('items.update', item.id));
     };
     
     const handleImageChange = (e) => {
@@ -38,8 +46,6 @@ export default function Create() {
                 setPreviewUrl(e.target.result);
             };
             reader.readAsDataURL(file);
-        } else {
-            setPreviewUrl(null);
         }
     };
 
@@ -47,7 +53,7 @@ export default function Create() {
         <AuthenticatedLayout>
             <Box sx={{ maxWidth: 600, mx: 'auto' }}>
                 <Typography variant="h4" component="h1" gutterBottom>
-                    Add New Item
+                    Edit Item
                 </Typography>
 
                 <Paper sx={{ p: 3 }}>
@@ -81,7 +87,7 @@ export default function Create() {
                                 startIcon={<CloudUploadIcon />}
                                 sx={{ mb: 2 }}
                             >
-                                Upload Image
+                                {item.image_path ? 'Change Image' : 'Upload Image'}
                                 <input
                                     type="file"
                                     hidden
@@ -113,7 +119,7 @@ export default function Create() {
                                 variant="contained"
                                 disabled={processing}
                             >
-                                Create Item
+                                Update Item
                             </Button>
                             <Button
                                 component={Link}

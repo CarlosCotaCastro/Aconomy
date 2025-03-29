@@ -3,7 +3,8 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite"
+        "dev": "vite",
+        "echo-server": "node_modules/.bin/laravel-echo-server start"
     },
     "devDependencies": {
         "@headlessui/react": "^2.0.0",
@@ -14,6 +15,7 @@
         "autoprefixer": "^10.4.12",
         "axios": "^1.8.2",
         "concurrently": "^9.0.1",
+        "laravel-echo-server": "^1.6.3",
         "laravel-vite-plugin": "^1.2.0",
         "postcss": "^8.4.31",
         "react": "^18.2.0",
@@ -28,6 +30,8 @@
         "@mui/material": "^7.0.1",
         "@mui/x-date-pickers": "^7.28.2",
         "date-fns": "^2.30.0",
-        "lodash": "^4.17.21"
+        "laravel-echo": "^2.0.2",
+        "lodash": "^4.17.21",
+        "socket.io-client": "^4.8.1"
     }
 }

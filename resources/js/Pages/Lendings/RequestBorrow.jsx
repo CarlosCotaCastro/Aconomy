@@ -48,7 +48,7 @@ export default function RequestBorrow({ item, auth }) {
             </Box>
 
             <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
+                <Grid md={6}>
                     <Card>
                         <CardContent>
                             <Typography variant="h6" component="h2" gutterBottom>
@@ -83,7 +83,7 @@ export default function RequestBorrow({ item, auth }) {
                     </Card>
                 </Grid>
                 
-                <Grid item xs={12} md={6}>
+                <Grid md={6}>
                     <Card>
                         <CardContent>
                             <Typography variant="h6" component="h2" gutterBottom>

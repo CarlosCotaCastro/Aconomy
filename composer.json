@@ -17,6 +17,7 @@
         "laravel/scout": "^10.14",
         "laravel/tinker": "^2.10.1",
         "meilisearch/meilisearch-php": "^1.13",
+        "predis/predis": "^2.3",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "tightenco/ziggy": "^2.0"
     },

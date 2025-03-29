@@ -51,7 +51,7 @@ export default function Index({ groups, auth }) {
                     const isUserApproved = group.users.find(u => u.id === auth.user.id)?.pivot.approved;
                     
                     return (
-                        <Grid item xs={12} sm={6} md={4} key={group.id}>
+                        <Grid md={4} sm={6} key={group.id}>
                             <Card>
                                 <CardContent>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>

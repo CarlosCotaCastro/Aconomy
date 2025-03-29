@@ -11,6 +11,7 @@ import {
     TextField,
     InputAdornment,
     Chip,
+    CardMedia,
 } from '@mui/material';
 import {
     Search as SearchIcon,
@@ -50,8 +51,31 @@ export default function GroupItems({ group, items, auth }) {
 
             <Grid container spacing={3}>
                 {filteredItems.map((item) => (
-                    <Grid item xs={12} sm={6} md={4} key={item.id}>
+                    <Grid md={4} sm={6} key={item.id}>
                         <Card>
+                            {item.image_path ? (
+                                <CardMedia
+                                    component="img"
+                                    height="160"
+                                    image={`/storage/${item.image_path}`}
+                                    alt={item.name}
+                                    sx={{ objectFit: 'contain', padding: 1 }}
+                                />
+                            ) : (
+                                <Box 
+                                    sx={{ 
+                                        height: 120, 
+                                        bgcolor: 'rgba(0,0,0,0.05)', 
+                                        display: 'flex', 
+                                        alignItems: 'center', 
+                                        justifyContent: 'center' 
+                                    }}
+                                >
+                                    <Typography color="text.secondary">
+                                        No Image
+                                    </Typography>
+                                </Box>
+                            )}
                             <CardContent>
                                 <Typography variant="h6" component="h2">
                                     {item.name}

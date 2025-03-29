@@ -98,7 +98,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
             </Box>
 
             <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
+                <Grid md={6}>
                     <Card>
                         <CardContent>
                             <Typography variant="h6" gutterBottom>
@@ -118,7 +118,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                             <Divider sx={{ my: 2 }} />
                             
                             <Grid container spacing={2}>
-                                <Grid item xs={12} sm={6}>
+                                <Grid sm={6}>
                                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                         <Avatar sx={{ mr: 2 }}>
                                             <PersonIcon />
@@ -134,7 +134,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                                     </Box>
                                 </Grid>
                                 
-                                <Grid item xs={12} sm={6}>
+                                <Grid sm={6}>
                                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                         <Avatar sx={{ mr: 2 }}>
                                             <PersonIcon />
@@ -167,7 +167,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                     </Card>
                 </Grid>
                 
-                <Grid item xs={12} md={6}>
+                <Grid md={6}>
                     <Card>
                         <CardContent>
                             <Typography variant="h6" gutterBottom>

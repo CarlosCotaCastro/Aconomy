@@ -49,7 +49,7 @@ export default function Create({ item, auth }) {
             </Box>
 
             <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
+                <Grid md={6}>
                     <Card>
                         <CardContent>
                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
@@ -90,7 +90,7 @@ export default function Create({ item, auth }) {
                     </Card>
                 </Grid>
                 
-                <Grid item xs={12} md={6}>
+                <Grid md={6}>
                     <Card>
                         <CardContent>
                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>

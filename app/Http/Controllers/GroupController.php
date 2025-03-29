@@ -102,6 +102,9 @@ class GroupController extends Controller
         $this->authorize('approveMembers', $group);
         
         $group->users()->updateExistingPivot($user->id, ['approved' => true]);
+
+        // Send notification to the approved user
+        $user->notify(new \App\Notifications\GroupJoinRequestApprovedNotification($group, auth()->user()));
         
         return redirect()->back()->with('success', 'User approved successfully.');
     }

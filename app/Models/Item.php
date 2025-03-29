@@ -15,6 +15,7 @@ class Item extends Model
         'description',
         'user_id',
         'group_id',
+        'image_path',
     ];
 
     /**

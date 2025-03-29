@@ -40,6 +40,8 @@ import {
     Home as HomeIcon,
     RequestQuote as RequestQuoteIcon,
 } from '@mui/icons-material';
+import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import NotificationMenu from '@/Components/Notifications/NotificationMenu';
 
 export default function AuthenticatedLayout({ user, children }) {
     const theme = useTheme();
@@ -440,46 +442,18 @@ export default function AuthenticatedLayout({ user, children }) {
                         </Box>
                     )}
 
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        {!isMobile && (
-                            <IconButton size="large" color="inherit">
-                                <Badge badgeContent={2} color="error">
-                                    <NotificationsIcon />
-                                </Badge>
-                            </IconButton>
-                        )}
-                        <Tooltip title="Account settings">
-                            <Box 
-                                onClick={handleUserMenuOpen}
-                                sx={{ 
-                                    display: 'flex', 
-                                    alignItems: 'center', 
-                                    cursor: 'pointer',
-                                    borderRadius: '24px',
-                                    padding: '4px 12px 4px 4px',
-                                    '&:hover': {
-                                        backgroundColor: 'rgba(0, 0, 0, 0.04)'
-                                    }
-                                }}
-                            >
-                                <Avatar 
-                                    sx={{ 
-                                        width: 34, 
-                                        height: 34,
-                                        background: 'linear-gradient(135deg, #5271ff 0%, #4361ee 100%)',
-                                        fontSize: '0.9rem',
-                                        mr: 1
-                                    }}
-                                >
-                                    {authUser.name.charAt(0)}
-                                </Avatar>
-                                {!isMobile && (
-                                    <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                                        {authUser.name}
-                                    </Typography>
-                                )}
-                            </Box>
-                        </Tooltip>
+                    <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
+                        <NotificationMenu />
+                        <IconButton
+                            size="large"
+                            aria-label="account of current user"
+                            aria-controls="menu-appbar"
+                            aria-haspopup="true"
+                            onClick={handleUserMenuOpen}
+                            color="inherit"
+                        >
+                            <Avatar alt={authUser.name}>{authUser.name.charAt(0)}</Avatar>
+                        </IconButton>
                         <Menu
                             anchorEl={userAnchorEl}
                             id="account-menu"

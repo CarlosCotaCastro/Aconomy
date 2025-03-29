@@ -99,7 +99,7 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                     <Grid container spacing={3}>
                         {outgoingRequests.length > 0 ? (
                             outgoingRequests.map((request) => (
-                                <Grid item xs={12} sm={6} md={4} key={request.id}>
+                                <Grid md={4} sm={6} key={request.id}>
                                     <Card>
                                         <CardContent>
                                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
@@ -142,7 +142,7 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                 </Grid>
                             ))
                         ) : (
-                            <Grid item xs={12}>
+                            <Grid >
                                 <Box sx={{ textAlign: 'center', py: 4 }}>
                                     <Typography color="text.secondary">
                                         You haven't sent any borrow requests yet.
@@ -168,7 +168,7 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                     <Grid container spacing={3}>
                         {incomingRequests.length > 0 ? (
                             incomingRequests.map((request) => (
-                                <Grid item xs={12} sm={6} md={4} key={request.id}>
+                                <Grid md={4} sm={6} key={request.id}>
                                     <Card>
                                         <CardContent>
                                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
@@ -213,7 +213,7 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                 </Grid>
                             ))
                         ) : (
-                            <Grid item xs={12}>
+                            <Grid >
                                 <Box sx={{ textAlign: 'center', py: 4 }}>
                                     <Typography color="text.secondary">
                                         You don't have any incoming borrow requests.

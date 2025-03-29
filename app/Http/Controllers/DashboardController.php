@@ -19,6 +19,7 @@ class DashboardController extends Controller
                 ->with(['lendings' => function ($query) {
                     $query->whereNull('returned_at');
                 }])
+                ->select('id', 'name', 'description', 'image_path')
                 ->get(),
             'groups' => Group::whereHas('users', function ($query) use ($user) {
                     $query->where('user_id', $user->id);

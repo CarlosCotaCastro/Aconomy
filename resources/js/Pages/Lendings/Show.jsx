@@ -48,7 +48,7 @@ export default function Show({ auth, lending }) {
                 </Box>
 
                 <Grid container spacing={3}>
-                    <Grid item xs={12} md={6}>
+                    <Grid md={6}>
                         <Card>
                             <CardContent>
                                 <Typography variant="h6" gutterBottom>Item Information</Typography>
@@ -64,7 +64,7 @@ export default function Show({ auth, lending }) {
                         </Card>
                     </Grid>
                     
-                    <Grid item xs={12} md={6}>
+                    <Grid md={6}>
                         <Card>
                             <CardContent>
                                 <Typography variant="h6" gutterBottom>Lending Information</Typography>
@@ -107,6 +107,16 @@ export default function Show({ auth, lending }) {
                                             label="Return Request Pending" 
                                             color="warning" 
                                         />
+                                        {lending.active_return_request && lending.active_return_request.notes && auth.user.id === lending.lender.id && (
+                                            <Box sx={{ mt: 1, p: 2, bgcolor: 'rgba(255, 244, 229, 0.7)', borderRadius: 1 }}>
+                                                <Typography variant="subtitle2" gutterBottom>
+                                                    Message from borrower:
+                                                </Typography>
+                                                <Typography variant="body2" fontStyle="italic">
+                                                    "{lending.active_return_request.notes}"
+                                                </Typography>
+                                            </Box>
+                                        )}
                                     </Box>
                                 )}
                             </CardContent>

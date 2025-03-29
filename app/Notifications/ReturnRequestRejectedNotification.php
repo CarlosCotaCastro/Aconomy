@@ -8,18 +8,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ReturnRequestNotification extends Notification implements ShouldQueue
+class ReturnRequestRejectedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
     protected $returnRequest;
+    protected $reason;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct(ReturnRequest $returnRequest)
+    public function __construct(ReturnRequest $returnRequest, ?string $reason = null)
     {
         $this->returnRequest = $returnRequest;
+        $this->reason = $reason;
     }
 
     /**
@@ -39,11 +41,8 @@ class ReturnRequestNotification extends Notification implements ShouldQueue
     {
         $lending = $this->returnRequest->lending;
         $item = $lending->item;
-        $borrower = $lending->borrower;
+        $lender = $lending->lender;
         
-        $approveUrl = url("/return-requests/{$this->returnRequest->id}/respond?action=approve");
-        $rejectUrl = url("/return-requests/{$this->returnRequest->id}/respond?action=reject");
-
         $imageHtml = '';
         
         // Add item image if available
@@ -54,29 +53,23 @@ class ReturnRequestNotification extends Notification implements ShouldQueue
                 <p style="margin-top: 5px; color: #718096; font-size: 14px;">Item: ' . $item->name . '</p>
             </div>';
         }
-
-        $message = (new MailMessage)
-            ->subject("Return Request for {$item->name}")
-            ->greeting("Hello {$notifiable->name}!")
-            ->line("{$borrower->name} has requested to return the item: {$item->name}")
+        
+        $mail = (new MailMessage)
+            ->subject("Return Request Rejected for {$item->name}")
+            ->greeting("Hello {$notifiable->name}")
+            ->line("{$lender->name} has declined your request to return the {$item->name}.")
             ->when($imageHtml, function ($message) use ($imageHtml) {
                 return $message->line($imageHtml);
-            })
-            ->line("This item was borrowed on {$lending->lent_at->format('F j, Y')}")
-            ->action('View Details', url("/lendings/{$lending->id}"))
-            ->line('You can approve or reject this return request by clicking the buttons below:')
-            ->line('<div style="display: flex; gap: 10px; margin-top: 15px;">
-                <a href="'.$approveUrl.'" class="button button-primary" style="background-color: #4CAF50; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; display: inline-block;">Approve Return</a>
-                <a href="'.$rejectUrl.'" class="button button-secondary" style="background-color: #f44336; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; display: inline-block;">Reject Return</a>
-                </div>');
+            });
         
-        // Add notes if provided
-        if ($this->returnRequest->notes) {
-            $message->line('Message from borrower:')
-                   ->line('"' . $this->returnRequest->notes . '"');
+        if (!empty($this->reason)) {
+            $mail->line('Reason: "' . $this->reason . '"');
         }
         
-        return $message->line('Thank you for using our application!');
+        return $mail
+            ->line("Please contact {$lender->name} directly to discuss returning the item.")
+            ->action('View Details', url("/lendings/{$lending->id}"))
+            ->line('Thank you for using our application.');
     }
 
     /**
@@ -88,18 +81,19 @@ class ReturnRequestNotification extends Notification implements ShouldQueue
     {
         $lending = $this->returnRequest->lending;
         $item = $lending->item;
-        $borrower = $lending->borrower;
+        $lender = $lending->lender;
         
         return [
-            'type' => 'return_request',
+            'type' => 'return_request_rejected',
             'return_request_id' => $this->returnRequest->id,
             'lending_id' => $lending->id,
             'item_id' => $item->id,
             'item_name' => $item->name,
-            'borrower_id' => $borrower->id,
-            'borrower_name' => $borrower->name,
-            'notes' => $this->returnRequest->notes,
-            'requested_at' => $this->returnRequest->requested_at->toIso8601String(),
+            'lender_id' => $lender->id,
+            'lender_name' => $lender->name,
+            'reason' => $this->reason,
+            'title' => 'Return Request Rejected',
+            'body' => "{$lender->name} has declined your request to return the {$item->name}",
             'url' => '/lendings/' . $lending->id,
         ];
     }
