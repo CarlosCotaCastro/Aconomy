@@ -1,3 +1,5 @@
+<?php
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NotificationController;
@@ -18,4 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Notification API routes
-Route::middleware('auth:sanctum')->get('/notifications', [NotificationController::class, 'getLatestNotifications']); 
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/notifications', [NotificationController::class, 'getLatestNotifications']);
+    Route::get('/notifications/count', [NotificationController::class, 'getUnreadCount']);
+});
