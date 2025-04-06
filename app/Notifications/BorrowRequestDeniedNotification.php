@@ -13,6 +13,7 @@ class BorrowRequestDeniedNotification extends Notification implements ShouldQueu
     use Queueable;
 
     protected $borrowRequest;
+
     protected $reason;
 
     /**
@@ -41,13 +42,13 @@ class BorrowRequestDeniedNotification extends Notification implements ShouldQueu
     {
         $mail = (new MailMessage)
             ->subject('Borrow Request Denied')
-            ->greeting('Hello ' . $notifiable->name)
-            ->line($this->borrowRequest->lender->name . ' has declined your request to borrow their ' . $this->borrowRequest->item->name . '.');
-            
-        if (!empty($this->reason)) {
-            $mail->line('Reason: "' . $this->reason . '"');
+            ->greeting('Hello '.$notifiable->name)
+            ->line($this->borrowRequest->lender->name.' has declined your request to borrow their '.$this->borrowRequest->item->name.'.');
+
+        if (! empty($this->reason)) {
+            $mail->line('Reason: "'.$this->reason.'"');
         }
-        
+
         return $mail->action('Browse Other Items', url('/groups'))
             ->line('Thank you for using our platform.');
     }
@@ -67,7 +68,7 @@ class BorrowRequestDeniedNotification extends Notification implements ShouldQueu
             'lender_name' => $this->borrowRequest->lender->name,
             'reason' => $this->reason,
             'title' => 'Borrow Request Denied',
-            'body' => $this->borrowRequest->lender->name . ' has declined your request to borrow their ' . $this->borrowRequest->item->name,
+            'body' => $this->borrowRequest->lender->name.' has declined your request to borrow their '.$this->borrowRequest->item->name,
         ];
     }
 }

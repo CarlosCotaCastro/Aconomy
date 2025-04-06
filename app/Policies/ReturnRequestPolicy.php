@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\ReturnRequest;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class ReturnRequestPolicy
 {
@@ -22,6 +21,7 @@ class ReturnRequestPolicy
     public function view(User $user, ReturnRequest $returnRequest): bool
     {
         $lending = $returnRequest->lending;
+
         return $user->id === $lending->lender_id || $user->id === $lending->borrower_id;
     }
 
@@ -64,13 +64,14 @@ class ReturnRequestPolicy
     {
         return false;
     }
-    
+
     /**
      * Determine whether the user can respond to the return request.
      */
     public function respond(User $user, ReturnRequest $returnRequest): bool
     {
         $lending = $returnRequest->lending;
+
         return $user->id === $lending->lender_id && $returnRequest->status === 'pending';
     }
 }

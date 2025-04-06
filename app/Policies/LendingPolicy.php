@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Lending;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class LendingPolicy
 {
@@ -71,7 +70,7 @@ class LendingPolicy
     {
         return $user->id === $lending->lender_id && $lending->returned_at === null;
     }
-    
+
     /**
      * Determine whether the user can create a return request.
      */

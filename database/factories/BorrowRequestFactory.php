@@ -16,7 +16,7 @@ class BorrowRequestFactory extends Factory
         $lender = User::factory()->create();
         $borrower = User::factory()->create();
         $item = Item::factory()->create(['user_id' => $lender->id]);
-        
+
         return [
             'item_id' => $item->id,
             'lender_id' => $lender->id,
@@ -29,7 +29,7 @@ class BorrowRequestFactory extends Factory
             'completed_at' => null,
         ];
     }
-    
+
     public function pending(): self
     {
         return $this->state(function (array $attributes) {
@@ -39,7 +39,7 @@ class BorrowRequestFactory extends Factory
             ];
         });
     }
-    
+
     public function approved(): self
     {
         return $this->state(function (array $attributes) {
@@ -49,7 +49,7 @@ class BorrowRequestFactory extends Factory
             ];
         });
     }
-    
+
     public function denied(): self
     {
         return $this->state(function (array $attributes) {
@@ -59,7 +59,7 @@ class BorrowRequestFactory extends Factory
             ];
         });
     }
-    
+
     public function completed(): self
     {
         return $this->state(function (array $attributes) {
@@ -69,4 +69,4 @@ class BorrowRequestFactory extends Factory
             ];
         });
     }
-} 
+}

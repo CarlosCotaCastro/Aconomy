@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Inertia\Inertia;
-use App\Models\Item;
 use App\Models\Group;
+use App\Models\Item;
 use App\Models\Lending;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
@@ -22,8 +21,8 @@ class DashboardController extends Controller
                 ->select('id', 'name', 'description', 'image_path')
                 ->get(),
             'groups' => Group::whereHas('users', function ($query) use ($user) {
-                    $query->where('user_id', $user->id);
-                })
+                $query->where('user_id', $user->id);
+            })
                 ->with(['users' => function ($query) {
                     $query->select('users.id', 'users.name', 'group_user.approved');
                 }])
@@ -36,4 +35,4 @@ class DashboardController extends Controller
                 ->get(),
         ]);
     }
-} 
+}
