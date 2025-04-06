@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Lending extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'item_id',
         'lender_id',

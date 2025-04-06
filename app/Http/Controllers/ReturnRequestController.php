@@ -4,12 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Lending;
 use App\Models\ReturnRequest;
-use App\Notifications\ReturnRequestNotification;
 use App\Notifications\ReturnRequestApprovedNotification;
+use App\Notifications\ReturnRequestNotification;
 use App\Notifications\ReturnRequestRejectedNotification;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 
 class ReturnRequestController extends Controller
 {
@@ -74,7 +72,7 @@ class ReturnRequestController extends Controller
             $returnRequest->update([
                 'status' => 'rejected',
                 'responded_at' => now(),
-                'rejection_reason' => $reason
+                'rejection_reason' => $reason,
             ]);
 
             // Send notification to the borrower

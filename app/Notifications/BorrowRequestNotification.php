@@ -39,27 +39,27 @@ class BorrowRequestNotification extends Notification implements ShouldQueue
     {
         $item = $this->borrowRequest->item;
         $imageHtml = '';
-        
+
         // Add item image if available
         if ($item->image_path) {
-            $imageUrl = url('storage/' . $item->image_path);
+            $imageUrl = url('storage/'.$item->image_path);
             $imageHtml = '<div style="text-align: center; margin-bottom: 15px;">
-                <img src="' . $imageUrl . '" alt="' . $item->name . '" style="max-width: 300px; max-height: 200px; object-fit: contain;">
-                <p style="margin-top: 5px; color: #718096; font-size: 14px;">Item: ' . $item->name . '</p>
+                <img src="'.$imageUrl.'" alt="'.$item->name.'" style="max-width: 300px; max-height: 200px; object-fit: contain;">
+                <p style="margin-top: 5px; color: #718096; font-size: 14px;">Item: '.$item->name.'</p>
             </div>';
         }
-        
+
         return (new MailMessage)
             ->subject('New Borrow Request')
-            ->greeting('Hello ' . $notifiable->name . '!')
-            ->line($this->borrowRequest->borrower->name . ' would like to borrow your ' . $this->borrowRequest->item->name . '.')
+            ->greeting('Hello '.$notifiable->name.'!')
+            ->line($this->borrowRequest->borrower->name.' would like to borrow your '.$this->borrowRequest->item->name.'.')
             ->when($imageHtml, function ($message) use ($imageHtml) {
                 return $message->line($imageHtml);
             })
-            ->when(!empty($this->borrowRequest->message), function ($message) {
-                return $message->line('Message: "' . $this->borrowRequest->message . '"');
+            ->when(! empty($this->borrowRequest->message), function ($message) {
+                return $message->line('Message: "'.$this->borrowRequest->message.'"');
             })
-            ->action('Respond to Request', url('/borrow-requests/' . $this->borrowRequest->id))
+            ->action('Respond to Request', url('/borrow-requests/'.$this->borrowRequest->id))
             ->line('This request will expire if not responded to within 7 days.');
     }
 
@@ -79,8 +79,8 @@ class BorrowRequestNotification extends Notification implements ShouldQueue
             'borrower_name' => $this->borrowRequest->borrower->name,
             'message' => $this->borrowRequest->message,
             'title' => 'New Borrow Request',
-            'body' => $this->borrowRequest->borrower->name . ' wants to borrow your ' . $this->borrowRequest->item->name,
-            'url' => '/borrow-requests/' . $this->borrowRequest->id,
+            'body' => $this->borrowRequest->borrower->name.' wants to borrow your '.$this->borrowRequest->item->name,
+            'url' => '/borrow-requests/'.$this->borrowRequest->id,
         ];
     }
 }

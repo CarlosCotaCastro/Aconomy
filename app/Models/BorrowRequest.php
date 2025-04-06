@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 class BorrowRequest extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'item_id',
         'lender_id',
@@ -21,28 +21,28 @@ class BorrowRequest extends Model
         'handover_code_expires_at',
         'completed_at',
     ];
-    
+
     protected $casts = [
         'expires_at' => 'datetime',
         'handover_code_expires_at' => 'datetime',
         'completed_at' => 'datetime',
     ];
-    
+
     public function item()
     {
         return $this->belongsTo(Item::class);
     }
-    
+
     public function lender()
     {
         return $this->belongsTo(User::class, 'lender_id');
     }
-    
+
     public function borrower()
     {
         return $this->belongsTo(User::class, 'borrower_id');
     }
-    
+
     /**
      * Determine if the borrow request is pending
      */
@@ -50,7 +50,7 @@ class BorrowRequest extends Model
     {
         return $this->status === 'pending';
     }
-    
+
     /**
      * Determine if the borrow request is approved
      */
@@ -58,7 +58,7 @@ class BorrowRequest extends Model
     {
         return $this->status === 'approved';
     }
-    
+
     /**
      * Determine if the borrow request is denied
      */
@@ -66,7 +66,7 @@ class BorrowRequest extends Model
     {
         return $this->status === 'denied';
     }
-    
+
     /**
      * Determine if the borrow request is completed
      */
@@ -74,7 +74,7 @@ class BorrowRequest extends Model
     {
         return $this->status === 'completed';
     }
-    
+
     /**
      * Determine if the handover code is valid
      */
@@ -83,10 +83,10 @@ class BorrowRequest extends Model
         if (empty($this->handover_code) || empty($this->handover_code_expires_at)) {
             return false;
         }
-        
+
         return now()->lt($this->handover_code_expires_at);
     }
-    
+
     /**
      * Generate a new handover code
      */
@@ -95,7 +95,7 @@ class BorrowRequest extends Model
         $this->handover_code = strtoupper(Str::random(6));
         $this->handover_code_expires_at = now()->addMinutes(15);
         $this->save();
-        
+
         return $this->handover_code;
     }
 }

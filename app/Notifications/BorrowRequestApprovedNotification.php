@@ -39,10 +39,10 @@ class BorrowRequestApprovedNotification extends Notification implements ShouldQu
     {
         return (new MailMessage)
             ->subject('Borrow Request Approved')
-            ->greeting('Good news, ' . $notifiable->name . '!')
-            ->line($this->borrowRequest->lender->name . ' has approved your request to borrow their ' . $this->borrowRequest->item->name . '.')
+            ->greeting('Good news, '.$notifiable->name.'!')
+            ->line($this->borrowRequest->lender->name.' has approved your request to borrow their '.$this->borrowRequest->item->name.'.')
             ->line('You can now meet with the owner to pick up the item. They will show you a QR code to scan when you receive the item.')
-            ->action('View Details', url('/borrow-requests/' . $this->borrowRequest->id))
+            ->action('View Details', url('/borrow-requests/'.$this->borrowRequest->id))
             ->line('The QR code will be valid for 15 minutes once it is generated.');
     }
 
@@ -60,7 +60,7 @@ class BorrowRequestApprovedNotification extends Notification implements ShouldQu
             'lender_id' => $this->borrowRequest->lender_id,
             'lender_name' => $this->borrowRequest->lender->name,
             'title' => 'Borrow Request Approved',
-            'body' => $this->borrowRequest->lender->name . ' has approved your request to borrow their ' . $this->borrowRequest->item->name,
+            'body' => $this->borrowRequest->lender->name.' has approved your request to borrow their '.$this->borrowRequest->item->name,
         ];
     }
 }
