@@ -70,7 +70,11 @@ export default function Index({ items, auth }) {
                                     height="200"
                                     image={`/storage/${item.image_path}`}
                                     alt={item.name}
-                                    sx={{ objectFit: 'contain', padding: 1 }}
+                                    sx={{
+                                        objectFit: 'cover',
+                                        padding: 0,
+                                        aspectRatio: 16 / 9
+                                    }}
                                 />
                             ) : (
                                 <Box
