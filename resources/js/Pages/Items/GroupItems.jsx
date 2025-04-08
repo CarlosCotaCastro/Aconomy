@@ -20,12 +20,7 @@ import {
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function GroupItems({ group, items, auth }) {
-    const [searchQuery, setSearchQuery] = useState('');
 
-    const filteredItems = items.filter(item =>
-        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        item.description?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
 
     return (
         <AuthenticatedLayout>
@@ -62,13 +57,13 @@ export default function GroupItems({ group, items, auth }) {
                                     sx={{ objectFit: 'contain', padding: 1 }}
                                 />
                             ) : (
-                                <Box 
-                                    sx={{ 
-                                        height: 120, 
-                                        bgcolor: 'rgba(0,0,0,0.05)', 
-                                        display: 'flex', 
-                                        alignItems: 'center', 
-                                        justifyContent: 'center' 
+                                <Box
+                                    sx={{
+                                        height: 120,
+                                        bgcolor: 'rgba(0,0,0,0.05)',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
                                     }}
                                 >
                                     <Typography color="text.secondary">
@@ -118,4 +113,4 @@ export default function GroupItems({ group, items, auth }) {
             </Grid>
         </AuthenticatedLayout>
     );
-} 
+}
