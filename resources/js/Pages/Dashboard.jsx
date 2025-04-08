@@ -175,7 +175,6 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                             sx={{
                                 borderRadius: 2,
                                 p: 1,
-                                background: 'linear-gradient(90deg, ' + theme.palette.primary.dark + ' 0%, ' + theme.palette.warning.dark + ' 100%)',
                                 textTransform: 'none',
                                 fontWeight: 600
                             }}
