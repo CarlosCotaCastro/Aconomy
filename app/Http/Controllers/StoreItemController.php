@@ -29,7 +29,6 @@ class StoreItemController extends Controller
         $item->groups()->attach($approvedGroups->pluck('id')->toArray());
         $item->searchable();
 
-
         return redirect()->route('items.index')->with('message', 'Item created successfully.');
     }
 }
