@@ -47,8 +47,7 @@ class GroupSearchItems extends Controller
                 $groupId = $group->id;
                 $items = Item::search($searchQuery)
                     ->whereIn('groups', $groupId)
-                    ->get()
-                ;
+                    ->get();
 
                 Log::info('Search results with query', [
                     'query' => $searchQuery,

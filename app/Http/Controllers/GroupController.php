@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
-use App\Models\Item;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class GroupController extends Controller
@@ -112,5 +109,4 @@ class GroupController extends Controller
 
         return redirect()->back()->with('success', 'User approved successfully.');
     }
-
 }

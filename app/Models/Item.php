@@ -28,7 +28,7 @@ class Item extends Model
     {
         $this->refresh();
 
-        if (!$this->relationLoaded('groups')) {
+        if (! $this->relationLoaded('groups')) {
             $this->load('groups');
         }
 
