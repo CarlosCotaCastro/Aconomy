@@ -8,7 +8,7 @@ import {
     Grid,
     Typography,
     Chip,
-    IconButton,
+    IconButton, Tooltip,
 } from '@mui/material';
 import {
     Add as AddIcon,
@@ -49,10 +49,10 @@ export default function Index({ groups, auth }) {
                     const pendingMembers = group.users.filter(u => !u.pivot.approved).length;
                     const isUserInGroup = group.users.some(u => u.id === auth.user.id);
                     const isUserApproved = group.users.find(u => u.id === auth.user.id)?.pivot.approved;
-                    
+
                     return (
-                        <Grid md={4} sm={6} key={group.id}>
-                            <Card>
+                        <Grid size={{xs: 12, sm: 6, md: 4, xl: 3}} key={group.id}>
+                            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                                 <CardContent>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
                                         <GroupIcon sx={{ mr: 1 }} />
@@ -61,23 +61,29 @@ export default function Index({ groups, auth }) {
                                         </Typography>
                                     </Box>
                                     {group.description && (
-                                        <Typography color="text.secondary" sx={{ mb: 2 }}>
+                                        <Tooltip title={group.description}>
+                                        <Typography color="text.secondary" sx={{ mb: 2,
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            whiteSpace: 'nowrap'
+                                        }}>
                                             {group.description}
                                         </Typography>
+                                        </Tooltip>
                                     )}
                                     <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
-                                        <Chip 
-                                            icon={<PersonIcon />} 
-                                            label={`${approvedMembers} approved member${approvedMembers !== 1 ? 's' : ''}`} 
-                                            color="primary" 
-                                            size="small" 
+                                        <Chip
+                                            icon={<PersonIcon />}
+                                            label={`${approvedMembers} approved member${approvedMembers !== 1 ? 's' : ''}`}
+                                            color="primary"
+                                            size="small"
                                         />
                                     </Box>
                                     {pendingMembers > 0 && isUserApproved && (
-                                        <Chip 
-                                            label={`${pendingMembers} pending request${pendingMembers !== 1 ? 's' : ''}`} 
-                                            color="warning" 
-                                            size="small" 
+                                        <Chip
+                                            label={`${pendingMembers} pending request${pendingMembers !== 1 ? 's' : ''}`}
+                                            color="warning"
+                                            size="small"
                                         />
                                     )}
                                 </CardContent>
@@ -134,4 +140,4 @@ export default function Index({ groups, auth }) {
             </Grid>
         </AuthenticatedLayout>
     );
-} 
+}

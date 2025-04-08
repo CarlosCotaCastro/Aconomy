@@ -46,6 +46,7 @@ export default function Index({ items, auth }) {
             <Box sx={{ mb: 4 }}>
                 <TextField
                     fullWidth
+                    type="search"
                     variant="outlined"
                     placeholder="Search my items..."
                     value={searchQuery}
