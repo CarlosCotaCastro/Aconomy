@@ -52,11 +52,15 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
     }
 
     function stringAvatar(name) {
+        const wordcount = name.split(' ').length;
         return {
             sx: {
                 bgcolor: stringToColor(name),
             },
-            children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+            children: (wordcount === 1)
+                ? name[0].toUpperCase()
+
+                :`${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
         };
     }
 
