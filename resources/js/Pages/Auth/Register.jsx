@@ -4,6 +4,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import {Button} from "@mui/material";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -102,18 +103,19 @@ export default function Register() {
                     />
                 </div>
 
-                <div className="mt-4 flex items-center justify-end">
-                    <Link
+                <PrimaryButton sx={{my: 2}} disabled={processing} type={'submit'}>
+                    Register
+                </PrimaryButton>
+
+                    <Button
+                        component={'a'}
+                        variant={'text'}
                         href={route('login')}
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            sx={{my: 2, textAlign: 'center', width: '100%'}}
                     >
                         Already registered?
-                    </Link>
+                    </Button>
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
-                    </PrimaryButton>
-                </div>
             </form>
         </GuestLayout>
     );

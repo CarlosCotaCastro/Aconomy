@@ -1,20 +1,35 @@
+import {useEffect, useState} from "react";
+import {Box, Button, useTheme} from "@mui/material";
+
 export default function PrimaryButton({
-    className = '',
-    disabled,
-    children,
-    ...props
-}) {
+                                          className = '',
+                                          disabled,
+                                          children,
+                                          ...props
+                                      }) {
+
+    const theme = useTheme();
+
     return (
-        <button
+        <Button
+            component={props.href ? 'a' : 'button'}
             {...props}
-            className={
-                `inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-gray-900 ${
-                    disabled && 'opacity-25'
-                } ` + className
-            }
+            className={"px-4 py-2 text-lg text-white tracking-wider rounded-lg"
+                + " bg-gradient-to-r from-blue-600 to-purple-800"
+                + " hover:from-blue-500 hover:to-purple-600"
+                + " hover:shadow-xl hover:shadow-blue-500/30"
+                + " focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                + " hover:before:blur-2xl "
+                + className}
+            type={props.type || 'submit'}
+            sx={{
+                color: theme.palette.common.white,
+                fontWeight: 600,
+                ...props.sx
+            }}
             disabled={disabled}
         >
             {children}
-        </button>
+        </Button>
     );
 }

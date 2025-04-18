@@ -17,6 +17,7 @@ import {
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {useState} from "react";
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function Index({ items, auth }) {
 
@@ -33,14 +34,14 @@ export default function Index({ items, auth }) {
                 <Typography variant="h4" component="h1">
                     My Items
                 </Typography>
-                <Button
+                <PrimaryButton
                     component={Link}
                     href={route('items.create')}
                     variant="contained"
                     startIcon={<AddIcon />}
                 >
                     Add Item
-                </Button>
+                </PrimaryButton>
             </Box>
 
             <Box sx={{ mb: 4 }}>

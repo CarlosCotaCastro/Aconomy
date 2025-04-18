@@ -22,9 +22,10 @@ import {
     AddCircle as AddCircleIcon,
     ArrowForward as ArrowForwardIcon,
     Circle as CircleIcon,
-    Person as PersonIcon,
+    Person as PersonIcon, ChevronRight,
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 
 export default function Dashboard({items = [], groups = [], lendings = [], borrowings = [], auth}) {
@@ -109,7 +110,23 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                 </Box>
                             </Box>
 
-                            <Divider sx={{mb: 2}}/>
+                                <Button
+                                    component={Link}
+                                    href={route('items.create')}
+                                    variant="outlined"
+                                    fullWidth
+                                    startIcon={<AddCircleIcon/>}
+                                    sx={{
+                                        borderRadius: 2,
+                                        p: 1,
+                                        textTransform: 'none',
+                                        fontWeight: 600
+                                    }}
+                                >
+                                    Add New Item
+                                </Button>
+
+                            <Divider sx={{my: 2}}/>
 
                             <List sx={{mb: 2}}>
                                 {items.slice(0, 3).map((item) => (
@@ -154,11 +171,11 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                 )}
 
                                 {items.length > 3 && (
-                                    <Box sx={{textAlign: 'center'}}>
+                                    <Box sx={{textAlign: 'right', mt: 2}}>
                                         <Button
                                             component={Link}
                                             href={route('items.index')}
-                                            endIcon={<ArrowForwardIcon/>}
+                                            endIcon={<ChevronRight/>}
                                             sx={{
                                                 textTransform: 'none',
                                                 fontWeight: 500,
@@ -169,24 +186,6 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                     </Box>
                                 )}
                             </List>
-
-                            <Box sx={{mt: 'auto'}}>
-                                <Button
-                                    component={Link}
-                                    href={route('items.create')}
-                                    variant="contained"
-                                    fullWidth
-                                    startIcon={<AddCircleIcon/>}
-                                    sx={{
-                                        borderRadius: 2,
-                                        p: 1,
-                                        textTransform: 'none',
-                                        fontWeight: 600
-                                    }}
-                                >
-                                    Add New Item
-                                </Button>
-                            </Box>
                         </Grid>
 
                         <Grid size={{xs: 12, md: 4}}>
@@ -210,10 +209,29 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                 </Box>
                             </Box>
 
-                            <Divider sx={{mb: 2}}/>
+
+                                <Button
+                                    component={Link}
+                                    href={route('groups.create')}
+                                    variant="outlined"
+                                    color={'warning'}
+                                    fullWidth
+                                    startIcon={<AddCircleIcon/>}
+                                    sx={{
+                                        borderRadius: 2,
+                                        p: 1,
+                                        //background: 'linear-gradient(90deg, #ff9800 0%, #ed8936 100%)',
+                                        textTransform: 'none',
+                                        fontWeight: 600
+                                    }}
+                                >
+                                    Create New Group
+                                </Button>
+
+                            <Divider sx={{my: 2}}/>
 
                             <List sx={{mb: 2}}>
-                                {groups.slice(0, 3).map((group) => (
+                                {groups && groups.slice(0, 3).map((group) => (
                                     <ListItem
                                         key={group.id}
                                         component={Link}
@@ -241,13 +259,14 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                         />
                                         <Chip
                                             label={group.users.find(u => u.id === auth.user.id)?.pivot.approved ? 'Approved' : 'Pending'}
-                                            color={group.users.find(u => u.id === auth.user.id)?.pivot.approved ? 'warning' : 'default'}
+                                            color={group.users.find(u => u.id === auth.user.id)?.pivot.approved ? 'success' : 'default'}
                                             size="small"
+                                            variant={'filled'}
                                             sx={{
                                                 ml: 1,
                                                 ...(group.users.find(u => u.id === auth.user.id)?.pivot.approved
-                                                    ? {backgroundColor: 'rgba(255, 152, 0, 0.1)', color: '#ff9800'}
-                                                    : {})
+                                                ? {color: theme.palette.common.white}
+                                                : {})
                                             }}
                                         />
                                     </ListItem>
@@ -262,11 +281,11 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                 )}
 
                                 {groups.length > 3 && (
-                                    <Box sx={{textAlign: 'center'}}>
+                                    <Box sx={{textAlign: 'right'}}>
                                         <Button
                                             component={Link}
                                             href={route('groups.index')}
-                                            endIcon={<ArrowForwardIcon/>}
+                                            endIcon={<ChevronRight/>}
                                             sx={{
                                                 textTransform: 'none',
                                                 fontWeight: 500,
@@ -278,24 +297,7 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                 )}
                             </List>
 
-                            <Box sx={{mt: 'auto'}}>
-                                <Button
-                                    component={Link}
-                                    href={route('groups.create')}
-                                    variant="contained"
-                                    fullWidth
-                                    startIcon={<AddCircleIcon/>}
-                                    sx={{
-                                        borderRadius: 2,
-                                        p: 1,
-                                        background: 'linear-gradient(90deg, #ff9800 0%, #ed8936 100%)',
-                                        textTransform: 'none',
-                                        fontWeight: 600
-                                    }}
-                                >
-                                    Create New Group
-                                </Button>
-                            </Box>
+
                         </Grid>
 
                         <Grid size={{xs: 12, md: 4}}>
@@ -319,7 +321,24 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                 </Box>
                             </Box>
 
-                            <Divider sx={{mb: 2}}/>
+                                <Button
+                                    component={Link}
+                                    href={route('lendings.create')}
+                                    variant="outlined"
+                                    color={'secondary'}
+                                    fullWidth
+                                    startIcon={<AddCircleIcon/>}
+                                    sx={{
+                                        borderRadius: 2,
+                                        p: 1,
+                                        textTransform: 'none',
+                                        fontWeight: 600
+                                    }}
+                                >
+                                    Lend an Item
+                                </Button>
+
+                            <Divider sx={{my: 2}}/>
 
                             <List sx={{mb: 2}}>
                                 {activeLendings.slice(0, 2).map((lending) => (
@@ -394,11 +413,11 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                 )}
 
                                 {(activeLendings.length + activeBorrowings.length) > 4 && (
-                                    <Box sx={{textAlign: 'center'}}>
+                                    <Box sx={{textAlign: 'right'}}>
                                         <Button
                                             component={Link}
                                             href={route('lendings.index')}
-                                            endIcon={<ArrowForwardIcon/>}
+                                            endIcon={<ChevronRight/>}
                                             sx={{
                                                 textTransform: 'none',
                                                 fontWeight: 500,
@@ -409,29 +428,17 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                     </Box>
                                 )}
                             </List>
-
-                            <Box sx={{mt: 'auto'}}>
-                                <Button
-                                    component={Link}
-                                    href={route('lendings.create')}
-                                    variant="contained"
-                                    fullWidth
-                                    startIcon={<AddCircleIcon/>}
-                                    sx={{
-                                        borderRadius: 2,
-                                        p: 1,
-                                        background: 'linear-gradient(90deg, #4caf50 0%, #43a047 100%)',
-                                        textTransform: 'none',
-                                        fontWeight: 600
-                                    }}
-                                >
-                                    Lend an Item
-                                </Button>
-                            </Box>
                         </Grid>
                     </Grid>
                 </CardContent>
             </Card>
+
+            <PrimaryButton href={'#'} sx={{marginY: '1em'}}
+                           startIcon={<AddCircleIcon/>}
+            >
+                Test
+            </PrimaryButton>
+
         </AuthenticatedLayout>
     );
 }

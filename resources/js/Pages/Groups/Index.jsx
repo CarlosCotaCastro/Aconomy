@@ -8,7 +8,7 @@ import {
     Grid,
     Typography,
     Chip,
-    IconButton, Tooltip,
+    IconButton, Tooltip, CardMedia, useTheme,
 } from '@mui/material';
 import {
     Add as AddIcon,
@@ -18,10 +18,12 @@ import {
     Person as PersonIcon,
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function Index({ groups, auth }) {
     const { post, processing } = useForm();
 
+    const theme = useTheme();
     const handleJoinGroup = (groupId) => {
         post(route('groups.join', groupId));
     };
@@ -32,18 +34,18 @@ export default function Index({ groups, auth }) {
                 <Typography variant="h4" component="h1">
                     Groups
                 </Typography>
-                <Button
+                <PrimaryButton
                     component={Link}
                     href={route('groups.create')}
                     variant="contained"
                     startIcon={<AddIcon />}
                 >
                     Create Group
-                </Button>
+                </PrimaryButton>
             </Box>
 
             <Grid container spacing={3}>
-                {groups.map((group) => {
+                {groups && groups.map((group) => {
                     // Count approved and pending members
                     const approvedMembers = group.users.filter(u => u.pivot.approved).length;
                     const pendingMembers = group.users.filter(u => !u.pivot.approved).length;
@@ -51,11 +53,20 @@ export default function Index({ groups, auth }) {
                     const isUserApproved = group.users.find(u => u.id === auth.user.id)?.pivot.approved;
 
                     return (
-                        <Grid size={{xs: 12, sm: 6, md: 4, xl: 3}} key={group.id}>
+                        <Grid size={{xs: 12, sm: 6}} key={group.id}>
                             <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                                <CardMedia sx={{
+                                    display: 'flex',
+                                    aspectRatio: 16/9,
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    backgroundColor: theme.palette.background.paper,
+                                }}>
+                                    <GroupIcon  sx={{ fontSize: '4em' }} />
+                                </CardMedia>
                                 <CardContent>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                                        <GroupIcon sx={{ mr: 1 }} />
+
                                         <Typography variant="h6" component="h2">
                                             {group.name}
                                         </Typography>
