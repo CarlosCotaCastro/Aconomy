@@ -2,59 +2,21 @@ export default function ApplicationLogo(props) {
     return (
         <svg
             {...props}
-            viewBox="0 0 200 200"
+            viewBox="0 0 100 100"
             xmlns="http://www.w3.org/2000/svg"
         >
-            {/* Base circular background for the logo */}
-            <circle cx="100" cy="100" r="95" fill="#1b1b1b" />
-            <circle cx="100" cy="100" r="90" fill="#f0f0f0" />
-            
-            {/* The 'A' in Aconomy, formed as part of a circle with a line through it (anarchist symbol) */}
-            <path d="M100 20 
-                    A80 80 0 0 1 180 100
-                    A80 80 0 0 1 100 180
-                    A80 80 0 0 1 20 100
-                    A80 80 0 0 1 100 20" 
-                  stroke="#d32f2f" 
-                  strokeWidth="4" 
-                  fill="none" />
-            
-            {/* The horizontal line in the A/circle */}
-            <line x1="40" y1="100" x2="160" y2="100" stroke="#d32f2f" strokeWidth="4" />
-            
-            {/* Solidarity hands icon */}
-            <path d="M85 120 
-                    C95 110, 105 110, 115 120
-                    L115 140
-                    C105 150, 95 150, 85 140
-                    Z" 
-                  fill="#4CAF50" />
-            
-            {/* Network connections - sharing economy concept */}
-            <circle cx="60" cy="70" r="10" fill="#2196F3" />
-            <circle cx="140" cy="70" r="10" fill="#2196F3" />
-            <circle cx="60" cy="130" r="10" fill="#2196F3" />
-            <circle cx="140" cy="130" r="10" fill="#2196F3" />
-            
-            {/* Connection lines */}
-            <line x1="60" y1="70" x2="140" y2="70" stroke="#2196F3" strokeWidth="2" />
-            <line x1="60" y1="130" x2="140" y2="130" stroke="#2196F3" strokeWidth="2" />
-            <line x1="60" y1="70" x2="60" y2="130" stroke="#2196F3" strokeWidth="2" />
-            <line x1="140" y1="70" x2="140" y2="130" stroke="#2196F3" strokeWidth="2" />
-            <line x1="60" y1="70" x2="140" y2="130" stroke="#2196F3" strokeWidth="2" />
-            <line x1="60" y1="130" x2="140" y2="70" stroke="#2196F3" strokeWidth="2" />
-            
-            {/* Outer edge with radial gradient for progressive feel */}
-            <circle cx="100" cy="100" r="95" fill="none" stroke="url(#gradient)" strokeWidth="5" />
-            
-            {/* Gradient definition */}
-            <defs>
-                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#673AB7" />
-                    <stop offset="50%" stopColor="#E91E63" />
-                    <stop offset="100%" stopColor="#FFC107" />
-                </linearGradient>
-            </defs>
+            <g>
+                <circle cx="50" cy="55" r="44"
+                        fill="transparent"
+                        stroke="#E8E0D0"
+                        strokeWidth="2" />
+                <path d="M50,30 L65,45 L50,80 L35,45 Z" fill="#E26D5C" />
+                <path d="M30,40 L50,30 L35,45 Z" fill="#FF851B" opacity="0.8" />
+                <path d="M70,40 L50,30 L65,45 Z" fill="#B10DC9" opacity="0.8" />
+                <path d="M35,45 L25,60 L50,80 Z" fill="#7FDBFF" opacity="0.8" />
+                <path d="M65,45 L75,60 L50,80 Z" fill="#3D9970" opacity="0.8" />
+                <text x="50" y="110" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#444">Original</text>
+            </g>
         </svg>
     );
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from '@inertiajs/react';
+import {Link, router} from '@inertiajs/react';
 import {
     Box,
     Tabs,
@@ -78,17 +78,17 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
 
             <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
                 <Tabs value={tabValue} onChange={handleTabChange} aria-label="borrow requests tabs">
-                    <Tab 
-                        icon={<SendIcon />} 
-                        label={`Sent Requests (${outgoingRequests.length})`} 
-                        id="tab-0" 
-                        aria-controls="tabpanel-0" 
+                    <Tab
+                        icon={<SendIcon />}
+                        label={`Sent Requests (${outgoingRequests.length})`}
+                        id="tab-0"
+                        aria-controls="tabpanel-0"
                     />
-                    <Tab 
-                        icon={<ReceiptIcon />} 
-                        label={`Received Requests (${incomingRequests.length})`} 
-                        id="tab-1" 
-                        aria-controls="tabpanel-1" 
+                    <Tab
+                        icon={<ReceiptIcon />}
+                        label={`Received Requests (${incomingRequests.length})`}
+                        id="tab-1"
+                        aria-controls="tabpanel-1"
                     />
                 </Tabs>
             </Box>
@@ -99,8 +99,8 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                     <Grid container spacing={3}>
                         {outgoingRequests.length > 0 ? (
                             outgoingRequests.map((request) => (
-                                <Grid md={4} sm={6} key={request.id}>
-                                    <Card>
+                                <Grid size={{xs: 12}} key={request.id}>
+                                    <Card sx={{cursor: 'pointer'}} onClick={() => router.get(route('borrow-requests.show', request.id))}>
                                         <CardContent>
                                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                                                 <Typography variant="h6" component="h2">
@@ -113,14 +113,14 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                                     size="small"
                                                 />
                                             </Box>
-                                            
+
                                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                                                 <PersonIcon fontSize="small" sx={{ mr: 1 }} />
                                                 <Typography variant="body2">
                                                     Owner: {request.lender.name}
                                                 </Typography>
                                             </Box>
-                                            
+
                                             {request.message && (
                                                 <Box sx={{ mt: 2, p: 1, bgcolor: 'background.paper', borderRadius: 1 }}>
                                                     <Typography variant="body2" fontStyle="italic" color="text.secondary">
@@ -129,15 +129,6 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                                 </Box>
                                             )}
                                         </CardContent>
-                                        <CardActions>
-                                            <Button
-                                                component={Link}
-                                                href={route('borrow-requests.show', request.id)}
-                                                size="small"
-                                            >
-                                                View Details
-                                            </Button>
-                                        </CardActions>
                                     </Card>
                                 </Grid>
                             ))
@@ -168,8 +159,8 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                     <Grid container spacing={3}>
                         {incomingRequests.length > 0 ? (
                             incomingRequests.map((request) => (
-                                <Grid md={4} sm={6} key={request.id}>
-                                    <Card>
+                                <Grid size={{xs: 12}} key={request.id}>
+                                    <Card sx={{cursor: 'pointer'}} onClick={() => router.get(route('borrow-requests.show', request.id))}>
                                         <CardContent>
                                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                                                 <Typography variant="h6" component="h2">
@@ -182,14 +173,14 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                                     size="small"
                                                 />
                                             </Box>
-                                            
+
                                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                                                 <PersonIcon fontSize="small" sx={{ mr: 1 }} />
                                                 <Typography variant="body2">
                                                     Requested by: {request.borrower.name}
                                                 </Typography>
                                             </Box>
-                                            
+
                                             {request.message && (
                                                 <Box sx={{ mt: 2, p: 1, bgcolor: 'background.paper', borderRadius: 1 }}>
                                                     <Typography variant="body2" fontStyle="italic" color="text.secondary">
@@ -198,17 +189,6 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                                 </Box>
                                             )}
                                         </CardContent>
-                                        <CardActions>
-                                            <Button
-                                                component={Link}
-                                                href={route('borrow-requests.show', request.id)}
-                                                size="small"
-                                                color={request.status === 'pending' ? "primary" : "inherit"}
-                                                variant={request.status === 'pending' ? "contained" : "text"}
-                                            >
-                                                {request.status === 'pending' ? 'Respond to Request' : 'View Details'}
-                                            </Button>
-                                        </CardActions>
                                     </Card>
                                 </Grid>
                             ))
@@ -226,4 +206,4 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
             </Box>
         </AuthenticatedLayout>
     );
-} 
+}

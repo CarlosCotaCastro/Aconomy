@@ -195,7 +195,7 @@ export default function AuthenticatedLayout({ user, children }) {
             display: 'flex',
             flexDirection: 'column',
             minHeight: '100vh',
-            backgroundColor: '#fafafa'
+            backgroundColor: theme.palette.background.default,
         }}>
             <CssBaseline />
             <AppBar

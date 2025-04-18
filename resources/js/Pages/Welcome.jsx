@@ -1,21 +1,14 @@
 import { Head, Link } from '@inertiajs/react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
     return (
         <>
             <Head title="Welcome to Aconomy" />
-            
-            <div className="min-h-screen bg-gradient-to-br from-purple-700 to-blue-500 relative overflow-hidden">
-                {/* Background overlay image */}
-                <div 
-                    className="absolute inset-0 bg-cover bg-center opacity-25"
-                    style={{ 
-                        backgroundImage: 'url("https://images.unsplash.com/photo-1530143584546-02191bc84eb5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80")',
-                        backgroundBlendMode: 'overlay'
-                    }}
-                ></div>
-                
+
+            <div className="min-h-screen bg-gradient-to-br from-purple-800 to-blue-950 relative overflow-hidden">
+
                 {/* Content */}
                 <div className="relative z-10 px-6 py-8 md:px-12">
                     {/* Header */}
@@ -24,7 +17,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                             <div className="w-16 h-16 text-white mr-4">
                                 <ApplicationLogo />
                             </div>
-                            <h1 className="text-2xl md:text-3xl font-bold text-white">Aconomy</h1>
+                            {/*<h1 className="text-2xl md:text-3xl font-bold text-white">Aconomy</h1>*/}
                         </div>
                         <nav>
                             {auth.user ? (
@@ -52,7 +45,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                             )}
                         </nav>
                     </header>
-                    
+
                     {/* Hero Section */}
                     <div className="max-w-7xl mx-auto mt-24 md:mt-32">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -64,27 +57,19 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                     A new kind of economy focused on sharing, mutual aid, and community empowerment.
                                 </p>
                                 <div className="mt-8">
-                                    <Link
+                                    <PrimaryButton
                                         href={route('register')}
-                                        className="bg-white rounded-full px-8 py-3 text-purple-700 font-bold shadow-xl hover:bg-purple-100 transition"
+                                        className={'w-full'}
                                     >
                                         Get Started
-                                    </Link>
+                                    </PrimaryButton>
                                 </div>
-                            </div>
-                            <div className="relative">
-                                <div className="absolute -inset-4 bg-gradient-to-r from-pink-500 to-purple-500 rounded-2xl opacity-50 blur-xl"></div>
-                                <img 
-                                    src="https://img.freepik.com/free-photo/two-friends-exchanging-skateboard-park_23-2148759024.jpg" 
-                                    alt="People sharing a skateboard" 
-                                    className="relative rounded-2xl shadow-2xl w-full"
-                                />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             {/* Features Section */}
             <div className="bg-white py-24 px-6">
                 <div className="max-w-7xl mx-auto">
@@ -94,7 +79,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                     <p className="mt-4 max-w-2xl mx-auto text-center text-xl text-gray-600">
                         A platform built on principles of mutual aid, resource sharing, and community building.
                     </p>
-                    
+
                     <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl p-8 shadow-lg transform transition hover:-translate-y-2 hover:shadow-xl">
                             <div className="w-14 h-14 rounded-full bg-purple-600 flex items-center justify-center mb-6">
@@ -107,7 +92,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                 Create or join community groups to share resources with people you trust.
                             </p>
                         </div>
-                        
+
                         <div className="bg-gradient-to-br from-green-50 to-teal-50 rounded-xl p-8 shadow-lg transform transition hover:-translate-y-2 hover:shadow-xl">
                             <div className="w-14 h-14 rounded-full bg-green-600 flex items-center justify-center mb-6">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
@@ -119,7 +104,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                 List items you're willing to share, and borrow what you need from others.
                             </p>
                         </div>
-                        
+
                         <div className="bg-gradient-to-br from-pink-50 to-red-50 rounded-xl p-8 shadow-lg transform transition hover:-translate-y-2 hover:shadow-xl">
                             <div className="w-14 h-14 rounded-full bg-pink-600 flex items-center justify-center mb-6">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
@@ -134,7 +119,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                     </div>
                 </div>
             </div>
-            
+
             {/* Footer */}
             <footer className="bg-gray-900 text-white py-8 px-6">
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
