@@ -56,31 +56,31 @@ export default function AuthenticatedLayout({ user, children }) {
     // Fallback to usePage if user prop is not provided
     const pageProps = usePage().props;
     const authUser = user || (pageProps.auth && pageProps.auth.user);
-    
+
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
-    
+
     const handleItemsMenuOpen = (event) => {
         setItemsAnchorEl(event.currentTarget);
     };
-    
+
     const handleGroupsMenuOpen = (event) => {
         setGroupsAnchorEl(event.currentTarget);
     };
-    
+
     const handleLendingsMenuOpen = (event) => {
         setLendingsAnchorEl(event.currentTarget);
     };
-    
+
     const handleBorrowRequestsMenuOpen = (event) => {
         setBorrowRequestsAnchorEl(event.currentTarget);
     };
-    
+
     const handleUserMenuOpen = (event) => {
         setUserAnchorEl(event.currentTarget);
     };
-    
+
     const handleMenuClose = () => {
         setItemsAnchorEl(null);
         setGroupsAnchorEl(null);
@@ -106,7 +106,7 @@ export default function AuthenticatedLayout({ user, children }) {
                         <ListItemText primary="Home" />
                     </ListItemButton>
                 </ListItem>
-                
+
                 <ListItem sx={{ mt: 1.5, mb: 0.5, px: 3 }}>
                     <Typography variant="overline" color="text.secondary" sx={{ fontWeight: 'bold' }}>
                         Items
@@ -128,7 +128,7 @@ export default function AuthenticatedLayout({ user, children }) {
                         <ListItemText primary="Add Item" />
                     </ListItemButton>
                 </ListItem>
-                
+
                 <ListItem sx={{ mt: 1.5, mb: 0.5, px: 3 }}>
                     <Typography variant="overline" color="text.secondary" sx={{ fontWeight: 'bold' }}>
                         Groups
@@ -150,7 +150,7 @@ export default function AuthenticatedLayout({ user, children }) {
                         <ListItemText primary="Create Group" />
                     </ListItemButton>
                 </ListItem>
-                
+
                 <ListItem sx={{ mt: 1.5, mb: 0.5, px: 3 }}>
                     <Typography variant="overline" color="text.secondary" sx={{ fontWeight: 'bold' }}>
                         Lendings
@@ -172,7 +172,7 @@ export default function AuthenticatedLayout({ user, children }) {
                         <ListItemText primary="Lend Item" />
                     </ListItemButton>
                 </ListItem>
-                
+
                 <ListItem sx={{ mt: 1.5, mb: 0.5, px: 3 }}>
                     <Typography variant="overline" color="text.secondary" sx={{ fontWeight: 'bold' }}>
                         Borrow Requests
@@ -191,18 +191,18 @@ export default function AuthenticatedLayout({ user, children }) {
     );
 
     return (
-        <Box sx={{ 
-            display: 'flex', 
-            flexDirection: 'column', 
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
             minHeight: '100vh',
-            backgroundColor: '#fafafa'
+            backgroundColor: theme.palette.background.default,
         }}>
             <CssBaseline />
-            <AppBar 
-                position="fixed" 
+            <AppBar
+                position="fixed"
                 elevation={0}
-                sx={{ 
-                    backgroundColor: 'white', 
+                sx={{
+                    backgroundColor: 'white',
                     borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
                     color: 'text.primary',
                     zIndex: (theme) => theme.zIndex.drawer + 1,
@@ -247,7 +247,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                 variant="text"
                                 color="inherit"
                                 startIcon={<HomeIcon />}
-                                sx={{ 
+                                sx={{
                                     textTransform: 'none',
                                     fontWeight: 600,
                                     borderRadius: '8px'
@@ -263,7 +263,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                 onClick={handleItemsMenuOpen}
                                 endIcon={<ArrowDropDownIcon />}
                                 startIcon={<InventoryIcon />}
-                                sx={{ 
+                                sx={{
                                     textTransform: 'none',
                                     fontWeight: 600,
                                     borderRadius: '8px'
@@ -279,24 +279,24 @@ export default function AuthenticatedLayout({ user, children }) {
                                 onClose={handleMenuClose}
                                 PaperProps={{
                                     elevation: 2,
-                                    sx: { 
+                                    sx: {
                                         mt: 1.5,
                                         width: 200,
                                         borderRadius: 2
                                     }
                                 }}
                             >
-                                <MenuItem 
+                                <MenuItem
                                     onClick={handleMenuClose}
-                                    component={Link} 
+                                    component={Link}
                                     href={route('items.index')}
                                     sx={{ borderRadius: 1, mx: 0.5 }}
                                 >
                                     My Items
                                 </MenuItem>
-                                <MenuItem 
+                                <MenuItem
                                     onClick={handleMenuClose}
-                                    component={Link} 
+                                    component={Link}
                                     href={route('items.create')}
                                     sx={{ borderRadius: 1, mx: 0.5 }}
                                 >
@@ -311,7 +311,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                 onClick={handleGroupsMenuOpen}
                                 endIcon={<ArrowDropDownIcon />}
                                 startIcon={<GroupIcon />}
-                                sx={{ 
+                                sx={{
                                     textTransform: 'none',
                                     fontWeight: 600,
                                     borderRadius: '8px'
@@ -327,24 +327,24 @@ export default function AuthenticatedLayout({ user, children }) {
                                 onClose={handleMenuClose}
                                 PaperProps={{
                                     elevation: 2,
-                                    sx: { 
+                                    sx: {
                                         mt: 1.5,
                                         width: 200,
                                         borderRadius: 2
                                     }
                                 }}
                             >
-                                <MenuItem 
+                                <MenuItem
                                     onClick={handleMenuClose}
-                                    component={Link} 
+                                    component={Link}
                                     href={route('groups.index')}
                                     sx={{ borderRadius: 1, mx: 0.5 }}
                                 >
                                     My Groups
                                 </MenuItem>
-                                <MenuItem 
+                                <MenuItem
                                     onClick={handleMenuClose}
-                                    component={Link} 
+                                    component={Link}
                                     href={route('groups.create')}
                                     sx={{ borderRadius: 1, mx: 0.5 }}
                                 >
@@ -359,7 +359,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                 onClick={handleLendingsMenuOpen}
                                 endIcon={<ArrowDropDownIcon />}
                                 startIcon={<SwapHorizIcon />}
-                                sx={{ 
+                                sx={{
                                     textTransform: 'none',
                                     fontWeight: 600,
                                     borderRadius: '8px'
@@ -375,24 +375,24 @@ export default function AuthenticatedLayout({ user, children }) {
                                 onClose={handleMenuClose}
                                 PaperProps={{
                                     elevation: 2,
-                                    sx: { 
+                                    sx: {
                                         mt: 1.5,
                                         width: 200,
                                         borderRadius: 2
                                     }
                                 }}
                             >
-                                <MenuItem 
+                                <MenuItem
                                     onClick={handleMenuClose}
-                                    component={Link} 
+                                    component={Link}
                                     href={route('lendings.index')}
                                     sx={{ borderRadius: 1, mx: 0.5 }}
                                 >
                                     My Lendings
                                 </MenuItem>
-                                <MenuItem 
+                                <MenuItem
                                     onClick={handleMenuClose}
-                                    component={Link} 
+                                    component={Link}
                                     href={route('lendings.create')}
                                     sx={{ borderRadius: 1, mx: 0.5 }}
                                 >
@@ -407,7 +407,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                 onClick={handleBorrowRequestsMenuOpen}
                                 endIcon={<ArrowDropDownIcon />}
                                 startIcon={<RequestQuoteIcon />}
-                                sx={{ 
+                                sx={{
                                     textTransform: 'none',
                                     fontWeight: 600,
                                     borderRadius: '8px'
@@ -423,16 +423,16 @@ export default function AuthenticatedLayout({ user, children }) {
                                 onClose={handleMenuClose}
                                 PaperProps={{
                                     elevation: 2,
-                                    sx: { 
+                                    sx: {
                                         mt: 1.5,
                                         width: 200,
                                         borderRadius: 2
                                     }
                                 }}
                             >
-                                <MenuItem 
+                                <MenuItem
                                     onClick={handleMenuClose}
-                                    component={Link} 
+                                    component={Link}
                                     href={route('borrow-requests.index')}
                                     sx={{ borderRadius: 1, mx: 0.5 }}
                                 >
@@ -477,7 +477,7 @@ export default function AuthenticatedLayout({ user, children }) {
                             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                         >
-                            <MenuItem 
+                            <MenuItem
                                 onClick={handleMenuClose}
                                 component={Link}
                                 href={route('profile.edit')}
@@ -489,7 +489,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                 Profile Settings
                             </MenuItem>
                             <Divider />
-                            <MenuItem 
+                            <MenuItem
                                 onClick={handleMenuClose}
                             >
                                 <Link
@@ -519,10 +519,10 @@ export default function AuthenticatedLayout({ user, children }) {
                 }}
                 sx={{
                     display: { xs: 'block', md: 'none' },
-                    '& .MuiDrawer-paper': { 
-                        boxSizing: 'border-box', 
-                        width: 250, 
-                        boxShadow: 'none' 
+                    '& .MuiDrawer-paper': {
+                        boxSizing: 'border-box',
+                        width: 250,
+                        boxShadow: 'none'
                     },
                 }}
             >
@@ -536,9 +536,9 @@ export default function AuthenticatedLayout({ user, children }) {
                         width: 250,
                         flexShrink: 0,
                         display: { xs: 'none', md: 'block' },
-                        '& .MuiDrawer-paper': { 
-                            width: 250, 
-                            boxSizing: 'border-box', 
+                        '& .MuiDrawer-paper': {
+                            width: 250,
+                            boxSizing: 'border-box',
                             borderRight: 'none',
                             backgroundColor: 'white',
                             boxShadow: 'rgba(0, 0, 0, 0.05) 0px 1px 2px 0px',
@@ -550,40 +550,31 @@ export default function AuthenticatedLayout({ user, children }) {
                 </Drawer>
             )}
 
-            <Box 
-                component="main" 
-                sx={{ 
+            <Box
+                component="main"
+                sx={{
                     flexGrow: 1,
                     p: { xs: 2, sm: 3 },
                     mt: 8,
-                    ml: { md: '250px' }, 
+                    ml: { md: '250px' },
                 }}
             >
-                <Container 
-                    maxWidth="lg" 
-                    sx={{ 
-                        py: 4,
+                <Container
+                    sx={{
+                        py: 2,
                     }}
                 >
-                    <Paper 
-                        elevation={0} 
-                        sx={{ 
-                            p: { xs: 2, sm: 3 }, 
-                            borderRadius: 3,
-                            boxShadow: 'rgba(0, 0, 0, 0.05) 0px 1px 2px 0px',
-                            mb: 4
-                        }}
-                    >
+
                         {children}
-                    </Paper>
+
                 </Container>
             </Box>
 
-            <Box 
-                component="footer" 
-                sx={{ 
-                    py: 3, 
-                    px: 2, 
+            <Box
+                component="footer"
+                sx={{
+                    py: 3,
+                    px: 2,
                     mt: 'auto',
                     ml: { md: '250px' },
                     backgroundColor: 'white',

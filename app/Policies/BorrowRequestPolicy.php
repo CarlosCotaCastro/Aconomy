@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\BorrowRequest;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class BorrowRequestPolicy
 {
@@ -73,7 +72,7 @@ class BorrowRequestPolicy
         // Only the lender can approve or deny the request
         return $user->id === $borrowRequest->lender_id && $borrowRequest->isPending();
     }
-    
+
     /**
      * Determine whether the user can verify the handover code.
      */

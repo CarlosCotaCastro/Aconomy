@@ -8,35 +8,63 @@ import {
     CardMedia,
     Grid,
     Typography,
-    IconButton,
+    IconButton, TextField, InputAdornment,
 } from '@mui/material';
 import {
     Add as AddIcon,
     Edit as EditIcon,
-    Delete as DeleteIcon,
+    Delete as DeleteIcon, Search as SearchIcon,
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import {useState} from "react";
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function Index({ items, auth }) {
+
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const filteredItems = items.filter(item =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.description?.toLowerCase().includes(searchQuery.toLowerCase())
+    ) ?? $items;
+
     return (
         <AuthenticatedLayout>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
                 <Typography variant="h4" component="h1">
                     My Items
                 </Typography>
-                <Button
+                <PrimaryButton
                     component={Link}
                     href={route('items.create')}
                     variant="contained"
                     startIcon={<AddIcon />}
                 >
                     Add Item
-                </Button>
+                </PrimaryButton>
+            </Box>
+
+            <Box sx={{ mb: 4 }}>
+                <TextField
+                    fullWidth
+                    type="search"
+                    variant="outlined"
+                    placeholder="Search my items..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <SearchIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                />
             </Box>
 
             <Grid container spacing={3}>
-                {items.map((item) => (
-                    <Grid md={4} sm={6} key={item.id}>
+                {filteredItems.map((item) => (
+                    <Grid size={{xs: 12, sm: 6, md: 4, xl: 2}} key={item.id}>
                         <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                             {item.image_path ? (
                                 <CardMedia
@@ -44,16 +72,20 @@ export default function Index({ items, auth }) {
                                     height="200"
                                     image={`/storage/${item.image_path}`}
                                     alt={item.name}
-                                    sx={{ objectFit: 'contain', padding: 1 }}
+                                    sx={{
+                                        objectFit: 'cover',
+                                        padding: 0,
+                                        aspectRatio: 16 / 9
+                                    }}
                                 />
                             ) : (
-                                <Box 
-                                    sx={{ 
-                                        height: 140, 
-                                        bgcolor: 'rgba(0,0,0,0.05)', 
-                                        display: 'flex', 
-                                        alignItems: 'center', 
-                                        justifyContent: 'center' 
+                                <Box
+                                    sx={{
+                                        height: 140,
+                                        bgcolor: 'rgba(0,0,0,0.05)',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
                                     }}
                                 >
                                     <Typography color="text.secondary">
@@ -102,4 +134,4 @@ export default function Index({ items, auth }) {
             </Grid>
         </AuthenticatedLayout>
     );
-} 
+}

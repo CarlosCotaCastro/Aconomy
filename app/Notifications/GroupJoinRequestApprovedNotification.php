@@ -12,8 +12,9 @@ use Illuminate\Notifications\Notification;
 class GroupJoinRequestApprovedNotification extends Notification implements ShouldQueue
 {
     use Queueable;
-    
+
     protected $group;
+
     protected $approver;
 
     /**
@@ -42,21 +43,21 @@ class GroupJoinRequestApprovedNotification extends Notification implements Shoul
     {
         // Create group profile section
         $groupInfoHtml = '<div style="text-align: center; margin-bottom: 20px; padding: 15px; background-color: #f9fafb; border-radius: 8px;">
-            <h2 style="margin: 0; color: #4f46e5; font-size: 20px;">' . $this->group->name . '</h2>
-            <p style="margin: 10px 0 0; color: #6b7280;">' . 
-                ($this->group->description ? $this->group->description : 'No description provided') . 
+            <h2 style="margin: 0; color: #4f46e5; font-size: 20px;">'.$this->group->name.'</h2>
+            <p style="margin: 10px 0 0; color: #6b7280;">'.
+                ($this->group->description ? $this->group->description : 'No description provided').
             '</p>
-            <p style="margin: 5px 0 0; font-size: 14px; color: #9ca3af;">' . 
-                count($this->group->users) . ' members
+            <p style="margin: 5px 0 0; font-size: 14px; color: #9ca3af;">'.
+                count($this->group->users).' members
             </p>
         </div>';
-        
+
         return (new MailMessage)
             ->subject("Welcome to {$this->group->name}!")
             ->greeting("Good news, {$notifiable->name}!")
             ->line("{$this->approver->name} has approved your request to join the group {$this->group->name}.")
             ->line($groupInfoHtml)
-            ->line("You now have access to all items shared within this group and can borrow them from other members.")
+            ->line('You now have access to all items shared within this group and can borrow them from other members.')
             ->action('View Group', url("/groups/{$this->group->id}"))
             ->line('Thank you for using our application!');
     }

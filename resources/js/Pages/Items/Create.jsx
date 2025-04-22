@@ -12,10 +12,11 @@ import {
 import { CloudUpload as CloudUploadIcon } from '@mui/icons-material';
 import { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function Create() {
     const [previewUrl, setPreviewUrl] = useState(null);
-    
+
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         description: '',
@@ -26,11 +27,11 @@ export default function Create() {
         e.preventDefault();
         post(route('items.store'));
     };
-    
+
     const handleImageChange = (e) => {
         const file = e.target.files[0];
         setData('image', file);
-        
+
         // Create preview URL
         if (file) {
             const reader = new FileReader();
@@ -73,7 +74,7 @@ export default function Create() {
                             rows={4}
                             sx={{ mb: 3 }}
                         />
-                        
+
                         <Box sx={{ mb: 3 }}>
                             <Button
                                 variant="outlined"
@@ -89,11 +90,11 @@ export default function Create() {
                                     accept="image/*"
                                 />
                             </Button>
-                            
+
                             {errors.image && (
                                 <FormHelperText error>{errors.image}</FormHelperText>
                             )}
-                            
+
                             {previewUrl && (
                                 <Card sx={{ mt: 2, maxWidth: 300 }}>
                                     <CardMedia
@@ -108,13 +109,13 @@ export default function Create() {
                         </Box>
 
                         <Box sx={{ display: 'flex', gap: 2 }}>
-                            <Button
+                            <PrimaryButton
                                 type="submit"
                                 variant="contained"
                                 disabled={processing}
                             >
                                 Create Item
-                            </Button>
+                            </PrimaryButton>
                             <Button
                                 component={Link}
                                 href={route('items.index')}
@@ -128,4 +129,4 @@ export default function Create() {
             </Box>
         </AuthenticatedLayout>
     );
-} 
+}
