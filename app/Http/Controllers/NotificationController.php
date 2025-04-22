@@ -14,19 +14,19 @@ class NotificationController extends Controller
     public function index()
     {
         $user = Auth::user();
-        
+
         // Get unread notifications
-        $unreadNotifications = $user->unreadNotifications;
-        
+        $unreadNotifications = $user->unreadNotifications()->get();
+
         // Get read notifications (limit to 20 most recent)
         $readNotifications = $user->readNotifications()->latest()->take(20)->get();
-        
+
         return Inertia::render('Notifications/Index', [
             'unreadNotifications' => $unreadNotifications,
             'readNotifications' => $readNotifications,
         ]);
     }
-    
+
     /**
      * Get unread notifications count
      */
@@ -34,10 +34,10 @@ class NotificationController extends Controller
     {
         $user = Auth::user();
         $count = $user->unreadNotifications()->count();
-        
+
         return response()->json(['count' => $count]);
     }
-    
+
     /**
      * Mark a notification as read
      */
@@ -46,10 +46,10 @@ class NotificationController extends Controller
         $user = Auth::user();
         $notification = $user->notifications()->findOrFail($id);
         $notification->markAsRead();
-        
+
         return redirect()->back();
     }
-    
+
     /**
      * Mark all notifications as read
      */
@@ -57,38 +57,39 @@ class NotificationController extends Controller
     {
         $user = Auth::user();
         $user->unreadNotifications->markAsRead();
-        
+
         return redirect()->back();
     }
-    
+
     /**
      * Get latest notifications for the current user (API endpoint)
      */
     public function getLatestNotifications()
     {
         $user = Auth::user();
-        
+
         // Get both unread and read notifications (limited to 10 most recent)
         $notifications = $user->notifications()
             ->latest()
             ->take(10)
             ->get()
-            ->map(function($notification) {
+            ->map(function ($notification) {
                 // Add the formatted type for frontend display
                 $notification->formattedType = $this->getNotificationType($notification);
+
                 return $notification;
             });
-        
+
         return response()->json($notifications);
     }
-    
+
     /**
      * Get readable notification type from class name
      */
     private function getNotificationType($notification)
     {
         $type = class_basename($notification->type);
-        
+
         switch ($type) {
             case 'BorrowRequestNotification':
                 return 'borrow_request';
@@ -100,4 +101,4 @@ class NotificationController extends Controller
                 return 'notification';
         }
     }
-} 
+}

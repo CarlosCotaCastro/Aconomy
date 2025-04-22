@@ -40,18 +40,18 @@ class ReturnRequestApprovedNotification extends Notification implements ShouldQu
         $lending = $this->returnRequest->lending;
         $item = $lending->item;
         $lender = $lending->lender;
-        
+
         $imageHtml = '';
-        
+
         // Add item image if available
         if ($item->image_path) {
-            $imageUrl = url('storage/' . $item->image_path);
+            $imageUrl = url('storage/'.$item->image_path);
             $imageHtml = '<div style="text-align: center; margin-bottom: 15px;">
-                <img src="' . $imageUrl . '" alt="' . $item->name . '" style="max-width: 300px; max-height: 200px; object-fit: contain;">
-                <p style="margin-top: 5px; color: #718096; font-size: 14px;">Item: ' . $item->name . '</p>
+                <img src="'.$imageUrl.'" alt="'.$item->name.'" style="max-width: 300px; max-height: 200px; object-fit: contain;">
+                <p style="margin-top: 5px; color: #718096; font-size: 14px;">Item: '.$item->name.'</p>
             </div>';
         }
-        
+
         return (new MailMessage)
             ->subject("Return Request Approved for {$item->name}")
             ->greeting("Hello {$notifiable->name}!")
@@ -75,7 +75,7 @@ class ReturnRequestApprovedNotification extends Notification implements ShouldQu
         $lending = $this->returnRequest->lending;
         $item = $lending->item;
         $lender = $lending->lender;
-        
+
         return [
             'type' => 'return_request_approved',
             'return_request_id' => $this->returnRequest->id,
@@ -86,7 +86,7 @@ class ReturnRequestApprovedNotification extends Notification implements ShouldQu
             'lender_name' => $lender->name,
             'title' => 'Return Request Approved',
             'body' => "{$lender->name} has approved your request to return the {$item->name}",
-            'url' => '/lendings/' . $lending->id,
+            'url' => '/lendings/'.$lending->id,
         ];
     }
 }

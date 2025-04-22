@@ -2,19 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Laravel\Scout\Searchable;
 
 class Item extends Model
 {
     use HasFactory, Searchable;
-    
+
     protected $fillable = [
         'name',
         'description',
         'user_id',
-        'group_id',
         'image_path',
     ];
 
@@ -25,15 +26,24 @@ class Item extends Model
      */
     public function toSearchableArray()
     {
+        $this->refresh();
+
+        if (! $this->relationLoaded('groups')) {
+            $this->load('groups');
+        }
+
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'description' => $this->description,
-            'group_id' => (int) $this->group_id,
-            'user_id' => (int) $this->user_id,
-            'created_at' => $this->created_at?->timestamp ?? null,
-            'updated_at' => $this->updated_at?->timestamp ?? null,
+            'user' => $this->user()->value('id'),
+            // Other item attributes
+            'groups' => $this->groups->pluck('id')->toArray(),
         ];
+    }
+
+    protected function makeAllSearchableUsing(Builder $query): Builder
+    {
+        return $query->with('groups');
     }
 
     /**
@@ -49,9 +59,9 @@ class Item extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function group()
+    public function groups(): belongsToMany
     {
-        return $this->belongsTo(Group::class);
+        return $this->belongsToMany(Group::class);
     }
 
     public function lendings()
@@ -66,7 +76,7 @@ class Item extends Model
 
     public function isAvailable()
     {
-        return !$this->lendings()->whereNull('returned_at')->exists();
+        return ! $this->lendings()->whereNull('returned_at')->exists();
     }
 
     /**

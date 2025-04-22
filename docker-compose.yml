@@ -100,6 +100,19 @@ services:
             - '/dev/shm:/dev/shm'
         networks:
             - sail
+    laravel-echo-server:
+        image: 'node:22-alpine'
+        working_dir: /app
+        ports:
+            - '${ECHO_SERVER_PORT:-6001}:6001'
+        volumes:
+            - '.:/app'
+        networks:
+            - sail
+        command: >
+            sh -c "npm install -g laravel-echo-server
+            && laravel-echo-server stop
+            && laravel-echo-server start --force"
 networks:
     sail:
         driver: bridge

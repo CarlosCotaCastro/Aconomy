@@ -40,18 +40,18 @@ class ReturnRequestNotification extends Notification implements ShouldQueue
         $lending = $this->returnRequest->lending;
         $item = $lending->item;
         $borrower = $lending->borrower;
-        
+
         $approveUrl = url("/return-requests/{$this->returnRequest->id}/respond?action=approve");
         $rejectUrl = url("/return-requests/{$this->returnRequest->id}/respond?action=reject");
 
         $imageHtml = '';
-        
+
         // Add item image if available
         if ($item->image_path) {
-            $imageUrl = url('storage/' . $item->image_path);
+            $imageUrl = url('storage/'.$item->image_path);
             $imageHtml = '<div style="text-align: center; margin-bottom: 15px;">
-                <img src="' . $imageUrl . '" alt="' . $item->name . '" style="max-width: 300px; max-height: 200px; object-fit: contain;">
-                <p style="margin-top: 5px; color: #718096; font-size: 14px;">Item: ' . $item->name . '</p>
+                <img src="'.$imageUrl.'" alt="'.$item->name.'" style="max-width: 300px; max-height: 200px; object-fit: contain;">
+                <p style="margin-top: 5px; color: #718096; font-size: 14px;">Item: '.$item->name.'</p>
             </div>';
         }
 
@@ -69,13 +69,13 @@ class ReturnRequestNotification extends Notification implements ShouldQueue
                 <a href="'.$approveUrl.'" class="button button-primary" style="background-color: #4CAF50; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; display: inline-block;">Approve Return</a>
                 <a href="'.$rejectUrl.'" class="button button-secondary" style="background-color: #f44336; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; display: inline-block;">Reject Return</a>
                 </div>');
-        
+
         // Add notes if provided
         if ($this->returnRequest->notes) {
             $message->line('Message from borrower:')
-                   ->line('"' . $this->returnRequest->notes . '"');
+                ->line('"'.$this->returnRequest->notes.'"');
         }
-        
+
         return $message->line('Thank you for using our application!');
     }
 
@@ -89,7 +89,7 @@ class ReturnRequestNotification extends Notification implements ShouldQueue
         $lending = $this->returnRequest->lending;
         $item = $lending->item;
         $borrower = $lending->borrower;
-        
+
         return [
             'type' => 'return_request',
             'return_request_id' => $this->returnRequest->id,
@@ -100,7 +100,7 @@ class ReturnRequestNotification extends Notification implements ShouldQueue
             'borrower_name' => $borrower->name,
             'notes' => $this->returnRequest->notes,
             'requested_at' => $this->returnRequest->requested_at->toIso8601String(),
-            'url' => '/lendings/' . $lending->id,
+            'url' => '/lendings/'.$lending->id,
         ];
     }
 }

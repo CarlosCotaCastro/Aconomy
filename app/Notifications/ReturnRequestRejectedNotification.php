@@ -13,6 +13,7 @@ class ReturnRequestRejectedNotification extends Notification implements ShouldQu
     use Queueable;
 
     protected $returnRequest;
+
     protected $reason;
 
     /**
@@ -42,18 +43,18 @@ class ReturnRequestRejectedNotification extends Notification implements ShouldQu
         $lending = $this->returnRequest->lending;
         $item = $lending->item;
         $lender = $lending->lender;
-        
+
         $imageHtml = '';
-        
+
         // Add item image if available
         if ($item->image_path) {
-            $imageUrl = url('storage/' . $item->image_path);
+            $imageUrl = url('storage/'.$item->image_path);
             $imageHtml = '<div style="text-align: center; margin-bottom: 15px;">
-                <img src="' . $imageUrl . '" alt="' . $item->name . '" style="max-width: 300px; max-height: 200px; object-fit: contain;">
-                <p style="margin-top: 5px; color: #718096; font-size: 14px;">Item: ' . $item->name . '</p>
+                <img src="'.$imageUrl.'" alt="'.$item->name.'" style="max-width: 300px; max-height: 200px; object-fit: contain;">
+                <p style="margin-top: 5px; color: #718096; font-size: 14px;">Item: '.$item->name.'</p>
             </div>';
         }
-        
+
         $mail = (new MailMessage)
             ->subject("Return Request Rejected for {$item->name}")
             ->greeting("Hello {$notifiable->name}")
@@ -61,11 +62,11 @@ class ReturnRequestRejectedNotification extends Notification implements ShouldQu
             ->when($imageHtml, function ($message) use ($imageHtml) {
                 return $message->line($imageHtml);
             });
-        
-        if (!empty($this->reason)) {
-            $mail->line('Reason: "' . $this->reason . '"');
+
+        if (! empty($this->reason)) {
+            $mail->line('Reason: "'.$this->reason.'"');
         }
-        
+
         return $mail
             ->line("Please contact {$lender->name} directly to discuss returning the item.")
             ->action('View Details', url("/lendings/{$lending->id}"))
@@ -82,7 +83,7 @@ class ReturnRequestRejectedNotification extends Notification implements ShouldQu
         $lending = $this->returnRequest->lending;
         $item = $lending->item;
         $lender = $lending->lender;
-        
+
         return [
             'type' => 'return_request_rejected',
             'return_request_id' => $this->returnRequest->id,
@@ -94,7 +95,7 @@ class ReturnRequestRejectedNotification extends Notification implements ShouldQu
             'reason' => $this->reason,
             'title' => 'Return Request Rejected',
             'body' => "{$lender->name} has declined your request to return the {$item->name}",
-            'url' => '/lendings/' . $lending->id,
+            'url' => '/lendings/'.$lending->id,
         ];
     }
 }

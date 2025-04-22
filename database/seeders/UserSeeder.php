@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
             'email_verified_at' => now(),
         ]);
-        
+
         // Create additional test users
         $additionalUsers = [
             [
@@ -44,7 +44,7 @@ class UserSeeder extends Seeder
                 'email' => 'eva@example.com',
             ],
         ];
-        
+
         foreach ($additionalUsers as $userData) {
             User::create([
                 'name' => $userData['name'],
@@ -54,4 +54,4 @@ class UserSeeder extends Seeder
             ]);
         }
     }
-} 
+}

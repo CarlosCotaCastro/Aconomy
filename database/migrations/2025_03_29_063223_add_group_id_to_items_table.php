@@ -11,8 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('items', function (Blueprint $table) {
-            $table->foreignId('group_id')->nullable()->constrained()->onDelete('set null');
+        Schema::create('group_item', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('group_id')->constrained()->onDelete('cascade');
+            $table->foreignId('item_id')->constrained()->onDelete('cascade');
+            $table->timestamps(); // Optional, you can remove if you don't need timestamps on the relationship
+
+            // To prevent duplicate relationships
+            $table->unique(['group_id', 'item_id']);
         });
     }
 
@@ -21,9 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('items', function (Blueprint $table) {
-            $table->dropForeign(['group_id']);
-            $table->dropColumn('group_id');
-        });
+        Schema::drop('group_item');
     }
 };

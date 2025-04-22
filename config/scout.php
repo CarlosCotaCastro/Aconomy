@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'after_commit' => false,
+    'after_commit' => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -141,7 +141,7 @@ return [
         'key' => env('MEILISEARCH_KEY'),
         'index-settings' => [
             'items' => [
-                'filterableAttributes'=> ['group_id', 'user_id'],
+                'filterableAttributes' => ['groups', 'user'],
                 'sortableAttributes' => ['created_at', 'updated_at'],
             ],
         ],
