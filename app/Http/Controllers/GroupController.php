@@ -15,7 +15,7 @@ class GroupController extends Controller
      */
     public function index()
     {
-        $groups = Group::with('users')->paginate(2);
+        $groups = Group::with('users')->latest()->paginate(2);
 
         return Inertia::render('Groups/Index', ['groups' => $groups]);
     }
