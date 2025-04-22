@@ -4,12 +4,9 @@ namespace App\Http\Controllers\Group;
 
 use App\Http\Controllers\Controller;
 use App\Models\Group;
-use App\Models\Item;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class MyGroups extends Controller
@@ -21,7 +18,7 @@ class MyGroups extends Controller
     {
 
         $user = Auth::getUser();
-        if (!$user instanceof User) {
+        if (! $user instanceof User) {
             return redirect()->route('login');
         }
 
