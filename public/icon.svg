@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+    <!-- Hintergrund -->
+    <rect width="400" height="400" fill="#001F3F"/>
+
+    <defs>
+        <!-- Drop-Shadow-Filter zur Erzeugung von Tiefe -->
+        <filter id="dropShadow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="5"/>
+            <feOffset dx="5" dy="5" result="offsetblur"/>
+            <feComponentTransfer>
+                <feFuncA type="linear" slope="0.3"/>
+            </feComponentTransfer>
+            <feMerge>
+                <feMergeNode/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+
+        <!-- Detaillierter Gradient für den oberen Teil des Hauptkreises -->
+        <linearGradient id="gradTopDetailed" x1="0" y1="50" x2="0" y2="150" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="yellow"/>
+            <stop offset="50%" stop-color="#FFA500"/>
+            <stop offset="100%" stop-color="orange"/>
+        </linearGradient>
+
+        <!-- Detaillierter Gradient für den unteren Teil des Hauptkreises -->
+        <linearGradient id="gradBottomDetailed" x1="0" y1="150" x2="0" y2="250" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#ADD8E6"/>
+            <stop offset="50%" stop-color="#87CEFA"/>
+            <stop offset="100%" stop-color="#00008B"/>
+        </linearGradient>
+
+        <!-- Clip-Pfad für den Hauptkreis -->
+        <clipPath id="circleClip">
+            <circle cx="200" cy="150" r="100"/>
+        </clipPath>
+
+        <!-- Radiale und lineare Gradienten für die kleinen Kreise -->
+        <radialGradient id="gradSmallLeftDetailed" cx="0.5" cy="0.5" r="0.5" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stop-color="#FFA500"/>
+            <stop offset="50%" stop-color="#FFB347"/>
+            <stop offset="100%" stop-color="#FF8C00"/>
+        </radialGradient>
+        <linearGradient id="gradSmallMiddleDetailed" x1="0" y1="0" x2="1" y2="0" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stop-color="#FFA500"/>
+            <stop offset="50%" stop-color="#FF7F50"/>
+            <stop offset="100%" stop-color="#00008B"/>
+        </linearGradient>
+        <radialGradient id="gradSmallRightDetailed" cx="0.5" cy="0.5" r="0.5" gradientUnits="objectBoundingBox">
+            <stop offset="0%" stop-color="#ADD8E6"/>
+            <stop offset="50%" stop-color="#87CEFA"/>
+            <stop offset="100%" stop-color="#00008B"/>
+        </radialGradient>
+    </defs>
+
+    <!-- Hauptkreis mit detaillierten Farbverläufen und Drop-Shadow -->
+    <g filter="url(#dropShadow)">
+        <g clip-path="url(#circleClip)">
+            <rect x="0" y="0" width="400" height="150" fill="url(#gradTopDetailed)"/>
+            <rect x="0" y="150" width="400" height="400" fill="url(#gradBottomDetailed)"/>
+        </g>
+    </g>
+
+    <!-- Doppelte, detaillierte wellenförmige Trennlinie im Hauptkreis -->
+    <g filter="url(#dropShadow)">
+        <!-- Unscharfe, deutlich dickere Linie als Schlagschatten -->
+        <path d="M100,150 C130,130 170,170 200,150 C230,130 270,170 300,150"
+              fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="8"/>
+        <!-- Klare, präzise Linie -->
+        <path d="M100,150 C130,130 170,170 200,150 C230,130 270,170 300,150"
+              fill="none" stroke="white" stroke-width="4"/>
+    </g>
+
+    <!-- Kleine Kreise mit zusätzlichen Glanzeffekten -->
+    <!-- Linker Kreis -->
+    <g filter="url(#dropShadow)">
+        <circle cx="150" cy="320" r="20" fill="url(#gradSmallLeftDetailed)"/>
+        <circle cx="143" cy="313" r="5" fill="white" opacity="0.8"/>
+    </g>
+    <!-- Mittlerer Kreis -->
+    <g filter="url(#dropShadow)">
+        <circle cx="200" cy="320" r="20" fill="url(#gradSmallMiddleDetailed)"/>
+        <circle cx="193" cy="313" r="5" fill="white" opacity="0.8"/>
+    </g>
+    <!-- Rechter Kreis -->
+    <g filter="url(#dropShadow)">
+        <circle cx="250" cy="320" r="20" fill="url(#gradSmallRightDetailed)"/>
+        <circle cx="243" cy="313" r="5" fill="white" opacity="0.8"/>
+    </g>
+
+    <!-- Zusätzliche feine Umrandung des Hauptkreises -->
+    <circle cx="200" cy="150" r="100" fill="none" stroke="white" stroke-width="2" opacity="0.7"/>
+</svg>
