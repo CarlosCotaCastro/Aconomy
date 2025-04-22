@@ -1,4 +1,4 @@
-import {Link, router, useForm} from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import {
     Box,
     Button,
@@ -8,7 +8,7 @@ import {
     Grid,
     Typography,
     Chip,
-    IconButton, Tooltip, CardMedia, useTheme, Pagination,
+    IconButton, Tooltip, CardMedia, useTheme,
 } from '@mui/material';
 import {
     Add as AddIcon,
@@ -19,7 +19,6 @@ import {
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
-import {useEffect} from "react";
 
 export default function Index({ groups, auth }) {
     const { post, processing } = useForm();
@@ -28,18 +27,6 @@ export default function Index({ groups, auth }) {
     const handleJoinGroup = (groupId) => {
         post(route('groups.join', groupId));
     };
-
-    const handlePageChange = (event, page) => {
-        router.get(
-            route(route().current()),
-            { page: page },
-            { preserveScroll: true, preserveState: true }
-        );
-    };
-
-    useEffect(() => {
-        console.log(groups);
-    }, []);
 
     return (
         <AuthenticatedLayout user={auth.user}>
@@ -58,7 +45,7 @@ export default function Index({ groups, auth }) {
             </Box>
 
             <Grid container spacing={3}>
-                {groups.data && groups.data.map((group) => {
+                {groups && groups.map((group) => {
                     // Count approved and pending members
                     const approvedMembers = group.users.filter(u => u.pivot.approved).length;
                     const pendingMembers = group.users.filter(u => !u.pivot.approved).length;
@@ -162,16 +149,6 @@ export default function Index({ groups, auth }) {
                     );
                 })}
             </Grid>
-            <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-                <Pagination
-                    count={groups.last_page}
-                    page={groups.current_page}
-                    onChange={handlePageChange}
-                    color="primary"
-                    showFirstButton
-                    showLastButton
-                />
-            </Box>
         </AuthenticatedLayout>
     );
 }

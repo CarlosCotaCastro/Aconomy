@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/groups/{group}/leave', [GroupUserController::class, 'destroy'])->name('groups.leave');
     Route::post('/groups/{group}/users/{user}/approve', [GroupController::class, 'approve'])->name('groups.approve');
     Route::get('/groups/{group}/search-items', GroupSearchItems::class)->name('groups.search-items');
+    Route::get('/my-groups', \App\Http\Controllers\Group\MyGroups::class)->name('groups.my-groups');
 
     // Borrow Requests routes
     Route::resource('borrow-requests', BorrowRequestController::class)->except(['edit', 'update', 'destroy']);

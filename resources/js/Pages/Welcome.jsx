@@ -7,7 +7,8 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
         <>
             <Head title="Welcome to Aconomy" />
 
-            <div className="min-h-screen bg-gradient-to-br from-purple-800 to-blue-950 relative overflow-hidden">
+            <div className="min-h-screen bg-gradient-to-br from-teal-800 to-blue-950 relative overflow-hidden">
+            {/*<div className="min-h-screen bg-gradient-to-br from-teal-950 to-orange-100 relative overflow-hidden">*/}
 
                 {/* Content */}
                 <div className="relative z-10 px-6 py-8 md:px-12">
@@ -17,7 +18,6 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                             <div className="w-16 h-16 text-white mr-4">
                                 <ApplicationLogo />
                             </div>
-                            {/*<h1 className="text-2xl md:text-3xl font-bold text-white">Aconomy</h1>*/}
                         </div>
                         <nav>
                             {auth.user ? (

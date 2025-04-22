@@ -103,7 +103,7 @@ export default function Register() {
                     />
                 </div>
 
-                <PrimaryButton sx={{my: 2}} disabled={processing} type={'submit'}>
+                <PrimaryButton sx={{my: 2}} disabled={processing} className={'w-full'} type={'submit'}>
                     Register
                 </PrimaryButton>
 
