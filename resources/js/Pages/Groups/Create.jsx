@@ -7,6 +7,7 @@ import {
     Paper,
 } from '@mui/material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
@@ -51,13 +52,13 @@ export default function Create() {
                         />
 
                         <Box sx={{ display: 'flex', gap: 2 }}>
-                            <Button
+                            <PrimaryButton
                                 type="submit"
                                 variant="contained"
                                 disabled={processing}
                             >
                                 Create Group
-                            </Button>
+                            </PrimaryButton>
                             <Button
                                 component={Link}
                                 href={route('groups.index')}
@@ -71,4 +72,4 @@ export default function Create() {
             </Box>
         </AuthenticatedLayout>
     );
-} 
+}
