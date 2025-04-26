@@ -32,7 +32,7 @@ export default function Index({ groups, auth }) {
         <AuthenticatedLayout user={auth.user}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
                 <Typography variant="h4" component="h1">
-                    Groups
+                    My Groups
                 </Typography>
                 <PrimaryButton
                     component={Link}

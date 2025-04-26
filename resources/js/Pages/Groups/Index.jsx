@@ -66,18 +66,19 @@ export default function Index({ groups, auth }) {
                     const isUserApproved = group.users.find(u => u.id === auth.user.id)?.pivot.approved;
 
                     return (
-                        <Grid size={{xs: 12, sm: 6}} key={group.id}>
-                            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                        <Grid size={{xs: 12}} key={group.id}>
+                            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'row' }}>
                                 <CardMedia sx={{
                                     display: 'flex',
                                     aspectRatio: 16/9,
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     backgroundColor: theme.palette.background.paper,
+                                    maxWidth: '15%'
                                 }}>
-                                    <GroupIcon  sx={{ fontSize: '4em' }} />
+                                    <GroupIcon  sx={{ fontSize: '4em' }} className={'m-4'} />
                                 </CardMedia>
-                                <CardContent>
+                                <CardContent sx={{ flex: 1, maxWidth: '60%' }}>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
 
                                         <Typography variant="h6" component="h2">
