@@ -135,7 +135,7 @@ export default function AuthenticatedLayout({ user, children }) {
                     </Typography>
                 </ListItem>
                 <ListItem disablePadding>
-                    <ListItemButton component={Link} href={route('groups.index')} sx={{ borderRadius: '0 20px 20px 0', mx: 1 }}>
+                    <ListItemButton component={Link} href={route('groups.my-groups')} sx={{ borderRadius: '0 20px 20px 0', mx: 1 }}>
                         <ListItemIcon>
                             <GroupIcon sx={{ color: '#ff9800' }} />
                         </ListItemIcon>
@@ -202,7 +202,7 @@ export default function AuthenticatedLayout({ user, children }) {
                 position="fixed"
                 elevation={0}
                 sx={{
-                    backgroundColor: 'white',
+                    background: 'linear-gradient(127deg, #c4d4ff 43.7%, #8b497e)',
                     borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
                     color: 'text.primary',
                     zIndex: (theme) => theme.zIndex.drawer + 1,
@@ -337,10 +337,18 @@ export default function AuthenticatedLayout({ user, children }) {
                                 <MenuItem
                                     onClick={handleMenuClose}
                                     component={Link}
-                                    href={route('groups.index')}
+                                    href={route('groups.my-groups')}
                                     sx={{ borderRadius: 1, mx: 0.5 }}
                                 >
                                     My Groups
+                                </MenuItem>
+                                <MenuItem
+                                    onClick={handleMenuClose}
+                                    component={Link}
+                                    href={route('groups.index')}
+                                    sx={{ borderRadius: 1, mx: 0.5 }}
+                                >
+                                    Find Groups
                                 </MenuItem>
                                 <MenuItem
                                     onClick={handleMenuClose}
@@ -529,34 +537,12 @@ export default function AuthenticatedLayout({ user, children }) {
                 {drawerContent}
             </Drawer>
 
-            {!isMobile && (
-                <Drawer
-                    variant="permanent"
-                    sx={{
-                        width: 250,
-                        flexShrink: 0,
-                        display: { xs: 'none', md: 'block' },
-                        '& .MuiDrawer-paper': {
-                            width: 250,
-                            boxSizing: 'border-box',
-                            borderRight: 'none',
-                            backgroundColor: 'white',
-                            boxShadow: 'rgba(0, 0, 0, 0.05) 0px 1px 2px 0px',
-                        },
-                    }}
-                    open
-                >
-                    {drawerContent}
-                </Drawer>
-            )}
-
             <Box
                 component="main"
                 sx={{
                     flexGrow: 1,
                     p: { xs: 2, sm: 3 },
                     mt: 8,
-                    ml: { md: '250px' },
                 }}
             >
                 <Container
@@ -576,8 +562,7 @@ export default function AuthenticatedLayout({ user, children }) {
                     py: 3,
                     px: 2,
                     mt: 'auto',
-                    ml: { md: '250px' },
-                    backgroundColor: 'white',
+                    //backgroundColor: 'white',
                     borderTop: '1px solid rgba(0, 0, 0, 0.06)',
                     textAlign: 'center'
                 }}
