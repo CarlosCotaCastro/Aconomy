@@ -18,9 +18,10 @@ import {
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {useState} from "react";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
+import { useTranslation } from 'react-i18next';
 
 export default function Index({ items, auth }) {
-
+    const { t } = useTranslation();
     const [searchQuery, setSearchQuery] = useState('');
 
     const filteredItems = items.filter(item =>
@@ -29,109 +30,123 @@ export default function Index({ items, auth }) {
     ) ?? $items;
 
     return (
-        <AuthenticatedLayout>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
-                <Typography variant="h4" component="h1">
-                    My Items
-                </Typography>
-                <PrimaryButton
-                    component={Link}
-                    href={route('items.create')}
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                >
-                    Add Item
-                </PrimaryButton>
-            </Box>
+        <AuthenticatedLayout
+            user={auth.user}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                {t('items.myItems')}
+            </h2>}
+        >
+            <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div className="p-6 text-gray-900">
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
+                                <Typography variant="h5" component="h1">
+                                    {t('items.myItems')}
+                                </Typography>
+                                <PrimaryButton
+                                    component={Link}
+                                    href={route('items.create')}
+                                    variant="contained"
+                                    startIcon={<AddIcon />}
+                                >
+                                    {t('items.addNewItem')}
+                                </PrimaryButton>
+                            </Box>
 
-            <Box sx={{ mb: 4 }}>
-                <TextField
-                    fullWidth
-                    type="search"
-                    variant="outlined"
-                    placeholder="Search my items..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    InputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <SearchIcon />
-                            </InputAdornment>
-                        ),
-                    }}
-                />
-            </Box>
-
-            <Grid container spacing={3}>
-                {filteredItems.map((item) => (
-                    <Grid size={{xs: 12, sm: 6, md: 4, xl: 2}} key={item.id}>
-                        <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                            {item.image_path ? (
-                                <CardMedia
-                                    component="img"
-                                    height="200"
-                                    image={`/storage/${item.image_path}`}
-                                    alt={item.name}
-                                    sx={{
-                                        objectFit: 'cover',
-                                        padding: 0,
-                                        aspectRatio: 16 / 9
+                            <Box sx={{ mb: 4 }}>
+                                <TextField
+                                    fullWidth
+                                    type="search"
+                                    variant="outlined"
+                                    placeholder={t('items.searchMyItems')}
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <SearchIcon />
+                                            </InputAdornment>
+                                        ),
                                     }}
                                 />
-                            ) : (
-                                <Box
-                                    sx={{
-                                        height: 140,
-                                        bgcolor: 'rgba(0,0,0,0.05)',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center'
-                                    }}
-                                >
-                                    <Typography color="text.secondary">
-                                        No Image
-                                    </Typography>
-                                </Box>
-                            )}
-                            <CardContent sx={{ flexGrow: 1 }}>
-                                <Typography variant="h6" component="h2">
-                                    {item.name}
-                                </Typography>
-                                {item.description && (
-                                    <Typography color="text.secondary" sx={{ mt: 1 }}>
-                                        {item.description}
-                                    </Typography>
-                                )}
-                            </CardContent>
-                            <CardActions>
-                                <Button
-                                    component={Link}
-                                    href={route('items.edit', item.id)}
-                                    size="small"
-                                >
-                                    Edit
-                                </Button>
-                                <Button
-                                    component={Link}
-                                    href={route('items.show', item.id)}
-                                    size="small"
-                                >
-                                    View Details
-                                </Button>
-                                <IconButton
-                                    component={Link}
-                                    href={route('items.destroy', item.id)}
-                                    method="delete"
-                                    as="button"
-                                    size="small"
-                                >
-                                    <DeleteIcon />
-                                </IconButton>
-                            </CardActions>
-                        </Card>
-                    </Grid>
-                ))}
-            </Grid>
+                            </Box>
+
+                            <Grid container spacing={3}>
+                                {filteredItems.map((item) => (
+                                    <Grid size={{xs: 12, sm: 6, md: 4, xl: 2}} key={item.id}>
+                                        <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                                            {item.image_path ? (
+                                                <CardMedia
+                                                    component="img"
+                                                    height="200"
+                                                    image={`/storage/${item.image_path}`}
+                                                    alt={item.name}
+                                                    sx={{
+                                                        objectFit: 'cover',
+                                                        padding: 0,
+                                                        aspectRatio: 16 / 9
+                                                    }}
+                                                />
+                                            ) : (
+                                                <Box
+                                                    sx={{
+                                                        height: 140,
+                                                        bgcolor: 'rgba(0,0,0,0.05)',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center'
+                                                    }}
+                                                >
+                                                    <Typography color="text.secondary">
+                                                        {t('items.noImage')}
+                                                    </Typography>
+                                                </Box>
+                                            )}
+                                            <CardContent sx={{ flexGrow: 1 }}>
+                                                <Typography variant="h6" component="h2">
+                                                    {item.name}
+                                                </Typography>
+                                                {item.description && (
+                                                    <Typography color="text.secondary" sx={{ mt: 1 }}>
+                                                        {item.description}
+                                                    </Typography>
+                                                )}
+                                            </CardContent>
+                                            <CardActions>
+                                                <Button
+                                                    component={Link}
+                                                    href={route('items.edit', item.id)}
+                                                    size="small"
+                                                >
+                                                    {t('common.edit')}
+                                                </Button>
+                                                <Button
+                                                    component={Link}
+                                                    href={route('items.show', item.id)}
+                                                    size="small"
+                                                >
+                                                    {t('common.viewDetails')}
+                                                </Button>
+                                                <IconButton
+                                                    component={Link}
+                                                    href={route('items.destroy', item.id)}
+                                                    method="delete"
+                                                    as="button"
+                                                    size="small"
+                                                    title={t('common.delete')}
+                                                >
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </CardActions>
+                                        </Card>
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </AuthenticatedLayout>
     );
 }

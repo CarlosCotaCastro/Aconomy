@@ -20,8 +20,10 @@ import {
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import {useEffect} from "react";
+import { useTranslation } from 'react-i18next';
 
 export default function Index({ groups, auth }) {
+    const { t } = useTranslation();
     const { post, processing } = useForm();
 
     const theme = useTheme();
@@ -45,7 +47,7 @@ export default function Index({ groups, auth }) {
         <AuthenticatedLayout user={auth.user}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
                 <Typography variant="h4" component="h1">
-                    Groups
+                    {t('groups.groups')}
                 </Typography>
                 <PrimaryButton
                     component={Link}
@@ -53,7 +55,7 @@ export default function Index({ groups, auth }) {
                     variant="contained"
                     startIcon={<AddIcon />}
                 >
-                    Create Group
+                    {t('groups.createNewGroup')}
                 </PrimaryButton>
             </Box>
 
@@ -80,7 +82,6 @@ export default function Index({ groups, auth }) {
                                 </CardMedia>
                                 <CardContent sx={{ flex: 1, maxWidth: '60%' }}>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-
                                         <Typography variant="h6" component="h2">
                                             {group.name}
                                         </Typography>
@@ -99,14 +100,14 @@ export default function Index({ groups, auth }) {
                                     <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
                                         <Chip
                                             icon={<PersonIcon />}
-                                            label={`${approvedMembers} approved member${approvedMembers !== 1 ? 's' : ''}`}
+                                            label={t('groups.approvedMembers', { count: approvedMembers })}
                                             color="primary"
                                             size="small"
                                         />
                                     </Box>
                                     {pendingMembers > 0 && isUserApproved && (
                                         <Chip
-                                            label={`${pendingMembers} pending request${pendingMembers !== 1 ? 's' : ''}`}
+                                            label={t('groups.pendingRequests', { count: pendingMembers })}
                                             color="warning"
                                             size="small"
                                         />
@@ -118,7 +119,7 @@ export default function Index({ groups, auth }) {
                                         href={route('groups.show', group.id)}
                                         size="small"
                                     >
-                                        View Details
+                                        {t('common.viewDetails')}
                                     </Button>
                                     {isUserApproved && (
                                         <>
@@ -147,12 +148,12 @@ export default function Index({ groups, auth }) {
                                             variant="outlined"
                                             size="small"
                                         >
-                                            Join Group
+                                            {t('groups.joinGroup')}
                                         </Button>
                                     )}
                                     {isUserInGroup && !isUserApproved && (
                                         <Chip
-                                            label="Pending Approval"
+                                            label={t('common.pendingApproval')}
                                             color="warning"
                                             size="small"
                                         />

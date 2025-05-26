@@ -51,4 +51,12 @@ class Lending extends Model
     {
         return $this->returnRequests()->where('status', 'pending')->exists();
     }
+
+    /**
+     * Scope a query to only include active lendings (not returned).
+     */
+    public function scopeActiveLending($query)
+    {
+        return $query->whereNull('returned_at');
+    }
 }

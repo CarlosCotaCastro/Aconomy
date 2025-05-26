@@ -1,4 +1,5 @@
 import { useForm, Link } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import {
     Box,
     Button,
@@ -15,6 +16,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function Edit({ item }) {
+    const { t } = useTranslation();
     const [previewUrl, setPreviewUrl] = useState(null);
 
     const { data, setData, post, processing, errors } = useForm({
@@ -54,14 +56,14 @@ export default function Edit({ item }) {
         <AuthenticatedLayout>
             <Box sx={{ maxWidth: 600, mx: 'auto' }}>
                 <Typography variant="h4" component="h1" gutterBottom>
-                    Edit Item
+                    {t('items.editItem')}
                 </Typography>
 
                 <Paper sx={{ p: 3 }}>
                     <form onSubmit={handleSubmit}>
                         <TextField
                             fullWidth
-                            label="Name"
+                            label={t('items.itemName')}
                             value={data.name}
                             onChange={e => setData('name', e.target.value)}
                             error={!!errors.name}
@@ -71,7 +73,7 @@ export default function Edit({ item }) {
 
                         <TextField
                             fullWidth
-                            label="Description"
+                            label={t('items.itemDescription')}
                             value={data.description}
                             onChange={e => setData('description', e.target.value)}
                             error={!!errors.description}
@@ -88,7 +90,7 @@ export default function Edit({ item }) {
                                 startIcon={<CloudUploadIcon />}
                                 sx={{ mb: 2 }}
                             >
-                                {item.image_path ? 'Change Image' : 'Upload Image'}
+                                {item.image_path ? t('items.changeImage') : t('items.uploadImage')}
                                 <input
                                     type="file"
                                     hidden
@@ -107,7 +109,7 @@ export default function Edit({ item }) {
                                         component="img"
                                         height="200"
                                         image={previewUrl}
-                                        alt="Image preview"
+                                        alt={t('items.imagePreview')}
                                         sx={{ objectFit: 'contain' }}
                                     />
                                 </Card>
@@ -120,14 +122,14 @@ export default function Edit({ item }) {
                                 variant="contained"
                                 disabled={processing}
                             >
-                                Update Item
+                                {t('items.updateItem')}
                             </PrimaryButton>
                             <Button
                                 component={Link}
                                 href={route('items.index')}
                                 variant="outlined"
                             >
-                                Cancel
+                                {t('common.cancel')}
                             </Button>
                         </Box>
                     </form>

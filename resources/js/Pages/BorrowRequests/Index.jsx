@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import {Link, router} from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import {
     Box,
     Tabs,
@@ -62,6 +63,7 @@ const getStatusColor = (status) => {
 };
 
 export default function Index({ outgoingRequests, incomingRequests, auth }) {
+    const { t } = useTranslation();
     const [tabValue, setTabValue] = useState(0);
 
     const handleTabChange = (event, newValue) => {
@@ -72,7 +74,7 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
         <AuthenticatedLayout>
             <Box sx={{ mb: 4 }}>
                 <Typography variant="h4" component="h1" gutterBottom>
-                    Borrow Requests
+                    {t('borrowRequests.borrowRequests')}
                 </Typography>
             </Box>
 
@@ -80,13 +82,13 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                 <Tabs value={tabValue} onChange={handleTabChange} aria-label="borrow requests tabs">
                     <Tab
                         icon={<SendIcon />}
-                        label={`Sent Requests (${outgoingRequests.length})`}
+                        label={t('borrowRequests.sentRequests', { count: outgoingRequests.length })}
                         id="tab-0"
                         aria-controls="tabpanel-0"
                     />
                     <Tab
                         icon={<ReceiptIcon />}
-                        label={`Received Requests (${incomingRequests.length})`}
+                        label={t('borrowRequests.receivedRequests', { count: incomingRequests.length })}
                         id="tab-1"
                         aria-controls="tabpanel-1"
                     />
@@ -108,7 +110,7 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                                 </Typography>
                                                 <Chip
                                                     icon={getStatusIcon(request.status)}
-                                                    label={request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+                                                    label={t(`borrowRequests.status.${request.status}`)}
                                                     color={getStatusColor(request.status)}
                                                     size="small"
                                                 />
@@ -117,7 +119,7 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                                                 <PersonIcon fontSize="small" sx={{ mr: 1 }} />
                                                 <Typography variant="body2">
-                                                    Owner: {request.lender.name}
+                                                    {t('borrowRequests.owner', { name: request.lender.name })}
                                                 </Typography>
                                             </Box>
 
@@ -133,10 +135,10 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                 </Grid>
                             ))
                         ) : (
-                            <Grid >
+                            <Grid>
                                 <Box sx={{ textAlign: 'center', py: 4 }}>
                                     <Typography color="text.secondary">
-                                        You haven't sent any borrow requests yet.
+                                        {t('borrowRequests.noSentRequests')}
                                     </Typography>
                                     <Button
                                         component={Link}
@@ -144,7 +146,7 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                         variant="contained"
                                         sx={{ mt: 2 }}
                                     >
-                                        Browse Groups
+                                        {t('borrowRequests.browseGroups')}
                                     </Button>
                                 </Box>
                             </Grid>
@@ -168,7 +170,7 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                                 </Typography>
                                                 <Chip
                                                     icon={getStatusIcon(request.status)}
-                                                    label={request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+                                                    label={t(`borrowRequests.status.${request.status}`)}
                                                     color={getStatusColor(request.status)}
                                                     size="small"
                                                 />
@@ -177,7 +179,7 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                                                 <PersonIcon fontSize="small" sx={{ mr: 1 }} />
                                                 <Typography variant="body2">
-                                                    Requested by: {request.borrower.name}
+                                                    {t('borrowRequests.requestedBy', { name: request.borrower.name })}
                                                 </Typography>
                                             </Box>
 
@@ -193,10 +195,10 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                 </Grid>
                             ))
                         ) : (
-                            <Grid >
+                            <Grid>
                                 <Box sx={{ textAlign: 'center', py: 4 }}>
                                     <Typography color="text.secondary">
-                                        You don't have any incoming borrow requests.
+                                        {t('borrowRequests.noIncomingRequests')}
                                     </Typography>
                                 </Box>
                             </Grid>

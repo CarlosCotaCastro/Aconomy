@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import {
     Box,
     Button,
@@ -20,18 +21,23 @@ import {
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function GroupItems({ group, items, auth }) {
-
+    const { t } = useTranslation();
+    const [searchQuery, setSearchQuery] = useState('');
+    const filteredItems = items.filter(item => 
+        item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.description?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
 
     return (
         <AuthenticatedLayout>
             <Box sx={{ mb: 4 }}>
                 <Typography variant="h4" component="h1" gutterBottom>
-                    {group.name} - Available Items
+                    {t('items.groupItemsTitle', { groupName: group.name })}
                 </Typography>
                 <TextField
                     fullWidth
                     variant="outlined"
-                    placeholder="Search items..."
+                    placeholder={t('items.searchItemsPlaceholder')}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     InputProps={{
@@ -67,7 +73,7 @@ export default function GroupItems({ group, items, auth }) {
                                     }}
                                 >
                                     <Typography color="text.secondary">
-                                        No Image
+                                        {t('items.noImage')}
                                     </Typography>
                                 </Box>
                             )}
@@ -83,12 +89,12 @@ export default function GroupItems({ group, items, auth }) {
                                 <Box sx={{ mt: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
                                     <PersonIcon fontSize="small" />
                                     <Typography variant="body2">
-                                        Owner: {item.user.name}
+                                        {t('items.owner', { name: item.user.name })}
                                     </Typography>
                                 </Box>
                                 <Box sx={{ mt: 1 }}>
                                     <Chip
-                                        label={item.is_available ? "Available" : "Currently Borrowed"}
+                                        label={item.is_available ? t('items.available') : t('items.currentlyBorrowed')}
                                         color={item.is_available ? "success" : "error"}
                                         size="small"
                                     />
@@ -103,7 +109,7 @@ export default function GroupItems({ group, items, auth }) {
                                         color="primary"
                                         size="small"
                                     >
-                                        Request to Borrow
+                                        {t('items.requestToBorrow')}
                                     </Button>
                                 )}
                             </CardActions>

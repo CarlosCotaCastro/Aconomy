@@ -50,11 +50,25 @@ class GroupController extends Controller
     public function show(Group $group)
     {
         $group->load(['users' => function ($query) {
-            $query->select('users.id', 'users.name', 'users.email', 'group_user.approved');
+            $query->select('users.id', 'users.name', 'users.email', 'users.profile_image_path', 'group_user.approved');
         }]);
+
+        // Get the 12 most recent items in the group
+        $recentItems = $group->items()
+            ->with(['user' => function ($query) {
+                $query->select('id', 'name', 'profile_image_path');
+            }])
+            ->latest()
+            ->take(12)
+            ->get()
+            ->map(function ($item) {
+                $item->is_available = $item->isAvailable();
+                return $item;
+            });
 
         return Inertia::render('Groups/Show', [
             'group' => $group,
+            'recentItems' => $recentItems,
             'auth' => [
                 'user' => Auth::user(),
             ],

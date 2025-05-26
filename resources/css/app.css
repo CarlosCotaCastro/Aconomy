@@ -1,3 +1,120 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.custom-hero-bg {
+  position: relative;
+  width: 100vw;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  min-height: 60vh;
+  overflow: hidden;
+  background: radial-gradient(circle at 20% 80%, rgba(0, 123, 255, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 0, 150, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(138, 43, 226, 0.1) 0%, transparent 50%);
+  /*z-index: -2;*/
+  animation: gradientShift 8s ease-in-out infinite;
+}
+
+.custom-hero-bg::before {
+  content: '';
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%) scale(1.2);
+  width: 80vw;
+  height: 40vh;
+  background: radial-gradient(circle at 60% 40%, rgba(129, 12, 168, 0.10) 0%, rgba(60, 0, 19, 0.08) 60%, transparent 100%);
+  filter: blur(40px);
+  z-index: 2;
+}
+
+.custom-hero-bg::after {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  right: 10%;
+  width: 40vw;
+  height: 30vh;
+  background: radial-gradient(circle at 40% 60%, rgba(233, 71, 133, 0.08) 0%, rgba(60, 0, 41, 0.1) 60%, transparent 100%);
+  filter: blur(60px);
+  z-index: 2;
+}
+
+.hero-cta-btn {
+  border-radius: 2em !important;
+  background: linear-gradient(90deg, #c147e9 0%, #810ca8 100%);
+  color: #fff !important;
+  border: none;
+  box-shadow: 0 4px 32px 0 rgba(193, 71, 233, 0.25), 0 1.5px 8px 0 rgba(129, 12, 168, 0.18);
+  transition: transform 0.15s cubic-bezier(.4, 2, .6, 1), box-shadow 0.2s, background 0.2s;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  height: 4em !important;
+}
+
+.hero-cta-btn:hover,
+.hero-cta-btn:focus {
+  background: linear-gradient(90deg, #a020f0 0%, #c147e9 100%);
+  box-shadow: 0 6px 40px 0 rgba(193, 71, 233, 0.35), 0 2px 12px 0 rgba(129, 12, 168, 0.22);
+  transform: scale(1.04);
+  outline: none;
+}
+
+.hero-cta-btn:active {
+  background: linear-gradient(90deg, #810ca8 0%, #c147e9 100%);
+  box-shadow: 0 2px 8px 0 rgba(193, 71, 233, 0.18);
+  transform: scale(0.98);
+}
+
+.hero-cta-download {
+  color: #fff !important;
+  margin-top: 1em !important;
+}
+
+.welcome-card {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 2.5rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+}
+.welcome-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 123, 255, 0.5), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.welcome-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(0, 123, 255, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 123, 255, 0.1);
+}
+
+.welcome-card:hover::before {
+  opacity: 1;
+}
+
+.feature-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #007bff, #ff0096);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
