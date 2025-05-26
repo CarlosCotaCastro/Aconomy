@@ -11,9 +11,10 @@ import {
 } from "@mui/material";
 import {Person as PersonIcon} from "@mui/icons-material";
 import {useState} from "react";
+import { useTranslation } from 'react-i18next';
 
 export default function GroupMemberList({approvedMembers}) {
-
+    const { t } = useTranslation();
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
 
@@ -21,7 +22,7 @@ export default function GroupMemberList({approvedMembers}) {
         <Card>
             <CardContent>
                 <Typography variant="h6" gutterBottom>
-                    Members ({approvedMembers.length})
+                    {t('groups.membersTitle', { count: approvedMembers.length })}
                 </Typography>
                 <Divider sx={{mb: 2}}/>
 
@@ -41,7 +42,7 @@ export default function GroupMemberList({approvedMembers}) {
                     ))}
                     {approvedMembers.length === 0 && (
                         <Typography color="text.secondary">
-                            No members in this group yet.
+                            {t('groups.noMembers')}
                         </Typography>
                     )}
                 </List>

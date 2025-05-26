@@ -8,8 +8,10 @@ import {
 } from '@mui/material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
+import { useTranslation } from 'react-i18next';
 
 export default function Create() {
+    const { t } = useTranslation();
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         description: '',
@@ -24,14 +26,14 @@ export default function Create() {
         <AuthenticatedLayout>
             <Box sx={{ maxWidth: 600, mx: 'auto' }}>
                 <Typography variant="h4" component="h1" gutterBottom>
-                    Create New Group
+                    {t('groups.createNewGroup')}
                 </Typography>
 
                 <Paper sx={{ p: 3 }}>
                     <form onSubmit={handleSubmit}>
                         <TextField
                             fullWidth
-                            label="Group Name"
+                            label={t('groups.groupName')}
                             value={data.name}
                             onChange={e => setData('name', e.target.value)}
                             error={!!errors.name}
@@ -41,7 +43,7 @@ export default function Create() {
 
                         <TextField
                             fullWidth
-                            label="Description"
+                            label={t('groups.groupDescription')}
                             value={data.description}
                             onChange={e => setData('description', e.target.value)}
                             error={!!errors.description}
@@ -57,14 +59,14 @@ export default function Create() {
                                 variant="contained"
                                 disabled={processing}
                             >
-                                Create Group
+                                {t('groups.createNewGroup')}
                             </PrimaryButton>
                             <Button
                                 component={Link}
                                 href={route('groups.index')}
                                 variant="outlined"
                             >
-                                Cancel
+                                {t('common.cancel')}
                             </Button>
                         </Box>
                     </form>

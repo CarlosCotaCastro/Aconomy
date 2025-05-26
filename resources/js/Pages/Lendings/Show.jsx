@@ -1,6 +1,6 @@
 import { Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Box, Button, Card, CardContent, Typography, Grid, Chip, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Box, Button, Card, CardContent, Typography, Grid, Chip, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Avatar } from '@mui/material';
 import { useState } from 'react';
 
 export default function Show({ auth, lending }) {
@@ -32,6 +32,57 @@ export default function Show({ auth, lending }) {
     };
 
     const hasActiveReturnRequest = lending.active_return_request !== null;
+
+    function stringToColor(string) {
+        let hash = 0;
+        let i;
+
+        for (i = 0; i < string.length; i += 1) {
+            hash = string.charCodeAt(i) + ((hash << 5) - hash);
+        }
+
+        let color = '#';
+
+        for (i = 0; i < 3; i += 1) {
+            const value = (hash >> (i * 8)) & 0xff;
+            color += `00${value.toString(16)}`.slice(-2);
+        }
+
+        return color;
+    }
+
+    const renderUserInfo = (user) => {
+        const isCurrentUser = user.id === auth.user.id;
+        return (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                {!isCurrentUser && (
+                    user.profile_image_path ? (
+                        <Avatar
+                            src={`/storage/${user.profile_image_path}`}
+                            alt={user.name}
+                            sx={{ width: 32, height: 32 }}
+                        />
+                    ) : (
+                        <Avatar
+                            sx={{
+                                width: 32,
+                                height: 32,
+                                bgcolor: stringToColor(user.name),
+                                fontSize: '1rem'
+                            }}
+                        >
+                            {user.name.charAt(0).toUpperCase()}
+                        </Avatar>
+                    )
+                )}
+                <Box>
+                    <Typography variant="body2" color="text.secondary">
+                        {isCurrentUser ? 'me' : user.name}
+                    </Typography>
+                </Box>
+            </Box>
+        );
+    };
 
     return (
         <AuthenticatedLayout user={auth.user}>
@@ -68,8 +119,18 @@ export default function Show({ auth, lending }) {
                         <Card>
                             <CardContent>
                                 <Typography variant="h6" gutterBottom>Lending Information</Typography>
-                                <Typography variant="body1"><strong>Lender:</strong> {lending.lender.name}</Typography>
-                                <Typography variant="body1"><strong>Borrower:</strong> {lending.borrower.name}</Typography>
+                                <Box sx={{ mb: 2 }}>
+                                    <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                                        Lender
+                                    </Typography>
+                                    {renderUserInfo(lending.lender)}
+                                </Box>
+                                <Box sx={{ mb: 2 }}>
+                                    <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                                        Borrower
+                                    </Typography>
+                                    {renderUserInfo(lending.borrower)}
+                                </Box>
                                 <Typography variant="body1"><strong>Lent Date:</strong> {new Date(lending.lent_at).toLocaleDateString()}</Typography>
                                 {lending.returned_at && (
                                     <Typography variant="body1"><strong>Returned Date:</strong> {new Date(lending.returned_at).toLocaleDateString()}</Typography>

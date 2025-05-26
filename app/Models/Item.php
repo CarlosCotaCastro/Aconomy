@@ -86,4 +86,33 @@ class Item extends Model
     {
         return $this->borrowRequests()->where('status', 'pending')->exists();
     }
+
+    /**
+     * Get the user who is currently borrowing this item.
+     */
+    public function currentBorrower()
+    {
+        return $this->belongsTo(User::class, 'current_borrower_id')
+            ->select(['id', 'name', 'profile_image_path'])
+            ->withDefault();
+    }
+
+    public function activeLending()
+    {
+        return $this->hasOne(Lending::class)
+            ->whereNull('returned_at')
+            ->latest();
+    }
+
+    protected static function booted()
+    {
+        static::addGlobalScope('withCurrentBorrower', function ($query) {
+            $query->addSelect(['current_borrower_id' => Lending::select('borrower_id')
+                ->whereColumn('item_id', 'items.id')
+                ->whereNull('returned_at')
+                ->latest()
+                ->limit(1)
+            ]);
+        });
+    }
 }

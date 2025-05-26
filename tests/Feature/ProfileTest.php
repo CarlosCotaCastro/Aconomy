@@ -10,7 +10,7 @@ class ProfileTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_profile_page_is_displayed(): void
+    public function test_profile_edit_page_is_displayed(): void
     {
         $user = User::factory()->create();
 
@@ -19,6 +19,16 @@ class ProfileTest extends TestCase
             ->get('/profile');
 
         $response->assertOk();
+    }
+
+    public function test_profile_edit_page_is_forbidden_for_unauthenticated_users(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->get('/profile');
+
+        $response->assertForbidden();
     }
 
     public function test_profile_information_can_be_updated(): void
@@ -95,5 +105,50 @@ class ProfileTest extends TestCase
             ->assertRedirect('/profile');
 
         $this->assertNotNull($user->fresh());
+    }
+
+    public function test_profile_show_page_loads_successfully(): void
+    {
+        // Create a test user
+        $user = User::factory()->create();
+
+        // Create another user to view their profile
+        $profileUser = User::factory()->create();
+
+        // Act as the first user
+        $this->actingAs($user);
+
+        // Make a request to the profile page
+        $response = $this->get(route('profile.show', $profileUser));
+
+        // Assert the response is successful
+        $response->assertStatus(200);
+    }
+
+    public function test_profile_show_page_loads_with_items(): void
+    {
+        // Create a test user
+        $user = User::factory()->create();
+
+        // Create another user with some items
+        $profileUser = User::factory()->create();
+
+        // Act as the first user
+        $this->actingAs($user);
+
+        // Make a request to the profile page
+        $response = $this->get(route('profile.show', $profileUser));
+
+        // Assert the response is successful
+        $response->assertStatus(200);
+
+        // Assert the response contains the expected data structure
+        $response->assertInertia(fn ($assert) => $assert
+            ->component('Profile/Show')
+            ->has('profileUser')
+            ->has('items')
+            ->has('borrowedItems')
+            ->has('auth.user')
+        );
     }
 }

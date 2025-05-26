@@ -42,6 +42,7 @@ import {
 } from '@mui/icons-material';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import NotificationMenu from '@/Components/Notifications/NotificationMenu';
+import LanguageSwitcher from '@/Components/LanguageSwitcher';
 
 export default function AuthenticatedLayout({ user, children }) {
     const theme = useTheme();
@@ -56,6 +57,24 @@ export default function AuthenticatedLayout({ user, children }) {
     // Fallback to usePage if user prop is not provided
     const pageProps = usePage().props;
     const authUser = user || (pageProps.auth && pageProps.auth.user);
+
+    function stringToColor(string) {
+        let hash = 0;
+        let i;
+
+        for (i = 0; i < string.length; i += 1) {
+            hash = string.charCodeAt(i) + ((hash << 5) - hash);
+        }
+
+        let color = '#';
+
+        for (i = 0; i < 3; i += 1) {
+            const value = (hash >> (i * 8)) & 0xff;
+            color += `00${value.toString(16)}`.slice(-2);
+        }
+
+        return color;
+    }
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -202,9 +221,9 @@ export default function AuthenticatedLayout({ user, children }) {
                 position="fixed"
                 elevation={0}
                 sx={{
-                    background: 'linear-gradient(127deg, #c4d4ff 43.7%, #8b497e)',
-                    borderBottom: '1px solid rgba(0, 0, 0, 0.06)',
-                    color: 'text.primary',
+                    background: 'white',
+                    borderBottom: '1px solid #f0f0f0',
+                    color: 'primary.main',
                     zIndex: (theme) => theme.zIndex.drawer + 1,
                 }}
             >
@@ -227,10 +246,11 @@ export default function AuthenticatedLayout({ user, children }) {
                         href={route('dashboard')}
                         sx={{
                             fontWeight: 700,
-                            background: 'linear-gradient(90deg, #5271ff 0%, #4361ee 100%)',
+                            background: 'linear-gradient(-45deg, '+ theme.palette.primary.light +' 0%, ' + theme.palette.secondary.light +' 100%)',
                             WebkitBackgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
                             textDecoration: 'none',
+                            color: 'linear-gradient(90deg, #c4d4ff 43.7%, #FF0000)',
                             flexGrow: { xs: 1, md: 0 },
                             mr: 3,
                             fontSize: { xs: '1.2rem', md: '1.5rem' }
@@ -239,216 +259,219 @@ export default function AuthenticatedLayout({ user, children }) {
                         Aconomy
                     </Typography>
 
-                    {!isMobile && (
-                        <Box sx={{ display: 'flex', flexGrow: 1, gap: 1.5 }}>
-                            <Button
-                                component={Link}
-                                href={route('dashboard')}
-                                variant="text"
-                                color="inherit"
-                                startIcon={<HomeIcon />}
-                                sx={{
-                                    textTransform: 'none',
-                                    fontWeight: 600,
-                                    borderRadius: '8px'
-                                }}
-                            >
-                                Home
-                            </Button>
+                    <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 2 }}>
+                        {!isMobile && (
+                            <Box sx={{ display: 'flex', gap: 1.5 }}>
+                                <Button
+                                    component={Link}
+                                    href={route('dashboard')}
+                                    variant="text"
+                                    color="inherit"
+                                    startIcon={<HomeIcon />}
+                                    sx={{
+                                        textTransform: 'none',
+                                        fontWeight: 600,
+                                        borderRadius: '8px'
+                                    }}
+                                >
+                                    Home
+                                </Button>
 
-                            <Button
-                                color="inherit"
-                                aria-controls="items-menu"
-                                aria-haspopup="true"
-                                onClick={handleItemsMenuOpen}
-                                endIcon={<ArrowDropDownIcon />}
-                                startIcon={<InventoryIcon />}
-                                sx={{
-                                    textTransform: 'none',
-                                    fontWeight: 600,
-                                    borderRadius: '8px'
-                                }}
-                            >
-                                Items
-                            </Button>
-                            <Menu
-                                id="items-menu"
-                                anchorEl={itemsAnchorEl}
-                                keepMounted
-                                open={Boolean(itemsAnchorEl)}
-                                onClose={handleMenuClose}
-                                PaperProps={{
-                                    elevation: 2,
-                                    sx: {
-                                        mt: 1.5,
-                                        width: 200,
-                                        borderRadius: 2
-                                    }
-                                }}
-                            >
-                                <MenuItem
-                                    onClick={handleMenuClose}
-                                    component={Link}
-                                    href={route('items.index')}
-                                    sx={{ borderRadius: 1, mx: 0.5 }}
+                                <Button
+                                    color="inherit"
+                                    aria-controls="items-menu"
+                                    aria-haspopup="true"
+                                    onClick={handleItemsMenuOpen}
+                                    endIcon={<ArrowDropDownIcon />}
+                                    startIcon={<InventoryIcon />}
+                                    sx={{
+                                        textTransform: 'none',
+                                        fontWeight: 600,
+                                        borderRadius: '8px'
+                                    }}
                                 >
-                                    My Items
-                                </MenuItem>
-                                <MenuItem
-                                    onClick={handleMenuClose}
-                                    component={Link}
-                                    href={route('items.create')}
-                                    sx={{ borderRadius: 1, mx: 0.5 }}
+                                    Items
+                                </Button>
+                                <Menu
+                                    id="items-menu"
+                                    anchorEl={itemsAnchorEl}
+                                    keepMounted
+                                    open={Boolean(itemsAnchorEl)}
+                                    onClose={handleMenuClose}
+                                    PaperProps={{
+                                        elevation: 2,
+                                        sx: {
+                                            mt: 1.5,
+                                            width: 200,
+                                            borderRadius: 2
+                                        }
+                                    }}
                                 >
-                                    Add New Item
-                                </MenuItem>
-                            </Menu>
+                                    <MenuItem
+                                        onClick={handleMenuClose}
+                                        component={Link}
+                                        href={route('items.index')}
+                                        sx={{ borderRadius: 1, mx: 0.5 }}
+                                    >
+                                        My Items
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={handleMenuClose}
+                                        component={Link}
+                                        href={route('items.create')}
+                                        sx={{ borderRadius: 1, mx: 0.5 }}
+                                    >
+                                        Add New Item
+                                    </MenuItem>
+                                </Menu>
 
-                            <Button
-                                color="inherit"
-                                aria-controls="groups-menu"
-                                aria-haspopup="true"
-                                onClick={handleGroupsMenuOpen}
-                                endIcon={<ArrowDropDownIcon />}
-                                startIcon={<GroupIcon />}
-                                sx={{
-                                    textTransform: 'none',
-                                    fontWeight: 600,
-                                    borderRadius: '8px'
-                                }}
-                            >
-                                Groups
-                            </Button>
-                            <Menu
-                                id="groups-menu"
-                                anchorEl={groupsAnchorEl}
-                                keepMounted
-                                open={Boolean(groupsAnchorEl)}
-                                onClose={handleMenuClose}
-                                PaperProps={{
-                                    elevation: 2,
-                                    sx: {
-                                        mt: 1.5,
-                                        width: 200,
-                                        borderRadius: 2
-                                    }
-                                }}
-                            >
-                                <MenuItem
-                                    onClick={handleMenuClose}
-                                    component={Link}
-                                    href={route('groups.my-groups')}
-                                    sx={{ borderRadius: 1, mx: 0.5 }}
+                                <Button
+                                    color="inherit"
+                                    aria-controls="groups-menu"
+                                    aria-haspopup="true"
+                                    onClick={handleGroupsMenuOpen}
+                                    endIcon={<ArrowDropDownIcon />}
+                                    startIcon={<GroupIcon />}
+                                    sx={{
+                                        textTransform: 'none',
+                                        fontWeight: 600,
+                                        borderRadius: '8px'
+                                    }}
                                 >
-                                    My Groups
-                                </MenuItem>
-                                <MenuItem
-                                    onClick={handleMenuClose}
-                                    component={Link}
-                                    href={route('groups.index')}
-                                    sx={{ borderRadius: 1, mx: 0.5 }}
+                                    Groups
+                                </Button>
+                                <Menu
+                                    id="groups-menu"
+                                    anchorEl={groupsAnchorEl}
+                                    keepMounted
+                                    open={Boolean(groupsAnchorEl)}
+                                    onClose={handleMenuClose}
+                                    PaperProps={{
+                                        elevation: 2,
+                                        sx: {
+                                            mt: 1.5,
+                                            width: 200,
+                                            borderRadius: 2
+                                        }
+                                    }}
                                 >
-                                    Find Groups
-                                </MenuItem>
-                                <MenuItem
-                                    onClick={handleMenuClose}
-                                    component={Link}
-                                    href={route('groups.create')}
-                                    sx={{ borderRadius: 1, mx: 0.5 }}
-                                >
-                                    Create New Group
-                                </MenuItem>
-                            </Menu>
+                                    <MenuItem
+                                        onClick={handleMenuClose}
+                                        component={Link}
+                                        href={route('groups.my-groups')}
+                                        sx={{ borderRadius: 1, mx: 0.5 }}
+                                    >
+                                        My Groups
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={handleMenuClose}
+                                        component={Link}
+                                        href={route('groups.index')}
+                                        sx={{ borderRadius: 1, mx: 0.5 }}
+                                    >
+                                        Find Groups
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={handleMenuClose}
+                                        component={Link}
+                                        href={route('groups.create')}
+                                        sx={{ borderRadius: 1, mx: 0.5 }}
+                                    >
+                                        Create New Group
+                                    </MenuItem>
+                                </Menu>
 
-                            <Button
-                                color="inherit"
-                                aria-controls="lendings-menu"
-                                aria-haspopup="true"
-                                onClick={handleLendingsMenuOpen}
-                                endIcon={<ArrowDropDownIcon />}
-                                startIcon={<SwapHorizIcon />}
-                                sx={{
-                                    textTransform: 'none',
-                                    fontWeight: 600,
-                                    borderRadius: '8px'
-                                }}
-                            >
-                                Lendings
-                            </Button>
-                            <Menu
-                                id="lendings-menu"
-                                anchorEl={lendingsAnchorEl}
-                                keepMounted
-                                open={Boolean(lendingsAnchorEl)}
-                                onClose={handleMenuClose}
-                                PaperProps={{
-                                    elevation: 2,
-                                    sx: {
-                                        mt: 1.5,
-                                        width: 200,
-                                        borderRadius: 2
-                                    }
-                                }}
-                            >
-                                <MenuItem
-                                    onClick={handleMenuClose}
-                                    component={Link}
-                                    href={route('lendings.index')}
-                                    sx={{ borderRadius: 1, mx: 0.5 }}
+                                <Button
+                                    color="inherit"
+                                    aria-controls="lendings-menu"
+                                    aria-haspopup="true"
+                                    onClick={handleLendingsMenuOpen}
+                                    endIcon={<ArrowDropDownIcon />}
+                                    startIcon={<SwapHorizIcon />}
+                                    sx={{
+                                        textTransform: 'none',
+                                        fontWeight: 600,
+                                        borderRadius: '8px'
+                                    }}
                                 >
-                                    My Lendings
-                                </MenuItem>
-                                <MenuItem
-                                    onClick={handleMenuClose}
-                                    component={Link}
-                                    href={route('lendings.create')}
-                                    sx={{ borderRadius: 1, mx: 0.5 }}
+                                    Lendings
+                                </Button>
+                                <Menu
+                                    id="lendings-menu"
+                                    anchorEl={lendingsAnchorEl}
+                                    keepMounted
+                                    open={Boolean(lendingsAnchorEl)}
+                                    onClose={handleMenuClose}
+                                    PaperProps={{
+                                        elevation: 2,
+                                        sx: {
+                                            mt: 1.5,
+                                            width: 200,
+                                            borderRadius: 2
+                                        }
+                                    }}
                                 >
-                                    Lend an Item
-                                </MenuItem>
-                            </Menu>
+                                    <MenuItem
+                                        onClick={handleMenuClose}
+                                        component={Link}
+                                        href={route('lendings.index')}
+                                        sx={{ borderRadius: 1, mx: 0.5 }}
+                                    >
+                                        My Lendings
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={handleMenuClose}
+                                        component={Link}
+                                        href={route('lendings.create')}
+                                        sx={{ borderRadius: 1, mx: 0.5 }}
+                                    >
+                                        Lend an Item
+                                    </MenuItem>
+                                </Menu>
 
-                            <Button
-                                color="inherit"
-                                aria-controls="borrow-requests-menu"
-                                aria-haspopup="true"
-                                onClick={handleBorrowRequestsMenuOpen}
-                                endIcon={<ArrowDropDownIcon />}
-                                startIcon={<RequestQuoteIcon />}
-                                sx={{
-                                    textTransform: 'none',
-                                    fontWeight: 600,
-                                    borderRadius: '8px'
-                                }}
-                            >
-                                Borrow Requests
-                            </Button>
-                            <Menu
-                                id="borrow-requests-menu"
-                                anchorEl={borrowRequestsAnchorEl}
-                                keepMounted
-                                open={Boolean(borrowRequestsAnchorEl)}
-                                onClose={handleMenuClose}
-                                PaperProps={{
-                                    elevation: 2,
-                                    sx: {
-                                        mt: 1.5,
-                                        width: 200,
-                                        borderRadius: 2
-                                    }
-                                }}
-                            >
-                                <MenuItem
-                                    onClick={handleMenuClose}
-                                    component={Link}
-                                    href={route('borrow-requests.index')}
-                                    sx={{ borderRadius: 1, mx: 0.5 }}
+                                <Button
+                                    color="inherit"
+                                    aria-controls="borrow-requests-menu"
+                                    aria-haspopup="true"
+                                    onClick={handleBorrowRequestsMenuOpen}
+                                    endIcon={<ArrowDropDownIcon />}
+                                    startIcon={<RequestQuoteIcon />}
+                                    sx={{
+                                        textTransform: 'none',
+                                        fontWeight: 600,
+                                        borderRadius: '8px'
+                                    }}
                                 >
-                                    My Requests
-                                </MenuItem>
-                            </Menu>
-                        </Box>
-                    )}
+                                    Borrow Requests
+                                </Button>
+                                <Menu
+                                    id="borrow-requests-menu"
+                                    anchorEl={borrowRequestsAnchorEl}
+                                    keepMounted
+                                    open={Boolean(borrowRequestsAnchorEl)}
+                                    onClose={handleMenuClose}
+                                    PaperProps={{
+                                        elevation: 2,
+                                        sx: {
+                                            mt: 1.5,
+                                            width: 200,
+                                            borderRadius: 2
+                                        }
+                                    }}
+                                >
+                                    <MenuItem
+                                        onClick={handleMenuClose}
+                                        component={Link}
+                                        href={route('borrow-requests.index')}
+                                        sx={{ borderRadius: 1, mx: 0.5 }}
+                                    >
+                                        My Requests
+                                    </MenuItem>
+                                </Menu>
+                            </Box>
+                        )}
+                        <LanguageSwitcher />
+                    </Box>
 
                     <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center' }}>
                         <NotificationMenu />
@@ -460,7 +483,24 @@ export default function AuthenticatedLayout({ user, children }) {
                             onClick={handleUserMenuOpen}
                             color="inherit"
                         >
-                            <Avatar alt={authUser.name}>{authUser.name.charAt(0)}</Avatar>
+                            {authUser.profile_image_path ? (
+                                <Avatar 
+                                    alt={authUser.name}
+                                    src={`/storage/${authUser.profile_image_path}`}
+                                    sx={{ width: 32, height: 32 }}
+                                />
+                            ) : (
+                                <Avatar 
+                                    alt={authUser.name}
+                                    sx={{ 
+                                        width: 32, 
+                                        height: 32,
+                                        bgcolor: stringToColor(authUser.name)
+                                    }}
+                                >
+                                    {authUser.name.charAt(0).toUpperCase()}
+                                </Avatar>
+                            )}
                         </IconButton>
                         <Menu
                             anchorEl={userAnchorEl}
@@ -541,7 +581,7 @@ export default function AuthenticatedLayout({ user, children }) {
                 component="main"
                 sx={{
                     flexGrow: 1,
-                    p: { xs: 2, sm: 3 },
+                    p: { xs: 0, sm: 3 },
                     mt: 8,
                 }}
             >

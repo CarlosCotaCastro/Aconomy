@@ -14,10 +14,10 @@ import {Link} from "@inertiajs/react";
 import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import debounce from 'lodash/debounce';
+import { useTranslation } from 'react-i18next';
 
 export default ({group, userId, isUserApproved}) => {
-
-
+    const { t } = useTranslation();
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [isSearching, setIsSearching] = useState(false);
@@ -94,14 +94,14 @@ export default ({group, userId, isUserApproved}) => {
                     <InventoryIcon />
                 </Avatar>
                 <Typography variant="h6">
-                    Shared Items
+                    {t('groups.sharedItems')}
                 </Typography>
             </Box>
 
             <TextField
                 fullWidth
                 variant="outlined"
-                placeholder="Search items in this group..."
+                placeholder={t('groups.searchItemsPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 InputProps={{
@@ -121,7 +121,7 @@ export default ({group, userId, isUserApproved}) => {
             {showSearchResults && (
                 <Box sx={{ mt: 3 }}>
                     <Typography variant="subtitle1" gutterBottom>
-                        {searchResults.length} items found
+                        {t('groups.itemsFound', { count: searchResults.length })}
                     </Typography>
 
                     <Grid container spacing={2} sx={{ mt: 1 }}>
@@ -147,7 +147,7 @@ export default ({group, userId, isUserApproved}) => {
                                         </Box>
 
                                         <Chip
-                                            label={item.is_available ? "Available" : "Currently Borrowed"}
+                                            label={item.is_available ? t('items.available') : t('items.currentlyBorrowed')}
                                             color={item.is_available ? "success" : "error"}
                                             size="small"
                                         />
@@ -162,7 +162,7 @@ export default ({group, userId, isUserApproved}) => {
                                                 color="primary"
                                                 size="small"
                                             >
-                                                Request to Borrow
+                                                {t('items.requestToBorrow')}
                                             </Button>
                                         )}
                                     </CardActions>
@@ -174,7 +174,7 @@ export default ({group, userId, isUserApproved}) => {
                     {searchResults.length === 0 && !isSearching && (
                         <Box sx={{ textAlign: 'center', py: 4 }}>
                             <Typography color="text.secondary">
-                                No items found. Try a different search term or add some items to the group.
+                                {t('groups.noItemsFound')}
                             </Typography>
                         </Box>
                     )}

@@ -1,4 +1,5 @@
 import { Link, useForm } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import {
     Box,
     Button,
@@ -21,6 +22,7 @@ import {
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function Create({ item, auth }) {
+    const { t } = useTranslation();
     const { data, setData, post, processing, errors } = useForm({
         item_id: item.id,
         message: '',
@@ -40,11 +42,11 @@ export default function Create({ item, auth }) {
                     startIcon={<ArrowBackIcon />}
                     sx={{ mb: 2 }}
                 >
-                    Back to Groups
+                    {t('groups.backToGroups')}
                 </Button>
 
                 <Typography variant="h4" component="h1" gutterBottom>
-                    Request to Borrow
+                    {t('borrowRequests.requestToBorrow')}
                 </Typography>
             </Box>
 
@@ -57,7 +59,7 @@ export default function Create({ item, auth }) {
                                     <DescriptionIcon />
                                 </Avatar>
                                 <Typography variant="h6">
-                                    Item Details
+                                    {t('borrowRequests.itemDetails')}
                                 </Typography>
                             </Box>
                             
@@ -79,7 +81,7 @@ export default function Create({ item, auth }) {
                                 </Avatar>
                                 <Box>
                                     <Typography variant="body2" color="text.secondary">
-                                        Owner
+                                        {t('items.owner')}
                                     </Typography>
                                     <Typography variant="body1">
                                         {item.user.name}
@@ -98,7 +100,7 @@ export default function Create({ item, auth }) {
                                     <RequestQuoteIcon />
                                 </Avatar>
                                 <Typography variant="h6">
-                                    Your Request
+                                    {t('borrowRequests.yourRequest')}
                                 </Typography>
                             </Box>
                             
@@ -107,9 +109,9 @@ export default function Create({ item, auth }) {
                                     fullWidth
                                     multiline
                                     rows={4}
-                                    label="Message (Optional)"
+                                    label={t('borrowRequests.messageLabel')}
                                     variant="outlined"
-                                    placeholder="Let the owner know why you'd like to borrow this item..."
+                                    placeholder={t('borrowRequests.messagePlaceholder')}
                                     value={data.message}
                                     onChange={(e) => setData('message', e.target.value)}
                                     error={!!errors.message}
@@ -118,7 +120,7 @@ export default function Create({ item, auth }) {
                                 />
                                 
                                 <Alert severity="info" sx={{ mb: 3 }}>
-                                    Your request will be sent to {item.user.name}. They'll need to approve your request before you can borrow this item.
+                                    {t('borrowRequests.requestInfo', { name: item.user.name })}
                                 </Alert>
                                 
                                 <Button
@@ -129,7 +131,7 @@ export default function Create({ item, auth }) {
                                     fullWidth
                                     size="large"
                                 >
-                                    Send Borrow Request
+                                    {t('borrowRequests.sendRequest')}
                                 </Button>
                             </Box>
                         </CardContent>

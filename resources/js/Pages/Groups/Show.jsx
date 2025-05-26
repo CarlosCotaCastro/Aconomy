@@ -40,8 +40,11 @@ import {
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import GroupMemberList from "@/Pages/Groups/Partials/GroupMemberList";
 import GroupItemSearch from "@/Pages/Groups/Partials/GroupItemSearch.jsx";
+import RecentItemsGrid from "@/Pages/Groups/Partials/RecentItemsGrid.jsx";
+import { useTranslation } from 'react-i18next';
 
-export default function Show({group, auth}) {
+export default function Show({group, recentItems, auth}) {
+    const { t } = useTranslation();
     const {post, processing} = useForm();
 
     const approvedMembers = group.users.filter(user => user.pivot.approved);
@@ -61,7 +64,7 @@ export default function Show({group, auth}) {
                     startIcon={<ArrowBackIcon/>}
                     sx={{mb: 2}}
                 >
-                    Back to Groups
+                    {t('groups.backToGroups')}
                 </Button>
 
                 <Box sx={{display: 'flex', alignItems: 'center', mb: 3, justifyContent: 'space-between'}}>
@@ -83,17 +86,16 @@ export default function Show({group, auth}) {
             </Box>
 
             <Grid container spacing={3}>
-                <Grid item size={{md: 3}}>
+                <Grid size={3}>
                     <GroupMemberList
                         approvedMembers={approvedMembers}
                     />
-
 
                     {isUserApproved && pendingMembers.length > 0 && (
                         <Card>
                             <CardContent>
                                 <Typography variant="h6" gutterBottom>
-                                    Pending Requests ({pendingMembers.length})
+                                    {t('groups.pendingRequestsTitle', { count: pendingMembers.length })}
                                 </Typography>
                                 <Divider sx={{mb: 2}}/>
 
@@ -131,16 +133,24 @@ export default function Show({group, auth}) {
                     )}
                 </Grid>
 
-
-            {/* Search Component */}
-            {isUserApproved && (
-                <Grid item size={{md: 9}}>
-                    <GroupItemSearch group={group} userId={auth.user.id} isUserApproved={isUserApproved}/>
+                <Grid size={9}>
+                    {isUserApproved && (
+                        <Box>
+                            <GroupItemSearch 
+                                group={group} 
+                                userId={auth.user.id} 
+                                isUserApproved={isUserApproved}
+                            />
+                            <Box sx={{ mt: 4 }}>
+                                <RecentItemsGrid 
+                                    items={recentItems} 
+                                    currentUserId={auth.user.id}
+                                />
+                            </Box>
+                        </Box>
+                    )}
                 </Grid>
-            )}
-
             </Grid>
-
 
             {group.users.find(u => u.id === auth.user.id) ? (
                 <Box sx={{mt: 3}}>
@@ -152,7 +162,7 @@ export default function Show({group, auth}) {
                         variant="outlined"
                         color="error"
                     >
-                        Leave Group
+                        {t('groups.leaveGroup')}
                     </Button>
                 </Box>
             ) : (
@@ -164,7 +174,7 @@ export default function Show({group, auth}) {
                         as="button"
                         variant="contained"
                     >
-                        Join Group
+                        {t('groups.joinGroup')}
                     </Button>
                 </Box>
             )}

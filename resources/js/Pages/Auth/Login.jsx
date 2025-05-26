@@ -4,9 +4,10 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
-import {Head, Link, useForm} from '@inertiajs/react';
+import {Head, Link, useForm, usePage} from '@inertiajs/react';
 import {Button} from "@mui/material";
 import ApplicationLogo from "@/Components/ApplicationLogo.jsx";
+import { useTranslation } from 'react-i18next';
 
 export default function Login({status, canResetPassword}) {
     const {data, setData, post, processing, errors, reset} = useForm({
@@ -23,9 +24,13 @@ export default function Login({status, canResetPassword}) {
         });
     };
 
+    const {t} = useTranslation();
+    const { csrf_token } = usePage().props;
+
+
     return (
         <GuestLayout>
-            <Head title="Log in"/>
+            <Head title={t("common.login")}/>
 
 
 
@@ -99,7 +104,10 @@ export default function Login({status, canResetPassword}) {
                             </Button>
                         )}
                     </div>
+
+                    
                 </form>
+                {csrf_token}
 
         </GuestLayout>
     );

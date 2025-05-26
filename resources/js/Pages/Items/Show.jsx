@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import {
     Box,
     Button,
@@ -19,6 +20,7 @@ import {
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function Show({ item, auth }) {
+    const { t } = useTranslation();
     const isOwner = auth.user.id === item.user_id;
     
     return (
@@ -30,7 +32,7 @@ export default function Show({ item, auth }) {
                     startIcon={<ArrowBackIcon />}
                     sx={{ mb: 3 }}
                 >
-                    Back to Items
+                    {t('items.backToItems')}
                 </Button>
                 
                 <Card sx={{ mb: 4 }}>
@@ -55,7 +57,7 @@ export default function Show({ item, auth }) {
                                     }}
                                 >
                                     <Typography color="text.secondary">
-                                        No Image
+                                        {t('items.noImage')}
                                     </Typography>
                                 </Box>
                             )}
@@ -74,7 +76,7 @@ export default function Show({ item, auth }) {
                                             variant="outlined"
                                             size="small"
                                         >
-                                            Edit
+                                            {t('common.edit')}
                                         </Button>
                                     )}
                                 </Box>
@@ -90,14 +92,14 @@ export default function Show({ item, auth }) {
                                 <Box sx={{ display: 'flex', alignItems: 'center', mt: 'auto' }}>
                                     <PersonIcon color="primary" sx={{ mr: 1 }} />
                                     <Typography variant="body2">
-                                        {isOwner ? 'You own this item' : `Owner: ${item.user?.name}`}
+                                        {isOwner ? t('items.youOwnThisItem') : t('items.owner', { name: item.user?.name })}
                                     </Typography>
                                 </Box>
                                 
                                 <Box sx={{ mt: 2 }}>
                                     <Chip 
                                         color={item.isAvailable ? "success" : "error"}
-                                        label={item.isAvailable ? "Available" : "Currently Borrowed"}
+                                        label={item.isAvailable ? t('items.available') : t('items.currentlyBorrowed')}
                                     />
                                 </Box>
                             </CardContent>
@@ -108,25 +110,25 @@ export default function Show({ item, auth }) {
                 {item.lendings && item.lendings.length > 0 && (
                     <Paper sx={{ p: 3 }}>
                         <Typography variant="h6" gutterBottom>
-                            Lending History
+                            {t('items.lendingHistory')}
                         </Typography>
                         <Divider sx={{ mb: 2 }} />
                         
                         {item.lendings.map((lending) => (
                             <Box key={lending.id} sx={{ mb: 2, p: 2, bgcolor: 'background.default', borderRadius: 1 }}>
                                 <Typography variant="subtitle1">
-                                    Borrowed by: {lending.borrower.name}
+                                    {t('items.borrowedBy', { name: lending.borrower.name })}
                                 </Typography>
                                 <Typography variant="body2">
-                                    From: {new Date(lending.lent_at).toLocaleDateString()}
+                                    {t('items.lentFrom', { date: new Date(lending.lent_at).toLocaleDateString() })}
                                 </Typography>
                                 {lending.returned_at ? (
                                     <Typography variant="body2">
-                                        Returned: {new Date(lending.returned_at).toLocaleDateString()}
+                                        {t('items.returnedAt', { date: new Date(lending.returned_at).toLocaleDateString() })}
                                     </Typography>
                                 ) : (
                                     <Typography variant="body2" color="error">
-                                        Not yet returned
+                                        {t('items.notYetReturned')}
                                     </Typography>
                                 )}
                             </Box>

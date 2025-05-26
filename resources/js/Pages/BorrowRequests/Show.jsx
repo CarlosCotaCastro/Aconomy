@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useForm } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import {
     Box,
     Button,
@@ -32,6 +33,7 @@ import {
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
+    const { t } = useTranslation();
     const [openQrDialog, setOpenQrDialog] = useState(false);
     const [openDenyDialog, setOpenDenyDialog] = useState(false);
     const [openVerifyDialog, setOpenVerifyDialog] = useState(false);
@@ -62,13 +64,13 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
     const getStatusChip = () => {
         switch(borrowRequest.status) {
             case 'pending':
-                return <Chip icon={<ScheduleIcon />} label="Pending" color="warning" />;
+                return <Chip icon={<ScheduleIcon />} label={t('borrowRequests.status.pending')} color="warning" />;
             case 'approved':
-                return <Chip icon={<CheckCircleIcon />} label="Approved" color="success" />;
+                return <Chip icon={<CheckCircleIcon />} label={t('borrowRequests.status.approved')} color="success" />;
             case 'denied':
-                return <Chip icon={<CancelIcon />} label="Denied" color="error" />;
+                return <Chip icon={<CancelIcon />} label={t('borrowRequests.status.denied')} color="error" />;
             case 'completed':
-                return <Chip icon={<CheckCircleIcon />} label="Completed" color="success" />;
+                return <Chip icon={<CheckCircleIcon />} label={t('borrowRequests.status.completed')} color="success" />;
             default:
                 return <Chip label={borrowRequest.status} />;
         }
@@ -86,12 +88,12 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                     startIcon={<ArrowBackIcon />}
                     sx={{ mb: 2 }}
                 >
-                    Back to Requests
+                    {t('borrowRequests.backToRequests')}
                 </Button>
 
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Typography variant="h4" component="h1">
-                        Borrow Request Details
+                        {t('borrowRequests.requestDetails')}
                     </Typography>
                     {getStatusChip()}
                 </Box>
@@ -102,7 +104,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                     <Card>
                         <CardContent>
                             <Typography variant="h6" gutterBottom>
-                                Item Details
+                                {t('borrowRequests.itemDetails')}
                             </Typography>
 
                             <Typography variant="h5" component="div">
@@ -125,7 +127,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                                         </Avatar>
                                         <Box>
                                             <Typography variant="body2" color="text.secondary">
-                                                Owner
+                                                {t('borrowRequests.owner')}
                                             </Typography>
                                             <Typography variant="body1">
                                                 {borrowRequest.lender.name}
@@ -141,7 +143,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                                         </Avatar>
                                         <Box>
                                             <Typography variant="body2" color="text.secondary">
-                                                Borrower
+                                                {t('borrowRequests.borrower')}
                                             </Typography>
                                             <Typography variant="body1">
                                                 {borrowRequest.borrower.name}
@@ -154,7 +156,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                             {borrowRequest.message && (
                                 <Box sx={{ mt: 3 }}>
                                     <Typography variant="subtitle2" gutterBottom>
-                                        Message from borrower:
+                                        {t('borrowRequests.messageFromBorrower')}:
                                     </Typography>
                                     <Paper variant="outlined" sx={{ p: 2, bgcolor: 'background.paper' }}>
                                         <Typography variant="body2" fontStyle="italic">
@@ -171,14 +173,16 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                     <Card>
                         <CardContent>
                             <Typography variant="h6" gutterBottom>
-                                Request Status
+                                {t('borrowRequests.requestStatus')}
                             </Typography>
 
                             {borrowRequest.status === 'pending' && isLender && (
                                 <Box sx={{ mt: 2 }}>
                                     <Alert severity="info" sx={{ mb: 3 }}>
-                                        {borrowRequest.borrower.name} would like to borrow your {borrowRequest.item.name}.
-                                        Please approve or deny this request.
+                                        {t('borrowRequests.pendingRequestInfo', {
+                                            borrower: borrowRequest.borrower.name,
+                                            item: borrowRequest.item.name
+                                        })}
                                     </Alert>
 
                                     <Box sx={{ display: 'flex', gap: 2 }}>
@@ -190,7 +194,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                                             startIcon={<CheckCircleIcon />}
                                             fullWidth
                                         >
-                                            Approve Request
+                                            {t('borrowRequests.approveRequest')}
                                         </Button>
 
                                         <Button
@@ -201,7 +205,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                                             startIcon={<CancelIcon />}
                                             fullWidth
                                         >
-                                            Deny Request
+                                            {t('borrowRequests.denyRequest')}
                                         </Button>
                                     </Box>
                                 </Box>
@@ -209,30 +213,29 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
 
                             {borrowRequest.status === 'pending' && isBorrower && (
                                 <Alert severity="info">
-                                    Your request is pending. {borrowRequest.lender.name} will review your request soon.
+                                    {t('borrowRequests.pendingRequestInfoBorrower')}
                                 </Alert>
                             )}
 
                             {borrowRequest.status === 'approved' && (
                                 <Box>
                                     <Alert severity="success" sx={{ mb: 3 }}>
-                                        This borrow request has been approved! The next step is to arrange the handover.
+                                        {t('borrowRequests.approvedRequestInfo')}
                                     </Alert>
 
                                     {isLender && (
                                         <Box sx={{ mt: 2, textAlign: 'center' }}>
                                             <Typography variant="subtitle1" gutterBottom>
-                                                QR Code for Item Handover
+                                                {t('borrowRequests.qrCodeForItemHandover')}
                                             </Typography>
 
                                             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                                                When you meet with the borrower, show them this QR code.
-                                                They will scan it to confirm receipt of the item.
+                                                {t('borrowRequests.qrCodeForItemHandoverInfo')}
                                             </Typography>
 
                                             {codeExpiresAt && (
                                                 <Typography variant="caption" display="block" color="text.secondary" sx={{ mb: 2 }}>
-                                                    Code expires {codeExpiresAt}
+                                                    {t('borrowRequests.codeExpiresAt', { codeExpiresAt })}
                                                 </Typography>
                                             )}
 
@@ -242,7 +245,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                                                 startIcon={<QrCodeIcon />}
                                                 onClick={() => setOpenQrDialog(true)}
                                             >
-                                                Show QR Code
+                                                {t('borrowRequests.showQRCode')}
                                             </Button>
                                         </Box>
                                     )}
@@ -250,12 +253,11 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                                     {isBorrower && (
                                         <Box sx={{ mt: 2, textAlign: 'center' }}>
                                             <Typography variant="subtitle1" gutterBottom>
-                                                Verify Item Handover
+                                                {t('borrowRequests.verifyItemHandover')}
                                             </Typography>
 
                                             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                                                When you meet with the owner, they will show you a QR code.
-                                                Scan it or enter the code manually to confirm receipt of the item.
+                                                {t('borrowRequests.verifyItemHandoverInfo')}
                                             </Typography>
 
                                             <Button
@@ -263,7 +265,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                                                 color="primary"
                                                 onClick={() => setOpenVerifyDialog(true)}
                                             >
-                                                Enter Handover Code
+                                                {t('borrowRequests.enterHandoverCode')}
                                             </Button>
                                         </Box>
                                     )}
@@ -272,13 +274,13 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
 
                             {borrowRequest.status === 'denied' && (
                                 <Alert severity="error">
-                                    This request has been denied by the owner.
+                                    {t('borrowRequests.deniedRequestInfo')}
                                 </Alert>
                             )}
 
                             {borrowRequest.status === 'completed' && (
                                 <Alert severity="success">
-                                    This item has been successfully borrowed. You can view the active lending in your lending history.
+                                    {t('borrowRequests.completedRequestInfo')}
                                 </Alert>
                             )}
                         </CardContent>
@@ -288,11 +290,10 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
 
             {/* QR Code Dialog */}
             <Dialog open={openQrDialog} onClose={() => setOpenQrDialog(false)}>
-                <DialogTitle>QR Code for Item Handover</DialogTitle>
+                <DialogTitle>{t('borrowRequests.qrCodeForItemHandoverTitle')}</DialogTitle>
                 <DialogContent>
                     <DialogContentText sx={{ mb: 2 }}>
-                        Show this QR code to the borrower. They will scan it to confirm receipt of the item.
-                        This code is valid for 15 minutes.
+                        {t('borrowRequests.qrCodeForItemHandoverInfo')}
                     </DialogContentText>
 
                     <Box sx={{ textAlign: 'center', p: 2 }}>
@@ -306,7 +307,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                     {borrowRequest.handover_code && (
                         <Box sx={{ textAlign: 'center', mt: 2 }}>
                             <Typography variant="subtitle2" gutterBottom>
-                                Manual Code
+                                {t('borrowRequests.manualCode')}
                             </Typography>
                             <Typography variant="h5" sx={{ letterSpacing: 2 }}>
                                 {borrowRequest.handover_code}
@@ -315,22 +316,22 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                     )}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setOpenQrDialog(false)}>Close</Button>
+                    <Button onClick={() => setOpenQrDialog(false)}>{t('borrowRequests.close')}</Button>
                 </DialogActions>
             </Dialog>
 
             {/* Deny Dialog */}
             <Dialog open={openDenyDialog} onClose={() => setOpenDenyDialog(false)}>
-                <DialogTitle>Deny Borrow Request</DialogTitle>
+                <DialogTitle>{t('borrowRequests.denyBorrowRequestTitle')}</DialogTitle>
                 <DialogContent>
                     <DialogContentText sx={{ mb: 2 }}>
-                        Are you sure you want to deny this request? You can optionally provide a reason.
+                        {t('borrowRequests.denyBorrowRequestInfo')}
                     </DialogContentText>
 
                     <TextField
                         autoFocus
                         margin="dense"
-                        label="Reason (Optional)"
+                        label={t('borrowRequests.reason')}
                         fullWidth
                         multiline
                         rows={3}
@@ -339,25 +340,25 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setOpenDenyDialog(false)}>Cancel</Button>
+                    <Button onClick={() => setOpenDenyDialog(false)}>{t('borrowRequests.cancel')}</Button>
                     <Button onClick={handleDeny} color="error" disabled={denyProcessing}>
-                        Deny Request
+                        {t('borrowRequests.denyRequest')}
                     </Button>
                 </DialogActions>
             </Dialog>
 
             {/* Verify Code Dialog */}
             <Dialog open={openVerifyDialog} onClose={() => setOpenVerifyDialog(false)}>
-                <DialogTitle>Verify Item Handover</DialogTitle>
+                <DialogTitle>{t('borrowRequests.verifyItemHandoverTitle')}</DialogTitle>
                 <DialogContent>
                     <DialogContentText sx={{ mb: 2 }}>
-                        Enter the code shown by the item owner to confirm you've received the item.
+                        {t('borrowRequests.verifyItemHandoverInfo')}
                     </DialogContentText>
 
                     <TextField
                         autoFocus
                         margin="dense"
-                        label="Handover Code"
+                        label={t('borrowRequests.handoverCode')}
                         fullWidth
                         value={verifyData.code}
                         onChange={(e) => setVerifyData('code', e.target.value)}
@@ -368,13 +369,13 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setOpenVerifyDialog(false)}>Cancel</Button>
+                    <Button onClick={() => setOpenVerifyDialog(false)}>{t('borrowRequests.cancel')}</Button>
                     <Button
                         onClick={handleVerifyCode}
                         color="primary"
                         disabled={verifyProcessing || !verifyData.code.trim()}
                     >
-                        Verify Code
+                        {t('borrowRequests.verifyCode')}
                     </Button>
                 </DialogActions>
             </Dialog>

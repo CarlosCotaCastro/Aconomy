@@ -1,0 +1,211 @@
+import { useState, useRef } from 'react';
+import ReactCrop, { centerCrop, makeAspectCrop } from 'react-image-crop';
+import 'react-image-crop/dist/ReactCrop.css';
+import InputError from '@/Components/InputError';
+import InputLabel from '@/Components/InputLabel';
+import PrimaryButton from '@/Components/PrimaryButton';
+import { useForm } from '@inertiajs/react';
+
+export default function ProfileImageUpload({ user, className = '' }) {
+    const [imgSrc, setImgSrc] = useState('');
+    const [crop, setCrop] = useState();
+    const [completedCrop, setCompletedCrop] = useState(null);
+    const imgRef = useRef(null);
+    const [showCrop, setShowCrop] = useState(false);
+
+    const { data, setData, post, processing, errors, reset } = useForm({
+        image: null,
+        crop: null,
+    });
+
+    function onSelectFile(e) {
+        if (e.target.files && e.target.files.length > 0) {
+            const reader = new FileReader();
+            reader.addEventListener('load', () => {
+                setImgSrc(reader.result?.toString() || '');
+                setShowCrop(true);
+            });
+            reader.readAsDataURL(e.target.files[0]);
+        }
+    }
+
+    function onImageLoad(e) {
+        const { width, height } = e.currentTarget;
+        const crop = centerCrop(
+            makeAspectCrop(
+                {
+                    unit: '%',
+                    width: 90,
+                },
+                1,
+                width,
+                height
+            ),
+            width,
+            height
+        );
+        setCrop(crop);
+    }
+
+    async function onCropComplete() {
+        if (!imgRef.current || !completedCrop) return;
+
+        try {
+            const image = imgRef.current;
+            const canvas = document.createElement('canvas');
+            const scaleX = image.naturalWidth / image.width;
+            const scaleY = image.naturalHeight / image.height;
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = completedCrop.width;
+            canvas.height = completedCrop.height;
+
+            ctx.drawImage(
+                image,
+                completedCrop.x * scaleX,
+                completedCrop.y * scaleY,
+                completedCrop.width * scaleX,
+                completedCrop.height * scaleY,
+                0,
+                0,
+                completedCrop.width,
+                completedCrop.height
+            );
+
+            // Convert canvas to blob
+            const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.95));
+            const file = new File([blob], 'profile-image.jpg', { type: 'image/jpeg' });
+
+            setData({
+                image: file,
+                crop: completedCrop,
+            });
+        } catch (error) {
+            console.error('Error processing image:', error);
+            setData('image', null);
+        }
+    }
+
+    function submit(e) {
+        if (e) e.preventDefault();
+        
+        if (!data.image) {
+            console.error('No image data available');
+            return;
+        }
+
+        post(route('profile.update-image'), {
+            onSuccess: () => {
+                setShowCrop(false);
+                setImgSrc('');
+                reset();
+            },
+            onError: (errors) => {
+                console.error('Error uploading image:', errors);
+            },
+        });
+    }
+
+    return (
+        <div className={className}>
+            <div className="flex items-center gap-6">
+                <div className="relative h-24 w-24 overflow-hidden rounded-full">
+                    {user.profile_image_path ? (
+                        <img
+                            src={`/storage/${user.profile_image_path}`}
+                            alt="Profile"
+                            className="h-full w-full object-cover"
+                        />
+                    ) : (
+                        <div className="flex h-full w-full items-center justify-center bg-gray-100 text-gray-400">
+                            <svg
+                                className="h-12 w-12"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                                />
+                            </svg>
+                        </div>
+                    )}
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="profile_image" value="Profile Image" />
+                    <input
+                        type="file"
+                        id="profile_image"
+                        accept="image/*"
+                        onChange={onSelectFile}
+                        className="mt-1 block w-full text-sm text-gray-500
+                            file:mr-4 file:py-2 file:px-4
+                            file:rounded-full file:border-0
+                            file:text-sm file:font-semibold
+                            file:bg-violet-50 file:text-violet-700
+                            hover:file:bg-violet-100"
+                    />
+                    <InputError message={errors.image} className="mt-2" />
+                </div>
+            </div>
+
+            {showCrop && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                    <div className="w-full max-w-lg rounded-lg bg-white p-6">
+                        <h3 className="mb-4 text-lg font-medium text-gray-900">
+                            Crop Profile Image
+                        </h3>
+                        <div className="mb-4">
+                            <ReactCrop
+                                crop={crop}
+                                onChange={(c) => setCrop(c)}
+                                onComplete={(c) => setCompletedCrop(c)}
+                                aspect={1}
+                                circularCrop
+                            >
+                                <img
+                                    ref={imgRef}
+                                    src={imgSrc}
+                                    onLoad={onImageLoad}
+                                    alt="Crop me"
+                                    className="max-h-[60vh] w-auto"
+                                />
+                            </ReactCrop>
+                        </div>
+                        <div className="flex justify-end gap-4">
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setShowCrop(false);
+                                    setImgSrc('');
+                                }}
+                                className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                            >
+                                Cancel
+                            </button>
+                            <PrimaryButton
+                                onClick={async () => {
+                                    try {
+                                        await onCropComplete();
+                                        if (data.image) {
+                                            submit();
+                                        }
+                                    } catch (error) {
+                                        console.error('Error saving image:', error);
+                                    }
+                                }}
+                                disabled={processing}
+                            >
+                                {processing ? 'Saving...' : 'Save'}
+                            </PrimaryButton>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+} 

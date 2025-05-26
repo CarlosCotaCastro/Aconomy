@@ -26,9 +26,11 @@ import {
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
+import { useTranslation } from 'react-i18next';
 
 
 export default function Dashboard({items = [], groups = [], lendings = [], borrowings = [], auth}) {
+    const { t } = useTranslation();
     const activeLendings = lendings.filter(l => !l.returned_at);
     const activeBorrowings = borrowings.filter(l => !l.returned_at);
 
@@ -81,10 +83,10 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                 WebkitTextFillColor: 'transparent',
                             }}
                         >
-                            Welcome back, {auth.user.name}!
+                            {t('dashboard.welcomeBack', { name: auth.user.name })}
                         </Typography>
                         <Typography variant="body1" color="text.secondary" sx={{mb: 3}}>
-                            Here's what's happening with your items and groups.
+                            {t('dashboard.dashboardOverview')}
                         </Typography>
                     </Box>
 
@@ -102,10 +104,10 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                 </Avatar>
                                 <Box>
                                     <Typography variant="h6" sx={{fontWeight: 600}}>
-                                        My Items
+                                        {t('dashboard.myItems')}
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
-                                        {items.length} total items
+                                        {items.length} {t('items.totalItems')}
                                     </Typography>
                                 </Box>
                             </Box>
@@ -123,7 +125,7 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                         fontWeight: 600
                                     }}
                                 >
-                                    Add New Item
+                                    {t('items.addNewItem')}
                                 </Button>
 
                             <Divider sx={{my: 2}}/>
@@ -165,7 +167,7 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                 {items.length === 0 && (
                                     <Box sx={{textAlign: 'center', py: 2}}>
                                         <Typography variant="body2" color="text.secondary">
-                                            No items yet. Add your first item!
+                                            {t('dashboard.noItems')}
                                         </Typography>
                                     </Box>
                                 )}
@@ -181,7 +183,7 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                                 fontWeight: 500,
                                             }}
                                         >
-                                            View all {items.length} items
+                                            {t('common.viewAll', { count: items.length, type: t('items.items') })}
                                         </Button>
                                     </Box>
                                 )}
@@ -201,10 +203,10 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                 </Avatar>
                                 <Box>
                                     <Typography variant="h6" sx={{fontWeight: 600}}>
-                                        My Groups
+                                        {t('dashboard.myGroups')}
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
-                                        {groups.length} groups joined
+                                        {groups.length} {t('groups.groupsJoined')}
                                     </Typography>
                                 </Box>
                             </Box>
@@ -220,12 +222,11 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                     sx={{
                                         borderRadius: 2,
                                         p: 1,
-                                        //background: 'linear-gradient(90deg, #ff9800 0%, #ed8936 100%)',
                                         textTransform: 'none',
                                         fontWeight: 600
                                     }}
                                 >
-                                    Create New Group
+                                    {t('groups.createNewGroup')}
                                 </Button>
 
                             <Divider sx={{my: 2}}/>
@@ -255,10 +256,10 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                                     {group.name}
                                                 </Typography>
                                             }
-                                            secondary={`${group.users.filter(u => u.pivot.approved).length} members`}
+                                            secondary={`${group.users.filter(u => u.pivot.approved).length} ${t('groups.members')}`}
                                         />
                                         <Chip
-                                            label={group.users.find(u => u.id === auth.user.id)?.pivot.approved ? 'Approved' : 'Pending'}
+                                            label={group.users.find(u => u.id === auth.user.id)?.pivot.approved ? t('common.approved') : t('common.pending')}
                                             color={group.users.find(u => u.id === auth.user.id)?.pivot.approved ? 'success' : 'default'}
                                             size="small"
                                             variant={'filled'}
@@ -275,7 +276,7 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                 {groups.length === 0 && (
                                     <Box sx={{textAlign: 'center', py: 2}}>
                                         <Typography variant="body2" color="text.secondary">
-                                            No groups yet. Create or join a group!
+                                            {t('dashboard.noGroups')}
                                         </Typography>
                                     </Box>
                                 )}
@@ -291,7 +292,7 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                                 fontWeight: 500,
                                             }}
                                         >
-                                            View all {groups.length} groups
+                                            {t('common.viewAll', { count: groups.length, type: t('groups.groups') })}
                                         </Button>
                                     </Box>
                                 )}
@@ -313,10 +314,10 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                 </Avatar>
                                 <Box>
                                     <Typography variant="h6" sx={{fontWeight: 600}}>
-                                        Active Lendings
+                                        {t('lendings.activeLendings')}
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary">
-                                        {activeLendings.length + activeBorrowings.length} active items
+                                        {activeLendings.length + activeBorrowings.length} {t('lendings.activeItems')}
                                     </Typography>
                                 </Box>
                             </Box>
@@ -335,7 +336,7 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                         fontWeight: 600
                                     }}
                                 >
-                                    Lend an Item
+                                    {t('lendings.lendItem')}
                                 </Button>
 
                             <Divider sx={{my: 2}}/>
@@ -358,10 +359,10 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                                     {lending.item.name}
                                                 </Typography>
                                             }
-                                            secondary={`Borrowed by ${lending.borrower.name}`}
+                                            secondary={t('lendings.borrowedBy', { name: lending.borrower.name })}
                                         />
                                         <Chip
-                                            label="Lent"
+                                            label={t('lendings.lent')}
                                             size="small"
                                             sx={{
                                                 ml: 1,
@@ -390,10 +391,10 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                                     {lending.item.name}
                                                 </Typography>
                                             }
-                                            secondary={`Borrowed from ${lending.lender.name}`}
+                                            secondary={t('lendings.borrowedFrom', { name: lending.lender.name })}
                                         />
                                         <Chip
-                                            label="Borrowed"
+                                            label={t('lendings.borrowed')}
                                             size="small"
                                             sx={{
                                                 ml: 1,
@@ -407,7 +408,7 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                 {activeLendings.length === 0 && activeBorrowings.length === 0 && (
                                     <Box sx={{textAlign: 'center', py: 2}}>
                                         <Typography variant="body2" color="text.secondary">
-                                            No active lendings. Start lending your items!
+                                            {t('lendings.noActiveLendings')}
                                         </Typography>
                                     </Box>
                                 )}
@@ -423,7 +424,7 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                                                 fontWeight: 500,
                                             }}
                                         >
-                                            View all lendings
+                                            {t('common.viewAll', { type: t('lendings.lendings') })}
                                         </Button>
                                     </Box>
                                 )}
