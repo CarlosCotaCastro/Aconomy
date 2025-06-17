@@ -26,6 +26,16 @@ use Inertia\Inertia;
 |
 */
 
+// CSRF token refresh route
+Route::get('/csrf-token', function () {
+    return response()->json(['token' => csrf_token()]);
+})->middleware('web');
+
+// CSRF token test route
+Route::post('/csrf-test', function () {
+    return response()->json(['message' => 'CSRF token is valid']);
+})->middleware('web');
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),

@@ -4,12 +4,25 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import {Button} from "@mui/material";
 
 export default function VerifyEmail({ status }) {
-    const { post, processing } = useForm({});
+    const { post: resendVerification, processing } = useForm({});
+    const { post: logout } = useForm({});
 
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('verification.send'));
+        resendVerification(route('verification.send'));
+    };
+
+    const handleLogout = () => {
+        logout(route('logout'), {
+            onError: (errors) => {
+                console.error('Logout error:', errors);
+                // If CSRF token error, reload the page
+                if (errors.status === 419) {
+                    window.location.reload();
+                }
+            },
+        });
     };
 
     return (
@@ -36,8 +49,7 @@ export default function VerifyEmail({ status }) {
                     </PrimaryButton>
 
                     <Button
-                        href={route('logout')}
-                        method="post"
+                        onClick={handleLogout}
                         variant={'text'}
                         className="w-full rounded-md text-sm text-gray-600 underline hover:text-white-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
