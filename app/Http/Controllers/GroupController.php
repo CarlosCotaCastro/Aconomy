@@ -63,6 +63,7 @@ class GroupController extends Controller
             ->get()
             ->map(function ($item) {
                 $item->is_available = $item->isAvailable();
+
                 return $item;
             });
 

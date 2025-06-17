@@ -26,22 +26,22 @@ class ProfileImageSeeder extends Seeder
 
         foreach ($userImages as $email => $imageUrl) {
             $user = User::where('email', $email)->first();
-            
+
             if ($user) {
                 try {
                     // Download the image
                     $response = Http::get($imageUrl);
                     if ($response->successful()) {
                         // Generate a unique filename
-                        $filename = 'profile_images/' . $user->id . '_' . time() . '.jpg';
-                        
+                        $filename = 'profile_images/'.$user->id.'_'.time().'.jpg';
+
                         // Store the image
                         Storage::disk('public')->put($filename, $response->body());
-                        
+
                         // Update user's profile image path
                         $user->profile_image_path = $filename;
                         $user->save();
-                        
+
                         $this->command->info("Added profile image for {$user->name}");
                     }
                 } catch (\Exception $e) {
@@ -50,4 +50,4 @@ class ProfileImageSeeder extends Seeder
             }
         }
     }
-} 
+}

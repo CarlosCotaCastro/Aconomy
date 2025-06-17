@@ -111,7 +111,7 @@ class Item extends Model
                 ->whereColumn('item_id', 'items.id')
                 ->whereNull('returned_at')
                 ->latest()
-                ->limit(1)
+                ->limit(1),
             ]);
         });
     }

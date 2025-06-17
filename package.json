@@ -4,9 +4,14 @@
     "scripts": {
         "build": "vite build",
         "dev": "vite",
-        "echo-server": "node_modules/.bin/laravel-echo-server start"
+        "echo-server": "node_modules/.bin/laravel-echo-server start",
+        "lint": "eslint . --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0",
+        "lint:fix": "eslint . --ext js,jsx,ts,tsx --fix"
     },
     "devDependencies": {
+        "@babel/eslint-parser": "^7.27.5",
+        "@babel/preset-react": "^7.27.1",
+        "@eslint/js": "^9.15.0",
         "@headlessui/react": "^2.2.2",
         "@inertiajs/react": "^2.0.8",
         "@tailwindcss/forms": "^0.5.3",
@@ -15,6 +20,10 @@
         "autoprefixer": "^10.4.12",
         "axios": "^1.8.2",
         "concurrently": "^9.0.1",
+        "eslint": "^9.15.0",
+        "eslint-plugin-react": "^7.37.2",
+        "eslint-plugin-react-hooks": "^5.0.0",
+        "eslint-plugin-react-refresh": "^0.4.14",
         "laravel-echo-server": "^1.6.3",
         "laravel-vite-plugin": "^1.2.0",
         "postcss": "^8.4.31",

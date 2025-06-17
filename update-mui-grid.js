@@ -25,14 +25,14 @@ function walkDir(dir, callback) {
 function updateGridInFile(filepath) {
   console.log(`Checking ${filepath}`);
   let content = fs.readFileSync(filepath, 'utf8');
-  let originalContent = content;
+  const originalContent = content;
   
   // Replace <Grid item xs={12} md={6}> with <Grid md={6} sm={12}>
   // This regex looks for Grid components with item and xs/sm/md props
   const itemRegex = /<Grid\s+item\s+(?:xs=\{([^}]+)\})?(?:\s+sm=\{([^}]+)\})?(?:\s+md=\{([^}]+)\})?(?:\s+lg=\{([^}]+)\})?(?:\s+xl=\{([^}]+)\})?([^>]*)>/g;
   
   content = content.replace(itemRegex, (match, xs, sm, md, lg, xl, rest) => {
-    let newProps = [];
+    const newProps = [];
     
     if (md) newProps.push(`md={${md}}`);
     if (sm) newProps.push(`sm={${sm}}`);
