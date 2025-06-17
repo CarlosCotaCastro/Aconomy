@@ -21,10 +21,22 @@ export default function UpdateProfileInformation({
             email: user.email,
         });
 
+    const { post: resendVerification } = useForm({});
+
     const submit = (e) => {
         e.preventDefault();
 
         patch(route('profile.update'));
+    };
+
+    const handleResendVerification = () => {
+        resendVerification(route('verification.send'), {
+            onError: (errors) => {
+                if (errors.status === 419) {
+                    window.location.reload();
+                }
+            },
+        });
     };
 
     return (
@@ -78,14 +90,12 @@ export default function UpdateProfileInformation({
                     <div>
                         <p className="mt-2 text-sm text-gray-800">
                             {t('profile.emailUnverified')}
-                            <Link
-                                href={route('verification.send')}
-                                method="post"
-                                as="button"
+                            <button
+                                onClick={handleResendVerification}
                                 className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                             >
                                 {t('profile.resendVerificationEmail')}
-                            </Link>
+                            </button>
                         </p>
 
                         {status === 'verification-link-sent' && (

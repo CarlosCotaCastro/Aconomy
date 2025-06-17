@@ -46,6 +46,8 @@ import { useTranslation } from 'react-i18next';
 export default function Show({group, recentItems, auth}) {
     const { t } = useTranslation();
     const {post, processing} = useForm();
+    const {post: joinGroup, processing: joining} = useForm();
+    const {delete: leaveGroup, processing: leaving} = useForm();
 
     const approvedMembers = group.users.filter(user => user.pivot.approved);
     const pendingMembers = group.users.filter(user => !user.pivot.approved);
@@ -53,6 +55,26 @@ export default function Show({group, recentItems, auth}) {
 
     const handleApproveUser = (userId) => {
         post(route('groups.approve', [group.id, userId]));
+    };
+
+    const handleJoinGroup = () => {
+        joinGroup(route('groups.join', group.id), {
+            onError: (errors) => {
+                if (errors.status === 419) {
+                    window.location.reload();
+                }
+            },
+        });
+    };
+
+    const handleLeaveGroup = () => {
+        leaveGroup(route('groups.leave', group.id), {
+            onError: (errors) => {
+                if (errors.status === 419) {
+                    window.location.reload();
+                }
+            },
+        });
     };
 
     return (
@@ -155,10 +177,8 @@ export default function Show({group, recentItems, auth}) {
             {group.users.find(u => u.id === auth.user.id) ? (
                 <Box sx={{mt: 3}}>
                     <Button
-                        component={Link}
-                        href={route('groups.leave', group.id)}
-                        method="delete"
-                        as="button"
+                        onClick={handleLeaveGroup}
+                        disabled={leaving}
                         variant="outlined"
                         color="error"
                     >
@@ -168,10 +188,8 @@ export default function Show({group, recentItems, auth}) {
             ) : (
                 <Box sx={{mt: 3}}>
                     <Button
-                        component={Link}
-                        href={route('groups.join', group.id)}
-                        method="post"
-                        as="button"
+                        onClick={handleJoinGroup}
+                        disabled={joining}
                         variant="contained"
                     >
                         {t('groups.joinGroup')}

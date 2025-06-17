@@ -47,6 +47,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        // Add CSRF token to response headers
+        $response = redirect('/');
+        $response->headers->set('X-CSRF-TOKEN', csrf_token());
+
+        return $response;
     }
 }

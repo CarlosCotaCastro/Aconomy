@@ -107,7 +107,6 @@ export default function Login({status, canResetPassword}) {
 
                     
                 </form>
-                {csrf_token}
 
         </GuestLayout>
     );

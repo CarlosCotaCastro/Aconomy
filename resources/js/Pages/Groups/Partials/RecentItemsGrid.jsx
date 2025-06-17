@@ -14,7 +14,7 @@ import {
     IconButton,
     Stack,
 } from '@mui/material';
-import { Link } from '@inertiajs/react';
+import { Link, useForm } from '@inertiajs/react';
 import { 
     Inventory as InventoryIcon,
     ArrowForward as ArrowForwardIcon,
@@ -44,6 +44,17 @@ export default function RecentItemsGrid({ items, currentUserId }) {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+    const { post: returnItem, processing } = useForm();
+
+    const handleReturnItem = (lendingId) => {
+        returnItem(route('lendings.return', lendingId), {
+            onError: (errors) => {
+                if (errors.status === 419) {
+                    window.location.reload();
+                }
+            },
+        });
+    };
 
     const renderUserAvatar = (user, size = 32) => (
         <Tooltip title={user.name}>
@@ -225,14 +236,12 @@ export default function RecentItemsGrid({ items, currentUserId }) {
                                 )}
                                 {!item.is_available && item.current_borrower?.id === currentUserId && (
                                     <Button
-                                        component={Link}
-                                        href={route('lendings.return', item.active_lending?.id)}
-                                        method="post"
+                                        onClick={() => handleReturnItem(item.active_lending?.id)}
+                                        disabled={!item.active_lending?.id || processing}
                                         variant="outlined"
                                         color="primary"
                                         size="small"
                                         fullWidth
-                                        disabled={!item.active_lending?.id}
                                     >
                                         {t('items.returnItem')}
                                     </Button>

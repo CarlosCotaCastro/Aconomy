@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, usePage } from '@inertiajs/react';
+import { Link, usePage, useForm } from '@inertiajs/react';
 import {
     AppBar,
     Box,
@@ -57,6 +57,24 @@ export default function AuthenticatedLayout({ user, children }) {
     // Fallback to usePage if user prop is not provided
     const pageProps = usePage().props;
     const authUser = user || (pageProps.auth && pageProps.auth.user);
+
+    // Logout form
+    const { post: logout } = useForm();
+
+    const handleLogout = () => {
+        logout(route('logout'), {
+            onSuccess: () => {
+                handleMenuClose();
+            },
+            onError: (errors) => {
+                console.error('Logout error:', errors);
+                // If CSRF token error, reload the page
+                if (errors.status === 419) {
+                    window.location.reload();
+                }
+            },
+        });
+    };
 
     function stringToColor(string) {
         let hash = 0;
@@ -538,20 +556,14 @@ export default function AuthenticatedLayout({ user, children }) {
                             </MenuItem>
                             <Divider />
                             <MenuItem
-                                onClick={handleMenuClose}
+                                onClick={handleLogout}
                             >
-                                <Link
-                                    href={route('logout')}
-                                    method="post"
-                                    as="button"
-                                    className="w-full text-left flex items-center"
-                                    style={{ textDecoration: 'none', color: 'inherit' }}
-                                >
+                                <div className="w-full text-left flex items-center">
                                     <ListItemIcon>
                                         <LogoutIcon fontSize="small" color="error" />
                                     </ListItemIcon>
                                     Logout
-                                </Link>
+                                </div>
                             </MenuItem>
                         </Menu>
                     </Box>

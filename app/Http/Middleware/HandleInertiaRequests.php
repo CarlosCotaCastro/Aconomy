@@ -34,6 +34,26 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'csrf_token' => csrf_token(),
         ];
+    }
+
+    /**
+     * Handle the incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return \Illuminate\Http\Response
+     */
+    public function handle(Request $request, \Closure $next)
+    {
+        $response = parent::handle($request, $next);
+
+        // Add CSRF token to response headers for AJAX requests
+        if ($request->ajax() || $request->wantsJson()) {
+            $response->headers->set('X-CSRF-TOKEN', csrf_token());
+        }
+
+        return $response;
     }
 }
