@@ -28,7 +28,7 @@ export default function Register() {
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="name" value="Name" color='text-white' />
 
                     <TextInput
                         id="name"
@@ -45,7 +45,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="email" value="Email" color='text-white' />
 
                     <TextInput
                         id="email"
@@ -62,7 +62,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel htmlFor="password" value="Password" color='text-white' />
 
                     <TextInput
                         id="password"
@@ -82,6 +82,7 @@ export default function Register() {
                     <InputLabel
                         htmlFor="password_confirmation"
                         value="Confirm Password"
+                        color='text-white'
                     />
 
                     <TextInput
