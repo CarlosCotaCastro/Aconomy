@@ -43,8 +43,10 @@ import {
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import NotificationMenu from '@/Components/Notifications/NotificationMenu';
 import LanguageSwitcher from '@/Components/LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 export default function AuthenticatedLayout({ user, children }) {
+    const { t } = useTranslation();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const [mobileOpen, setMobileOpen] = useState(false);
@@ -140,13 +142,13 @@ export default function AuthenticatedLayout({ user, children }) {
                         <ListItemIcon>
                             <HomeIcon color="primary" />
                         </ListItemIcon>
-                        <ListItemText primary="Home" />
+                        <ListItemText primary={t('navigation.home')} />
                     </ListItemButton>
                 </ListItem>
 
                 <ListItem sx={{ mt: 1.5, mb: 0.5, px: 3 }}>
                     <Typography variant="overline" color="text.secondary" sx={{ fontWeight: 'bold' }}>
-                        Items
+                        {t('navigation.items')}
                     </Typography>
                 </ListItem>
                 <ListItem disablePadding>
@@ -154,7 +156,7 @@ export default function AuthenticatedLayout({ user, children }) {
                         <ListItemIcon>
                             <InventoryIcon color="secondary" />
                         </ListItemIcon>
-                        <ListItemText primary="My Items" />
+                        <ListItemText primary={t('navigation.myItems')} />
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
@@ -162,13 +164,13 @@ export default function AuthenticatedLayout({ user, children }) {
                         <ListItemIcon>
                             <AddIcon color="secondary" />
                         </ListItemIcon>
-                        <ListItemText primary="Add Item" />
+                        <ListItemText primary={t('navigation.addNewItem')} />
                     </ListItemButton>
                 </ListItem>
 
                 <ListItem sx={{ mt: 1.5, mb: 0.5, px: 3 }}>
                     <Typography variant="overline" color="text.secondary" sx={{ fontWeight: 'bold' }}>
-                        Groups
+                        {t('navigation.groups')}
                     </Typography>
                 </ListItem>
                 <ListItem disablePadding>
@@ -176,7 +178,7 @@ export default function AuthenticatedLayout({ user, children }) {
                         <ListItemIcon>
                             <GroupIcon sx={{ color: '#ff9800' }} />
                         </ListItemIcon>
-                        <ListItemText primary="My Groups" />
+                        <ListItemText primary={t('navigation.myGroups')} />
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
@@ -184,13 +186,13 @@ export default function AuthenticatedLayout({ user, children }) {
                         <ListItemIcon>
                             <AddIcon sx={{ color: '#ff9800' }} />
                         </ListItemIcon>
-                        <ListItemText primary="Create Group" />
+                        <ListItemText primary={t('navigation.createNewGroup')} />
                     </ListItemButton>
                 </ListItem>
 
                 <ListItem sx={{ mt: 1.5, mb: 0.5, px: 3 }}>
                     <Typography variant="overline" color="text.secondary" sx={{ fontWeight: 'bold' }}>
-                        Lendings
+                        {t('navigation.lendings')}
                     </Typography>
                 </ListItem>
                 <ListItem disablePadding>
@@ -198,7 +200,7 @@ export default function AuthenticatedLayout({ user, children }) {
                         <ListItemIcon>
                             <SwapHorizIcon sx={{ color: '#4caf50' }} />
                         </ListItemIcon>
-                        <ListItemText primary="My Lendings" />
+                        <ListItemText primary={t('navigation.myLendings')} />
                     </ListItemButton>
                 </ListItem>
                 <ListItem disablePadding>
@@ -206,13 +208,13 @@ export default function AuthenticatedLayout({ user, children }) {
                         <ListItemIcon>
                             <AddIcon sx={{ color: '#4caf50' }} />
                         </ListItemIcon>
-                        <ListItemText primary="Lend Item" />
+                        <ListItemText primary={t('navigation.lendAnItem')} />
                     </ListItemButton>
                 </ListItem>
 
                 <ListItem sx={{ mt: 1.5, mb: 0.5, px: 3 }}>
                     <Typography variant="overline" color="text.secondary" sx={{ fontWeight: 'bold' }}>
-                        Borrow Requests
+                        {t('navigation.borrowRequests')}
                     </Typography>
                 </ListItem>
                 <ListItem disablePadding>
@@ -220,7 +222,7 @@ export default function AuthenticatedLayout({ user, children }) {
                         <ListItemIcon>
                             <RequestQuoteIcon sx={{ color: '#9c27b0' }} />
                         </ListItemIcon>
-                        <ListItemText primary="My Requests" />
+                        <ListItemText primary={t('navigation.myRequests')} />
                     </ListItemButton>
                 </ListItem>
             </List>
@@ -292,7 +294,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                         borderRadius: '8px'
                                     }}
                                 >
-                                    Home
+                                    {t('navigation.home')}
                                 </Button>
 
                                 <Button
@@ -308,7 +310,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                         borderRadius: '8px'
                                     }}
                                 >
-                                    Items
+                                    {t('navigation.items')}
                                 </Button>
                                 <Menu
                                     id="items-menu"
@@ -331,7 +333,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                         href={route('items.index')}
                                         sx={{ borderRadius: 1, mx: 0.5 }}
                                     >
-                                        My Items
+                                        {t('navigation.myItems')}
                                     </MenuItem>
                                     <MenuItem
                                         onClick={handleMenuClose}
@@ -339,7 +341,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                         href={route('items.create')}
                                         sx={{ borderRadius: 1, mx: 0.5 }}
                                     >
-                                        Add New Item
+                                        {t('navigation.addNewItem')}
                                     </MenuItem>
                                 </Menu>
 
@@ -356,7 +358,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                         borderRadius: '8px'
                                     }}
                                 >
-                                    Groups
+                                    {t('navigation.groups')}
                                 </Button>
                                 <Menu
                                     id="groups-menu"
@@ -379,7 +381,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                         href={route('groups.my-groups')}
                                         sx={{ borderRadius: 1, mx: 0.5 }}
                                     >
-                                        My Groups
+                                        {t('navigation.myGroups')}
                                     </MenuItem>
                                     <MenuItem
                                         onClick={handleMenuClose}
@@ -387,7 +389,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                         href={route('groups.index')}
                                         sx={{ borderRadius: 1, mx: 0.5 }}
                                     >
-                                        Find Groups
+                                        {t('navigation.findGroups')}
                                     </MenuItem>
                                     <MenuItem
                                         onClick={handleMenuClose}
@@ -395,7 +397,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                         href={route('groups.create')}
                                         sx={{ borderRadius: 1, mx: 0.5 }}
                                     >
-                                        Create New Group
+                                        {t('navigation.createNewGroup')}
                                     </MenuItem>
                                 </Menu>
 
@@ -412,7 +414,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                         borderRadius: '8px'
                                     }}
                                 >
-                                    Lendings
+                                    {t('navigation.lendings')}
                                 </Button>
                                 <Menu
                                     id="lendings-menu"
@@ -435,7 +437,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                         href={route('lendings.index')}
                                         sx={{ borderRadius: 1, mx: 0.5 }}
                                     >
-                                        My Lendings
+                                        {t('navigation.myLendings')}
                                     </MenuItem>
                                     <MenuItem
                                         onClick={handleMenuClose}
@@ -443,7 +445,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                         href={route('lendings.create')}
                                         sx={{ borderRadius: 1, mx: 0.5 }}
                                     >
-                                        Lend an Item
+                                        {t('navigation.lendAnItem')}
                                     </MenuItem>
                                 </Menu>
 
@@ -460,7 +462,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                         borderRadius: '8px'
                                     }}
                                 >
-                                    Borrow Requests
+                                    {t('navigation.borrowRequests')}
                                 </Button>
                                 <Menu
                                     id="borrow-requests-menu"
@@ -483,7 +485,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                         href={route('borrow-requests.index')}
                                         sx={{ borderRadius: 1, mx: 0.5 }}
                                     >
-                                        My Requests
+                                        {t('navigation.myRequests')}
                                     </MenuItem>
                                 </Menu>
                             </Box>
@@ -552,7 +554,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                 <ListItemIcon>
                                     <SettingsIcon fontSize="small" color="primary" />
                                 </ListItemIcon>
-                                Profile Settings
+                                {t('navigation.profileSettings')}
                             </MenuItem>
                             <Divider />
                             <MenuItem
@@ -562,7 +564,7 @@ export default function AuthenticatedLayout({ user, children }) {
                                     <ListItemIcon>
                                         <LogoutIcon fontSize="small" color="error" />
                                     </ListItemIcon>
-                                    Logout
+                                    {t('common.logout')}
                                 </div>
                             </MenuItem>
                         </Menu>

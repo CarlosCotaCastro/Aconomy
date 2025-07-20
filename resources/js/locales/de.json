@@ -82,7 +82,8 @@
         "returnedAt": "Zurückgegeben: {{date}}",
         "notYetReturned": "Noch nicht zurückgegeben",
         "groupItemsTitle": "{{groupName}} - Verfügbare Gegenstände",
-        "searchItemsPlaceholder": "Gegenstände durchsuchen..."
+        "searchItemsPlaceholder": "Gegenstände durchsuchen...",
+        "noLendings": "Bisher keine Ausleihen"
     },
     "groups": {
         "createNewGroup": "Neue Gruppe erstellen",
@@ -218,6 +219,27 @@
         "verifyItemHandoverTitle": "Übergabe bestätigen",
         "handoverCode": "Übergabecode",
         "verifyCode": "Code verifizieren"
+    },
+    "navigation": {
+        "home": "Startseite",
+        "items": "Gegenstände",
+        "myItems": "Meine Gegenstände",
+        "addNewItem": "Neuen Gegenstand hinzufügen",
+        "groups": "Gruppen",
+        "myGroups": "Meine Gruppen",
+        "findGroups": "Gruppen finden",
+        "createNewGroup": "Neue Gruppe erstellen",
+        "lendings": "Ausleihen",
+        "myLendings": "Meine Ausleihen",
+        "lendAnItem": "Gegenstand verleihen",
+        "borrowRequests": "Leihanfragen",
+        "myRequests": "Meine Anfragen",
+        "profileSettings": "Profileinstellungen"
+    },
+    "groupItemSearch": {
+        "searchPlaceholder": "Suche nach Gegenständen in deinen Gruppen...",
+        "notApprovedTitle": "Suche nicht verfügbar",
+        "notApprovedMessage": "Du wirst in der Lage sein, in allen deinen genehmigten Gruppen nach Gegenständen zu suchen, sobald du ein genehmigtes Mitglied in mindestens einer Gruppe wirst."
     },
     "welcome": {
         "heroTitle": "Ressourcen teilen, Gemeinschaft aufbauen",

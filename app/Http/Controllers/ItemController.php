@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\Item;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
@@ -64,7 +65,7 @@ class ItemController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:16048',
         ]);
 
         $item->name = $validated['name'];
@@ -117,5 +118,51 @@ class ItemController extends Controller
             'group' => $group,
             'items' => $items,
         ]);
+    }
+
+    public function groupSearch(Request $request)
+    {
+        $user = $request->user();
+
+        // Get group IDs where user is approved
+        $groupIds = $user->groups()->wherePivot('approved', true)->pluck('groups.id');
+
+        if ($groupIds->isEmpty()) {
+            return response()->json(['items' => []]);
+        }
+
+        // Get user IDs in those groups (excluding self)
+        $userIds = User::whereHas('groups', function ($q) use ($groupIds) {
+            $q->whereIn('groups.id', $groupIds)->where('group_user.approved', true);
+        })->where('id', '!=', $user->id)->pluck('id');
+
+        // Search items owned by those users, in those groups, not owned by self
+        $query = Item::with(['user', 'groups'])
+            ->whereIn('user_id', $userIds)
+            ->whereHas('groups', function ($q) use ($groupIds) {
+                $q->whereIn('groups.id', $groupIds);
+            });
+
+        if ($request->filled('q')) {
+            $query->where('name', 'like', '%'.$request->q.'%');
+        }
+
+        $items = $query->get();
+
+        $mappedItems = $items->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'name' => $item->name,
+                'status' => $item->status ?? 'available', // fallback if no status
+                'image' => $item->image_path ? '/storage/'.$item->image_path : null,
+                'owner' => [
+                    'id' => $item->user->id,
+                    'name' => $item->user->name,
+                    'avatar' => $item->user->profile_image_path ? '/storage/'.$item->user->profile_image_path : null,
+                ],
+            ];
+        });
+
+        return response()->json(['items' => $mappedItems]);
     }
 }

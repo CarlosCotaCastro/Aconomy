@@ -26,7 +26,9 @@ import {
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
+import GroupItemSearch from "@/Components/GroupItemSearch.jsx";
 import { useTranslation } from 'react-i18next';
+import React from 'react';
 
 
 export default function Dashboard({items = [], groups = [], lendings = [], borrowings = [], auth}) {
@@ -66,6 +68,10 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                 :`${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
         };
     }
+
+    const isApprovedMember = groups.some(group => 
+    group.users.find(u => u.id === auth.user.id)?.pivot.approved
+);
 
     return (
         <AuthenticatedLayout user={auth.user}>
@@ -434,11 +440,7 @@ export default function Dashboard({items = [], groups = [], lendings = [], borro
                 </CardContent>
             </Card>
 
-            <PrimaryButton href={'#'} sx={{marginY: '1em'}}
-                           startIcon={<AddCircleIcon/>}
-            >
-                Test
-            </PrimaryButton>
+            <GroupItemSearch isApprovedMember={isApprovedMember} />
 
         </AuthenticatedLayout>
     );
