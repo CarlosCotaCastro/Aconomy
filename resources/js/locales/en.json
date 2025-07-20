@@ -82,7 +82,8 @@
         "returnedAt": "Returned: {{date}}",
         "notYetReturned": "Not yet returned",
         "groupItemsTitle": "{{groupName}} - Available Items",
-        "searchItemsPlaceholder": "Search items..."
+        "searchItemsPlaceholder": "Search items...",
+        "noLendings": "No lendings yet"
     },
     "groups": {
         "createNewGroup": "Create New Group",
@@ -223,6 +224,27 @@
         "verifyItemHandoverTitle": "Verify Item Handover",
         "handoverCode": "Handover Code",
         "verifyCode": "Verify Code"
+    },
+    "groupItemSearch": {
+        "searchPlaceholder": "Search for items in your groups...",
+        "notApprovedTitle": "Search Unavailable",
+        "notApprovedMessage": "You'll be able to search for items in all your approved groups once you become an approved member of at least one group."
+    },
+    "navigation": {
+        "home": "Home",
+        "items": "Items",
+        "myItems": "My Items",
+        "addNewItem": "Add New Item",
+        "groups": "Groups",
+        "myGroups": "My Groups",
+        "findGroups": "Find Groups",
+        "createNewGroup": "Create New Group",
+        "lendings": "Lendings",
+        "myLendings": "My Lendings",
+        "lendAnItem": "Lend an Item",
+        "borrowRequests": "Borrow Requests",
+        "myRequests": "My Requests",
+        "profileSettings": "Profile Settings"
     },
     "welcome": {
         "heroTitle": "Share Resources, Build Community",

@@ -61,6 +61,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('items', ItemController::class);
     Route::post('/items', StoreItemController::class)->name('items.store');
     Route::get('/groups/{group}/items', [ItemController::class, 'groupItems'])->name('groups.items.index');
+    Route::get('/search/group-items', [ItemController::class, 'groupSearch'])->name('items.group-search');
 
     // Groups routes
     Route::resource('groups', GroupController::class);

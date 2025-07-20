@@ -37,14 +37,16 @@ export default function Show({ item, auth }) {
                 
                 <Card sx={{ mb: 4 }}>
                     <Grid container>
-                        <Grid md={6}>
+                        <Grid size={{xs: 12, md: 8}}>
                             {item.image_path ? (
                                 <CardMedia
                                     component="img"
                                     height="300"
                                     image={`/storage/${item.image_path}`}
                                     alt={item.name}
-                                    sx={{ objectFit: 'contain', p: 2 }}
+                                    sx={{ objectFit: 'cover', p: 0 ,
+                                        
+                                     }}
                                 />
                             ) : (
                                 <Box 
@@ -53,7 +55,8 @@ export default function Show({ item, auth }) {
                                         bgcolor: 'rgba(0,0,0,0.05)', 
                                         display: 'flex', 
                                         alignItems: 'center', 
-                                        justifyContent: 'center' 
+                                        justifyContent: 'center',
+                                        aspectRatio: '16/9'
                                     }}
                                 >
                                     <Typography color="text.secondary">
@@ -62,7 +65,7 @@ export default function Show({ item, auth }) {
                                 </Box>
                             )}
                         </Grid>
-                        <Grid md={6}>
+                        <Grid size={{xs: 12, md: 4}}>
                             <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                     <Typography variant="h4" component="h1">
@@ -107,14 +110,14 @@ export default function Show({ item, auth }) {
                     </Grid>
                 </Card>
                 
-                {item.lendings && item.lendings.length > 0 && (
+                {item.lendings && (
                     <Paper sx={{ p: 3 }}>
                         <Typography variant="h6" gutterBottom>
                             {t('items.lendingHistory')}
                         </Typography>
                         <Divider sx={{ mb: 2 }} />
                         
-                        {item.lendings.map((lending) => (
+                        {item.lendings.length > 0 && item.lendings.map((lending) => (
                             <Box key={lending.id} sx={{ mb: 2, p: 2, bgcolor: 'background.default', borderRadius: 1 }}>
                                 <Typography variant="subtitle1">
                                     {t('items.borrowedBy', { name: lending.borrower.name })}
@@ -133,6 +136,11 @@ export default function Show({ item, auth }) {
                                 )}
                             </Box>
                         ))}
+                        {item.lendings.length === 0 && (
+                            <Typography variant="body2">
+                                {t('items.noLendings')}
+                            </Typography>
+                        )}
                     </Paper>
                 )}
             </Box>
