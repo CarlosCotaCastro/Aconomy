@@ -8,7 +8,9 @@ export default function GuestLayout({ children }) {
             <div className="mt-6 w-full overflow-hidden bg-black/20 px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
                 <div className="flex items-center justify-center">
                     <Link href="/">
-                        <ApplicationLogo className="h-20 w-20 fill-current text-gray-500"/>
+                        <div className="text-white">
+                        <ApplicationLogo className="h-20 w-20"/>
+                        </div>
                     </Link>
                 </div>
                 {children}
