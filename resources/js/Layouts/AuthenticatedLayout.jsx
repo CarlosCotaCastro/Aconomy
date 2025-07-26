@@ -43,6 +43,7 @@ import {
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import NotificationMenu from '@/Components/Notifications/NotificationMenu';
 import LanguageSwitcher from '@/Components/LanguageSwitcher';
+import ApplicationLogo from '@/Components/ApplicationLogo';
 import { useTranslation } from 'react-i18next';
 
 export default function AuthenticatedLayout({ user, children }) {
@@ -130,22 +131,7 @@ export default function AuthenticatedLayout({ user, children }) {
 
     const drawerContent = (
         <Box sx={{ width: 250 }} role="presentation" onClick={handleDrawerToggle}>
-            <Box sx={{ py: 2, px: 2, display: 'flex', alignItems: 'center' }}>
-                <Typography variant="h6" sx={{ fontWeight: 700, color: '#5271ff' }}>
-                    Aconomy
-                </Typography>
-            </Box>
-            <Divider />
             <List>
-                <ListItem disablePadding>
-                    <ListItemButton component={Link} href={route('dashboard')} sx={{ borderRadius: '0 20px 20px 0', mx: 1 }}>
-                        <ListItemIcon>
-                            <HomeIcon color="primary" />
-                        </ListItemIcon>
-                        <ListItemText primary={t('navigation.home')} />
-                    </ListItemButton>
-                </ListItem>
-
                 <ListItem sx={{ mt: 1.5, mb: 0.5, px: 3 }}>
                     <Typography variant="overline" color="text.secondary" sx={{ fontWeight: 'bold' }}>
                         {t('navigation.items')}
@@ -265,18 +251,12 @@ export default function AuthenticatedLayout({ user, children }) {
                         component={Link}
                         href={route('dashboard')}
                         sx={{
-                            fontWeight: 700,
-                            background: 'linear-gradient(-45deg, '+ theme.palette.primary.light +' 0%, ' + theme.palette.secondary.light +' 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            textDecoration: 'none',
-                            color: 'linear-gradient(90deg, #c4d4ff 43.7%, #FF0000)',
                             flexGrow: { xs: 1, md: 0 },
                             mr: 3,
                             fontSize: { xs: '1.2rem', md: '1.5rem' }
                         }}
                     >
-                        Aconomy
+                        <ApplicationLogo fontSize="1.5rem" />
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 2 }}>
