@@ -126,34 +126,25 @@ class ItemController extends Controller
 
         // Get group IDs where user is approved
         $groupIds = $user->groups()->wherePivot('approved', true)->pluck('groups.id');
-
         if ($groupIds->isEmpty()) {
             return response()->json(['items' => []]);
         }
 
-        // Get user IDs in those groups (excluding self)
-        $userIds = User::whereHas('groups', function ($q) use ($groupIds) {
-            $q->whereIn('groups.id', $groupIds)->where('group_user.approved', true);
-        })->where('id', '!=', $user->id)->pluck('id');
+        // Use Scout/Meilisearch for searching items, filtering by allowed user_ids and group_ids
+        $searchQuery = $request->filled('q') ? $request->q : '';
 
-        // Search items owned by those users, in those groups, not owned by self
-        $query = Item::with(['user', 'groups'])
-            ->whereIn('user_id', $userIds)
-            ->whereHas('groups', function ($q) use ($groupIds) {
-                $q->whereIn('groups.id', $groupIds);
-            });
+        $items = Item::search($searchQuery)->whereNotIn('user', $user->id)
+            ->whereIn('groups', $groupIds->toArray())
+            ->get();
 
-        if ($request->filled('q')) {
-            $query->where('name', 'like', '%'.$request->q.'%');
-        }
+        // Eager load user and groups for the filtered items
+        $itemModels = Item::with(['user'])->whereIn('id', $items->pluck('id'))->get();
 
-        $items = $query->get();
-
-        $mappedItems = $items->map(function ($item) {
+        $mappedItems = $itemModels->map(function ($item) {
             return [
                 'id' => $item->id,
                 'name' => $item->name,
-                'status' => $item->status ?? 'available', // fallback if no status
+                'status' => $item->status ?? 'available',
                 'image' => $item->image_path ? '/storage/'.$item->image_path : null,
                 'owner' => [
                     'id' => $item->user->id,
