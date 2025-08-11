@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import GroupItemSearchUnavailable from './GroupItemSearchUnavailable.jsx';
+import { Icon, OutlinedInput } from '@mui/material';
+import { Search } from '@mui/icons-material';
 
 export default function GroupItemSearch({ isApprovedMember }) {
     const { t } = useTranslation();
@@ -51,13 +53,14 @@ export default function GroupItemSearch({ isApprovedMember }) {
 
     return (
         <div className="py-4">
-            <div className="mb-4 flex items-center gap-2">
+            <div className="mb-4 flex items-center gap-2 border bg-white rounded p-4 ">
+                <Search />
                 <input
-                    type="text"
+                    type="search"
                     value={query}
                     onChange={e => setQuery(e.target.value)}
                     placeholder={t('groupItemSearch.searchPlaceholder')}
-                    className="border rounded px-2 py-1 flex-1"
+                    className="flex-1 border-none text-3xl focus:bg-transparent focus:border-none focus:box-shadow-none  focus:outline-none"
                 />
             </div>
             {loading && <div>Loading...</div>}
