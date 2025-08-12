@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import GroupItemSearchUnavailable from './GroupItemSearchUnavailable.jsx';
 import { Icon, OutlinedInput } from '@mui/material';
 import { Search } from '@mui/icons-material';
+import { router } from '@inertiajs/react';
 
 export default function GroupItemSearch({ isApprovedMember }) {
     const { t } = useTranslation();
@@ -39,9 +40,10 @@ export default function GroupItemSearch({ isApprovedMember }) {
     const requestBorrow = async (itemId) => {
         setError(null);
         setSuccess(null);
+
+        console.info(`Requesting borrow for item ID: ${itemId}`);
         try {
-            await axios.post('/borrow-requests', { item_id: itemId });
-            setSuccess('Borrow request sent!');
+            router.get('/borrow-requests/create/', { item: itemId });
         } catch (err) {
             setError('Could not send borrow request.');
         }
