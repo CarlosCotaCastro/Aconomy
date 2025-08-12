@@ -9,8 +9,7 @@ import {
     Box,
     Avatar,
     Divider,
-    ListItemIcon,
-    ListItemText,
+    MenuList,
     Tooltip,
     Button,
     ButtonGroup,
@@ -47,7 +46,7 @@ const getNotificationIcon = (type) => {
 // Helper function to format notification content
 const formatNotification = (notification) => {
     const data = notification.data;
-    
+
     switch (data.type) {
         case 'borrow_request':
             return {
@@ -87,7 +86,7 @@ const formatNotification = (notification) => {
                 initiatorName: data.borrower_name,
                 initiatorId: data.borrower_id,
                 entityName: data.item_name,
-                entityId: data.item_id, 
+                entityId: data.item_id,
                 hasMessage: !!data.notes,
                 messageText: data.notes,
                 actions: {
@@ -116,12 +115,12 @@ export default function NotificationMenu() {
     const [count, setCount] = useState(0);
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
-    
+
     const fetchNotifications = async () => {
         try {
             const response = await axios.get('/api/notifications');
             setNotifications(response.data);
-            
+
             // Count unread notifications
             const unreadCount = response.data.filter(notification => !notification.read_at).length;
             setCount(unreadCount);
@@ -129,11 +128,11 @@ export default function NotificationMenu() {
             console.error('Error fetching notifications:', error);
         }
     };
-    
+
     // Fetch initial notifications
     useEffect(() => {
         fetchNotifications();
-        
+
         // Listen for new notifications
         const channel = window.Echo?.private(`App.Models.User.${auth.user.id}`);
         if (channel) {
@@ -141,10 +140,10 @@ export default function NotificationMenu() {
                 fetchNotifications();
             });
         }
-        
+
         // Set up polling every 30 seconds as a fallback
         const interval = setInterval(fetchNotifications, 30000);
-        
+
         return () => {
             clearInterval(interval);
             // Remove event listener
@@ -153,16 +152,16 @@ export default function NotificationMenu() {
             }
         };
     }, [auth.user.id]);
-    
+
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
         fetchNotifications(); // Refresh when opening
     };
-    
+
     const handleClose = () => {
         setAnchorEl(null);
     };
-    
+
     const handleMarkAllAsRead = () => {
         router.post(route('notifications.read-all'), {}, {
             onSuccess: () => {
@@ -175,7 +174,7 @@ export default function NotificationMenu() {
             }
         });
     };
-    
+
     const handleAction = (url, method, notificationId) => {
         router.post(url, {}, {
             onSuccess: () => {
@@ -183,20 +182,20 @@ export default function NotificationMenu() {
                 if (notificationId) {
                     router.post(route('notifications.read', notificationId));
                 }
-                
+
                 // Refresh notifications
                 fetchNotifications();
                 handleClose();
             }
         });
     };
-    
+
     // Get initials for user avatar
     const getInitials = (name) => {
         if (!name) return '';
         return name.split(' ').map(n => n[0]).join('').toUpperCase();
     };
-    
+
     return (
         <>
             <Tooltip title="Notifications">
@@ -210,150 +209,152 @@ export default function NotificationMenu() {
                     </Badge>
                 </IconButton>
             </Tooltip>
-            
+
             <Menu
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleClose}
-                PaperProps={{
-                    elevation: 2,
-                    sx: {
-                        width: 380,
-                        maxWidth: '100%',
-                        mt: 1.5,
-                        borderRadius: 2,
-                        maxHeight: 'calc(100vh - 100px)',
-                        overflow: 'auto',
+                slotProps={{
+                    paper: {
+                        elevation: 2,
+                        sx: {
+                            width: 380,
+                            maxWidth: '100%',
+                            mt: 1.5,
+                            borderRadius: 2,
+                            maxHeight: 'calc(100vh - 100px)',
+                            overflow: 'auto',
+                        }
                     }
                 }}
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Typography variant="h6">Notifications</Typography>
-                    {count > 0 && (
-                        <Tooltip title="Mark all as read">
-                            <IconButton size="small" onClick={handleMarkAllAsRead}>
-                                <DoneAllIcon />
-                            </IconButton>
-                        </Tooltip>
-                    )}
-                </Box>
-                
-                <Divider />
-                
-                {notifications.length > 0 ? (
-                    <>
-                        {notifications.slice(0, 5).map((notification) => {
-                            const formatted = formatNotification(notification);
-                            const isRead = notification.read_at !== null;
-                            const canApprove = !!formatted.actions.approve;
-                            const canDeny = !!formatted.actions.deny;
-                            
-                            return (
-                                <Box key={notification.id} sx={{ 
-                                    p: 2, 
-                                    borderBottom: '1px solid rgba(0,0,0,0.08)',
-                                    bgcolor: isRead ? 'transparent' : 'rgba(25, 118, 210, 0.04)',
-                                }}>
-                                    <Box sx={{ display: 'flex', gap: 2, mb: 1 }}>
-                                        <Avatar sx={{ bgcolor: isRead ? 'grey.300' : 'primary.main' }}>
-                                            {formatted.initiatorName 
-                                                ? getInitials(formatted.initiatorName)
-                                                : getNotificationIcon(notification.data.type)}
-                                        </Avatar>
-                                        
-                                        <Box sx={{ flexGrow: 1 }}>
-                                            <Typography 
-                                                variant="subtitle2" 
-                                                sx={{ fontWeight: isRead ? 'normal' : 'bold' }}
-                                            >
-                                                {formatted.title}
-                                            </Typography>
-                                            
-                                            <Typography variant="body2" color="text.secondary">
-                                                {formatted.message}
-                                            </Typography>
-                                            
-                                            {formatted.hasMessage && (
-                                                <Box sx={{ mt: 1, display: 'flex', alignItems: 'center' }}>
-                                                    <CommentIcon fontSize="small" sx={{ mr: 0.5, color: 'text.secondary', fontSize: 16 }} />
-                                                    <Typography variant="body2" color="text.secondary" fontStyle="italic">
-                                                        {
-                                                            formatted.messageText?.length > 40 
-                                                                ? formatted.messageText.substring(0, 40) + '...' 
-                                                                : formatted.messageText
-                                                        }
-                                                    </Typography>
+                <MenuList>
+                    <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="h6">Notifications</Typography>
+                        {count > 0 && (
+                            <Tooltip title="Mark all as read">
+                                <IconButton size="small" onClick={handleMarkAllAsRead}>
+                                    <DoneAllIcon />
+                                </IconButton>
+                            </Tooltip>
+                        )}
+                    </Box>
+
+                    <Divider />
+
+                    {notifications.length > 0 && (
+                        notifications.slice(0, 5).map((notification) => {
+                                const formatted = formatNotification(notification);
+                                const isRead = notification.read_at !== null;
+                                const canApprove = !!formatted.actions.approve;
+                                const canDeny = !!formatted.actions.deny;
+
+                                return (
+                                    <Box key={notification.id} sx={{
+                                        p: 2,
+                                        borderBottom: '1px solid rgba(0,0,0,0.08)',
+                                        bgcolor: isRead ? 'transparent' : 'rgba(25, 118, 210, 0.04)',
+                                    }}>
+                                        <Box sx={{ display: 'flex', gap: 2, mb: 1 }}>
+                                            <Avatar sx={{ bgcolor: isRead ? 'grey.300' : 'primary.main' }}>
+                                                {formatted.initiatorName
+                                                    ? getInitials(formatted.initiatorName)
+                                                    : getNotificationIcon(notification.data.type)}
+                                            </Avatar>
+
+                                            <Box sx={{ flexGrow: 1 }}>
+                                                <Typography
+                                                    variant="subtitle2"
+                                                    sx={{ fontWeight: isRead ? 'normal' : 'bold' }}
+                                                >
+                                                    {formatted.title}
+                                                </Typography>
+
+                                                <Typography variant="body2" color="text.secondary">
+                                                    {formatted.message}
+                                                </Typography>
+
+                                                {formatted.hasMessage && (
+                                                    <Box sx={{ mt: 1, display: 'flex', alignItems: 'center' }}>
+                                                        <CommentIcon fontSize="small" sx={{ mr: 0.5, color: 'text.secondary', fontSize: 16 }} />
+                                                        <Typography variant="body2" color="text.secondary" fontStyle="italic">
+                                                            {
+                                                                formatted.messageText?.length > 40
+                                                                    ? formatted.messageText.substring(0, 40) + '...'
+                                                                    : formatted.messageText
+                                                            }
+                                                        </Typography>
+                                                    </Box>
+                                                )}
+
+                                                <Box sx={{ mt: 0.5 }}>
+                                                    <Chip
+                                                        icon={<PersonIcon fontSize="small" />}
+                                                        label={formatted.initiatorName}
+                                                        size="small"
+                                                        variant="outlined"
+                                                        sx={{ fontSize: '0.7rem', height: 22 }}
+                                                    />
                                                 </Box>
-                                            )}
-                                            
-                                            <Box sx={{ mt: 0.5 }}>
-                                                <Chip 
-                                                    icon={<PersonIcon fontSize="small" />}
-                                                    label={formatted.initiatorName}
-                                                    size="small"
-                                                    variant="outlined"
-                                                    sx={{ fontSize: '0.7rem', height: 22 }}
-                                                />
                                             </Box>
                                         </Box>
+
+                                        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
+                                            <Button
+                                                component={Link}
+                                                href={formatted.url}
+                                                size="small"
+                                                onClick={handleClose}
+                                                variant="text"
+                                            >
+                                                View Details
+                                            </Button>
+
+                                            {!isRead && (canApprove || canDeny) && (
+                                                <ButtonGroup size="small" variant="outlined">
+                                                    {canApprove && (
+                                                        <Button
+                                                            startIcon={<CheckIcon />}
+                                                            color="success"
+                                                            onClick={() => handleAction(formatted.actions.approve, 'post', notification.id)}
+                                                        >
+                                                            Approve
+                                                        </Button>
+                                                    )}
+                                                    {canDeny && (
+                                                        <Button
+                                                            startIcon={<CloseIcon />}
+                                                            color="error"
+                                                            onClick={() => handleAction(formatted.actions.deny, 'post', notification.id)}
+                                                        >
+                                                            Deny
+                                                        </Button>
+                                                    )}
+                                                </ButtonGroup>
+                                            )}
+                                        </Box>
                                     </Box>
-                                    
-                                    <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between' }}>
-                                        <Button
-                                            component={Link}
-                                            href={formatted.url}
-                                            size="small"
-                                            onClick={handleClose}
-                                            variant="text"
-                                        >
-                                            View Details
-                                        </Button>
-                                        
-                                        {!isRead && (canApprove || canDeny) && (
-                                            <ButtonGroup size="small" variant="outlined">
-                                                {canApprove && (
-                                                    <Button 
-                                                        startIcon={<CheckIcon />}
-                                                        color="success"
-                                                        onClick={() => handleAction(formatted.actions.approve, 'post', notification.id)}
-                                                    >
-                                                        Approve
-                                                    </Button>
-                                                )}
-                                                {canDeny && (
-                                                    <Button 
-                                                        startIcon={<CloseIcon />}
-                                                        color="error"
-                                                        onClick={() => handleAction(formatted.actions.deny, 'post', notification.id)}
-                                                    >
-                                                        Deny
-                                                    </Button>
-                                                )}
-                                            </ButtonGroup>
-                                        )}
-                                    </Box>
-                                </Box>
-                            );
-                        })}
-                        
-                        <Box sx={{ p: 1 }}>
-                            <Button
-                                component={Link}
-                                href={route('notifications.index')}
-                                fullWidth
-                                onClick={handleClose}
-                            >
+                                );
+                            })
+                        )
+                    }
+                    <Divider />
+                    {notifications.length > 0 ? (
+                        <MenuItem sx={{ mt: 2 }}
+                            href={route('notifications.index')}
+                            onClick={handleClose}
+                            component={Link}>
                                 View All Notifications
-                            </Button>
-                        </Box>
-                    </>
-                ) : (
-                    <Box sx={{ p: 4, textAlign: 'center' }}>
-                        <Typography color="text.secondary">No new notifications</Typography>
-                    </Box>
-                )}
+                        </MenuItem>
+
+                    ) : (
+                        <MenuItem sx={{ p: 4, textAlign: 'center' }}>
+                            <Typography color="text.secondary">No new notifications</Typography>
+                        </MenuItem>
+                    )}
+                </MenuList>
             </Menu>
         </>
     );

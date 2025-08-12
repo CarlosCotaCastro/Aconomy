@@ -88,6 +88,20 @@ class Item extends Model
     }
 
     /**
+     * @return false|BorrowRequest
+     */
+    public function pendingBorrowRequestForUser($userId): BorrowRequest | bool
+    {
+        $ret = $this->borrowRequests()
+            ->where('borrower_id', $userId)
+            ->where('status', 'pending')
+            ->first();
+        
+        return $ret ?: false;
+
+    }
+
+    /**
      * Get the user who is currently borrowing this item.
      */
     public function currentBorrower()

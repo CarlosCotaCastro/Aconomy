@@ -58,8 +58,11 @@ class BorrowRequestController extends Controller
         }
 
         // Check if there's already a pending request for this item
-        if ($item->hasPendingBorrowRequest()) {
-            return redirect()->back()->with('error', 'There is already a pending request for this item.');
+        $pendingRequest = $item->pendingBorrowRequestForUser($user->id);
+        if ($pendingRequest !== false) {
+            return redirect(
+                to: route('borrow-requests.show', ['borrow_request' => $pendingRequest])
+            );
         }
 
         return Inertia::render('BorrowRequests/Create', [
@@ -91,8 +94,11 @@ class BorrowRequestController extends Controller
         }
 
         // Check if there's already a pending request for this item
-        if ($item->hasPendingBorrowRequest()) {
-            return redirect()->back()->with('error', 'There is already a pending request for this item.');
+        $pendingRequest = $item->pendingBorrowRequestForUser($user->id);
+        if ($pendingRequest !== false) {
+            return redirect(
+                to: route('borrow-requests.show', ['borrowRequest' => $pendingRequest->first()])
+            );
         }
 
         // Create the borrow request
