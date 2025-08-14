@@ -4,7 +4,8 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
-import {Button} from "@mui/material";
+import {Button, Divider} from "@mui/material";
+import { useTranslation } from 'react-i18next';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -21,6 +22,8 @@ export default function Register() {
             onFinish: () => reset('password', 'password_confirmation'),
         });
     };
+
+    const {t} = useTranslation();
 
     return (
         <GuestLayout>
@@ -82,7 +85,7 @@ export default function Register() {
                     <InputLabel
                         htmlFor="password_confirmation"
                         value="Confirm Password"
-                        color='text-white'
+                        color='dark:text-white text-black'
                     />
 
                     <TextInput
@@ -105,8 +108,10 @@ export default function Register() {
                 </div>
 
                 <PrimaryButton sx={{my: 2}} disabled={processing} className={'w-full'} type={'submit'}>
-                    Register
+                    {t('common.register')}
                 </PrimaryButton>
+
+                <Divider variant={"fullWidth"} sx={{color: '#fff'}}>{t('common.or')}</Divider>
 
                     <Button
                         component={'a'}
@@ -114,7 +119,7 @@ export default function Register() {
                         href={route('login')}
                             sx={{my: 2, textAlign: 'center', width: '100%'}}
                     >
-                        Already registered?
+                        {t('auth.alreadyRegistered')}
                     </Button>
 
             </form>

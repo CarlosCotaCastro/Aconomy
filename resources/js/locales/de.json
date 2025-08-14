@@ -26,7 +26,8 @@
         "viewAll": "Alle {{count}} {{type}} anzeigen",
         "viewDetails": "Details anzeigen",
         "pendingApproval": "Genehmigung ausstehend",
-        "pendingApproval": "Genehmigung ausstehend"
+        "pendingApproval": "Genehmigung ausstehend",
+        "or": "oder"
     },
     "auth": {
         "loginTitle": "Melde dich bei Deinem Konto an",
