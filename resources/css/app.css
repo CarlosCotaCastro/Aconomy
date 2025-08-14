@@ -55,13 +55,6 @@
   height: 4em !important;
 }
 
-.hero-cta-btn:hover,
-.hero-cta-btn:focus {
-  background: linear-gradient(90deg, #a020f0 0%, #c147e9 100%);
-  box-shadow: 0 6px 40px 0 rgba(193, 71, 233, 0.35), 0 2px 12px 0 rgba(129, 12, 168, 0.22);
-  transform: scale(1.04);
-  outline: none;
-}
 
 .hero-cta-btn:active {
   background: linear-gradient(90deg, #810ca8 0%, #c147e9 100%);
@@ -117,4 +110,26 @@
   justify-content: center;
   font-size: 1.5rem;
   margin-bottom: 1.5rem;
+}
+
+.cta-button {
+  width: 100%;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.cta-gradient {
+  background: linear-gradient(135deg, #4a9eff 0%, #7b2cbf 100%);
+  color: white;
+}
+
+.cta-gradient:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(74, 158, 255, 0.3);
 }

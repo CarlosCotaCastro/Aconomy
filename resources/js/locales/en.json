@@ -26,7 +26,8 @@
         "viewAll": "View all {{count}} {{type}}",
         "viewDetails": "View Details",
         "pendingApproval": "Pending Approval",
-        "me": "me"
+        "me": "me",
+        "or": "or"
     },
     "auth": {
         "loginTitle": "Log in to your account",

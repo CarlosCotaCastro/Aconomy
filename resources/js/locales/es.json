@@ -26,7 +26,8 @@
         "viewAll": "Ver todos los {{count}} {{type}}",
         "viewDetails": "Ver Detalles",
         "pendingApproval": "Aprobación Pendiente",
-        "me": "yo"
+        "me": "yo",
+        "or": "o"
     },
     "auth": {
         "loginTitle": "Inicia sesión en tu cuenta",
@@ -248,7 +249,7 @@
         "notApprovedMessage": "Podrás buscar objetos en todos tus grupos aprobados una vez que seas un miembro aprobado en al menos un grupo."
     },
     "welcome": {
-        "heroTitle": "Comparte Recursos, Construye Comunidad",
+        "heroTitle": "Comparte recursos, construye comunidad",
         "heroSubtitle": "Un nuevo tipo de economía centrada en el intercambio, la ayuda mutua y el empoderamiento comunitario.",
         "howItWorks": "¿Cómo Funciona Aconomy?",
         "howItWorksDescription": "Una plataforma construida sobre principios de ayuda mutua, intercambio de recursos y construcción de comunidad.",
