@@ -19,4 +19,4 @@ class ItemFactory extends Factory
             'image_path' => null, // or you can use $this->faker->imageUrl() if you want a fake image
         ];
     }
-} 
+}

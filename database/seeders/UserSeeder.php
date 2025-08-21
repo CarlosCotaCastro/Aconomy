@@ -25,23 +25,23 @@ class UserSeeder extends Seeder
         $additionalUsers = [
             [
                 'name' => 'Alice Smith',
-                'email' => 'alice@example.com',
+                'email' => 'a@a.de',
             ],
             [
                 'name' => 'Bob Johnson',
-                'email' => 'bob@example.com',
+                'email' => 'b@a.de',
             ],
             [
                 'name' => 'Carol Davis',
-                'email' => 'carol@example.com',
+                'email' => 'c@a.de',
             ],
             [
                 'name' => 'David Wilson',
-                'email' => 'david@example.com',
+                'email' => 'd@a.de',
             ],
             [
                 'name' => 'Eva Brown',
-                'email' => 'eva@example.com',
+                'email' => 'e@a.de',
             ],
         ];
 
@@ -49,7 +49,7 @@ class UserSeeder extends Seeder
             User::create([
                 'name' => $userData['name'],
                 'email' => $userData['email'],
-                'password' => Hash::make('password'),
+                'password' => Hash::make('a'),
                 'email_verified_at' => now(),
             ]);
         }

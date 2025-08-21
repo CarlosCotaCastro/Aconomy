@@ -1,32 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Notification;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 
-class NotificationController extends Controller
+class NotificationApiController extends Controller
 {
-    /**
-     * Get all notifications for the authenticated user
-     */
-    public function index()
-    {
-        $user = Auth::user();
-
-        // Get unread notifications
-        $unreadNotifications = $user->unreadNotifications()->get();
-
-        // Get read notifications (limit to 20 most recent)
-        $readNotifications = $user->readNotifications()->latest()->take(20)->get();
-
-        return Inertia::render('Notifications/Index', [
-            'unreadNotifications' => $unreadNotifications,
-            'readNotifications' => $readNotifications,
-        ]);
-    }
-
     /**
      * Get unread notifications count
      */
@@ -36,29 +16,6 @@ class NotificationController extends Controller
         $count = $user->unreadNotifications()->count();
 
         return response()->json(['count' => $count]);
-    }
-
-    /**
-     * Mark a notification as read
-     */
-    public function markAsRead(Request $request, $id)
-    {
-        $user = Auth::user();
-        $notification = $user->notifications()->findOrFail($id);
-        $notification->markAsRead();
-
-        return redirect()->back();
-    }
-
-    /**
-     * Mark all notifications as read
-     */
-    public function markAllAsRead()
-    {
-        $user = Auth::user();
-        $user->unreadNotifications->markAsRead();
-
-        return redirect()->back();
     }
 
     /**

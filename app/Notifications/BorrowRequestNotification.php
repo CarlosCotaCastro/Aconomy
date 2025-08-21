@@ -4,11 +4,12 @@ namespace App\Notifications;
 
 use App\Models\BorrowRequest;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Log;
 
-class BorrowRequestNotification extends Notification implements ShouldQueue
+class BorrowRequestNotification extends Notification implements ShouldBroadcast
 {
     use Queueable;
 
@@ -29,7 +30,33 @@ class BorrowRequestNotification extends Notification implements ShouldQueue
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        return ['mail', 'database', 'broadcast'];
+    }
+
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return array
+     */
+    public function broadcastOn()
+    {
+        Log::info('BorrowRequestNotification broadcasting to channel', [
+            'channel' => 'App.Models.User.'.$this->borrowRequest->lender_id,
+            'lender_id' => $this->borrowRequest->lender_id,
+            'borrow_request_id' => $this->borrowRequest->id,
+        ]);
+
+        return ['App.Models.User.'.$this->borrowRequest->lender_id];
+    }
+
+    /**
+     * Get the data to broadcast.
+     *
+     * @return array
+     */
+    public function broadcastAs()
+    {
+        return 'notification';
     }
 
     /**
