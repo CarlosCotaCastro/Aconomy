@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+
+:root {
+  /* Sophisticated monochromatic palette */
+  --bg-primary: #fafafa;
+  --bg-accent: rgba(0, 123, 255, 0.15);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+      --bg-primary: #0a0a0f;
+      --bg-accent: rgba(255, 0, 150, 0.15);
+  }
+}
+
+
 .custom-hero-bg {
   position: relative;
   width: 100vw;
@@ -12,7 +27,7 @@
   min-height: 60vh;
   overflow: hidden;
   background: radial-gradient(circle at 20% 80%, rgba(0, 123, 255, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255, 0, 150, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, var(--bg-accent) 0%, transparent 50%),
     radial-gradient(circle at 40% 40%, rgba(138, 43, 226, 0.1) 0%, transparent 50%);
   /*z-index: -2;*/
   animation: gradientShift 8s ease-in-out infinite;

@@ -125,7 +125,6 @@
         "returnRequested": "Devolución Solicitada",
         "active": "Activo",
         "overdue": "Vencido",
-        "lendItem": "Prestar un Objeto",
         "activeItems": "objetos activos",
         "borrowedBy": "Prestado por {{name}}",
         "borrowedFrom": "Prestado de {{name}}",
@@ -238,7 +237,6 @@
         "createNewGroup": "Crear Nuevo Grupo",
         "lendings": "Préstamos",
         "myLendings": "Mis Préstamos",
-        "lendAnItem": "Prestar un Objeto",
         "borrowRequests": "Solicitudes de Préstamo",
         "myRequests": "Mis Solicitudes",
         "profileSettings": "Configuración del Perfil"
@@ -246,7 +244,8 @@
     "groupItemSearch": {
         "searchPlaceholder": "Buscar objetos en tus grupos...",
         "notApprovedTitle": "Búsqueda no disponible",
-        "notApprovedMessage": "Podrás buscar objetos en todos tus grupos aprobados una vez que seas un miembro aprobado en al menos un grupo."
+        "notApprovedMessage": "Podrás buscar objetos en todos tus grupos aprobados una vez que seas un miembro aprobado en al menos un grupo.",
+        "joinGroupToUseSearch": "Unite a un grupo para usar la búsqueda de objetos"
     },
     "welcome": {
         "heroTitle": "Comparte recursos, construye comunidad",

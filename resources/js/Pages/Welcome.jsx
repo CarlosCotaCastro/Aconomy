@@ -11,13 +11,13 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
     return (
         <>
             <Head title={t('common.welcome')} />
-            <div style={{ background: "#0a0a0f" }}>
+            <div style={{ background: "var(--bg-primary)" }}>
 
                 <div className="custom-hero-bg min-h-screen relative overflow-hidden">
                     {/*<div className="min-h-screen bg-gradient-to-br from-teal-950 to-orange-100 relative overflow-hidden">*/}
 
                     {/* Content */}
-                    <div className="relative z-10 px-6 py-8 md:px-12 border-solid border-b-2 border-cyan-950">
+                    <div className="relative z-10 px-6 py-8 md:px-12 border-solid border-b-2 border-cyan-950 max-w-7xl mx-auto">
                         {/* Header */}
                         <header className="flex items-center justify-between">
                             <div className="flex items-center">
@@ -54,7 +54,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
 
                         {/* Hero Section */}
                         <div className="py-24 md:py-32">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
                                 <div>
                                     <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                                         {t('welcome.heroTitle')}
@@ -73,6 +73,9 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                             {t('welcome.download.fromGithub')}
                                         </Button>
                                     </div>
+                                </div>
+                                <div>
+                                    <img src="/hero.png" />
                                 </div>
                             </div>
                         </div>

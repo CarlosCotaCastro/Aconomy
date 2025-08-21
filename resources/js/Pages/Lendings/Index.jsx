@@ -18,7 +18,6 @@ import {
     Avatar,
 } from '@mui/material';
 import {
-    Add as AddIcon,
     Visibility as VisibilityIcon,
 } from '@mui/icons-material';
 import { useState } from 'react';
@@ -261,15 +260,6 @@ export default function Index({ auth, lendings }) {
                                 <Typography variant="h5" component="h1">
                                     {t('lendings.activeLendings')}
                                 </Typography>
-                                <Button
-                                    component={Link}
-                                    href={route('lendings.create')}
-                                    variant="contained"
-                                    color="primary"
-                                    startIcon={<AddIcon />}
-                                >
-                                    {t('lendings.lendItem')}
-                                </Button>
                             </Box>
 
                             {lendings.length === 0 ? (

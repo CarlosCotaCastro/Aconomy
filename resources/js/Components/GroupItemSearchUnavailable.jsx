@@ -17,14 +17,7 @@ export default function GroupItemSearchUnavailable() {
                     border: '1px solid #e2e8f0'
                 }}
             >
-                <SearchIcon 
-                    sx={{ 
-                        fontSize: 48, 
-                        color: 'text.secondary',
-                        mb: 2,
-                        opacity: 0.6
-                    }} 
-                />
+                <img src="/group.png" className="max-h-48 mx-auto" />
                 <Typography 
                     variant="h6" 
                     sx={{ 
@@ -33,7 +26,7 @@ export default function GroupItemSearchUnavailable() {
                         fontWeight: 600
                     }}
                 >
-                    {t('groupItemSearch.notApprovedTitle')}
+                    {t('groupItemSearch.joinGroupToUseSearch')}
                 </Typography>
                 <Typography 
                     variant="body2" 

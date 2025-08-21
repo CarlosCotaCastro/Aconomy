@@ -136,7 +136,8 @@ export default function NotificationMenu() {
         // Listen for new notifications
         const channel = window.Echo?.private(`App.Models.User.${auth.user.id}`);
         if (channel) {
-            channel.notification(() => {
+            channel.listen('.Illuminate\\Notifications\\Events\\BroadcastNotificationCreated', () => {
+                console.log('Received real-time notification!');
                 fetchNotifications();
             });
         }

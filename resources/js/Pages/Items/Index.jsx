@@ -40,10 +40,13 @@ export default function Index({ items, auth }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
+                            <Grid container sx={{justifyContent: 'space-between', mb: 4 }}>
+                                <Grid item size={{xs: 12, md: 6, lg: 8}}>   
                                 <Typography variant="h5" component="h1">
                                     {t('items.myItems')}
                                 </Typography>
+                                </Grid>
+                                <Grid item size={{xs: 12, md: 6, lg: 4}}>
                                 <PrimaryButton
                                     component={Link}
                                     href={route('items.create')}
@@ -52,7 +55,8 @@ export default function Index({ items, auth }) {
                                 >
                                     {t('items.addNewItem')}
                                 </PrimaryButton>
-                            </Box>
+                                </Grid>
+                            </Grid>
 
                             <Box sx={{ mb: 4 }}>
                                 <TextField

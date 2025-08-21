@@ -125,7 +125,6 @@
         "returnRequested": "Return Requested",
         "active": "Active",
         "overdue": "Overdue",
-        "lendItem": "Lend an Item",
         "activeItems": "active items",
         "borrowedBy": "Borrowed by {{name}}",
         "borrowedFrom": "Borrowed from {{name}}",
@@ -229,7 +228,8 @@
     "groupItemSearch": {
         "searchPlaceholder": "Search for items in your groups...",
         "notApprovedTitle": "Search Unavailable",
-        "notApprovedMessage": "You'll be able to search for items in all your approved groups once you become an approved member of at least one group."
+        "notApprovedMessage": "You'll be able to search for items in all your approved groups once you become an approved member of at least one group.",
+        "joinGroupToUseSearch": "Join a group to use the item search"
     },
     "navigation": {
         "home": "Home",
@@ -242,7 +242,6 @@
         "createNewGroup": "Create New Group",
         "lendings": "Lendings",
         "myLendings": "My Lendings",
-        "lendAnItem": "Lend an Item",
         "borrowRequests": "Borrow Requests",
         "myRequests": "My Requests",
         "profileSettings": "Profile Settings"
@@ -274,4 +273,4 @@
             "fromGithub": "Host an instance yourself!"
         }
     }
-} 
+}
