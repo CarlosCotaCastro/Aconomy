@@ -189,14 +189,7 @@ export default function AuthenticatedLayout({ user, children }) {
                         <ListItemText primary={t('navigation.myLendings')} />
                     </ListItemButton>
                 </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton component={Link} href={route('lendings.create')} sx={{ borderRadius: '0 20px 20px 0', mx: 1 }}>
-                        <ListItemIcon>
-                            <AddIcon sx={{ color: '#4caf50' }} />
-                        </ListItemIcon>
-                        <ListItemText primary={t('navigation.lendAnItem')} />
-                    </ListItemButton>
-                </ListItem>
+
 
                 <ListItem sx={{ mt: 1.5, mb: 0.5, px: 3 }}>
                     <Typography variant="overline" color="text.secondary" sx={{ fontWeight: 'bold' }}>
@@ -419,46 +412,6 @@ export default function AuthenticatedLayout({ user, children }) {
                                     >
                                         {t('navigation.myLendings')}
                                     </MenuItem>
-                                    <MenuItem
-                                        onClick={handleMenuClose}
-                                        component={Link}
-                                        href={route('lendings.create')}
-                                        sx={{ borderRadius: 1, mx: 0.5 }}
-                                    >
-                                        {t('navigation.lendAnItem')}
-                                    </MenuItem>
-                                </Menu>
-
-                                <Button
-                                    color="inherit"
-                                    aria-controls="borrow-requests-menu"
-                                    aria-haspopup="true"
-                                    onClick={handleBorrowRequestsMenuOpen}
-                                    endIcon={<ArrowDropDownIcon />}
-                                    startIcon={<RequestQuoteIcon />}
-                                    sx={{
-                                        textTransform: 'none',
-                                        fontWeight: 600,
-                                        borderRadius: '8px'
-                                    }}
-                                >
-                                    {t('navigation.borrowRequests')}
-                                </Button>
-                                <Menu
-                                    id="borrow-requests-menu"
-                                    anchorEl={borrowRequestsAnchorEl}
-                                    keepMounted
-                                    open={Boolean(borrowRequestsAnchorEl)}
-                                    onClose={handleMenuClose}
-                                    PaperProps={{
-                                        elevation: 2,
-                                        sx: {
-                                            mt: 1.5,
-                                            width: 200,
-                                            borderRadius: 2
-                                        }
-                                    }}
-                                >
                                     <MenuItem
                                         onClick={handleMenuClose}
                                         component={Link}

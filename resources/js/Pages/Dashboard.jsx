@@ -72,35 +72,30 @@ export default function Dashboard({ items = [], groups = [], lendings = [], borr
         <AuthenticatedLayout user={auth.user}>
             <Grid container spacing={3}>
                 {/* Main content card (2/3 width) */}
-                <Grid item size={{ xs: 12, md: 8 }}>
-                    <Card>
-                        <CardContent>
-                                <Box sx={{ mb: 4 }}>
+                <Grid item size={{ xs: 12, md: 12 }}>
+
                                     <Typography
                                         variant="h4"
                                         component="h1"
                                         sx={{
                                             fontWeight: 700,
                                             mb: 1,
-                                            background: 'linear-gradient(90deg, #5271ff 0%, #4361ee 100%)',
-                                            WebkitBackgroundClip: 'text',
-                                            WebkitTextFillColor: 'transparent',
                                         }}
                                     >
                                         {t('dashboard.welcomeBack', { name: auth.user.name })}
                                     </Typography>
+                                <Box sx={{ minHeight: '40vh'}}>
+                                <GroupItemSearch isApprovedMember={isApprovedMember} rounded={true} />
                                 </Box>
-                                <GroupItemSearch isApprovedMember={isApprovedMember} />
-                            </CardContent>
-                        </Card>
+
                     </Grid>
                 {/* Sidebar (1/3 width) */}
-                <Grid item size={{ xs: 12, md: 4 }}>
+                <Grid item size={{ xs: 12, md: 12 }}>
                     
                         <Grid container spacing={2}>
                             
                             {/* Active Lendings/Borrowings */}
-                            <Grid item size={ 12}>
+                            <Grid item size={{ xs: 12, md: 6 }}>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                                         <Avatar sx={{
                                             bgcolor: 'rgba(76, 175, 80, 0.1)',
@@ -119,22 +114,7 @@ export default function Dashboard({ items = [], groups = [], lendings = [], borr
                                             </Typography>
                                         </Box>
                                     </Box>
-                                    <Button
-                                        component={Link}
-                                        href={route('lendings.create')}
-                                        variant="outlined"
-                                        color={'secondary'}
-                                        fullWidth
-                                        startIcon={<AddCircleIcon />}
-                                        sx={{
-                                            borderRadius: 2,
-                                            p: 1,
-                                            textTransform: 'none',
-                                            fontWeight: 600
-                                        }}
-                                    >
-                                        {t('lendings.lendItem')}
-                                    </Button>
+
                                     <Divider sx={{ my: 2 }} />
                                     <List sx={{ mb: 2 }}>
                                         {activeLendings.slice(0, 2).map((lending) => (
@@ -221,10 +201,9 @@ export default function Dashboard({ items = [], groups = [], lendings = [], borr
                                             </Box>
                                         )}
                                     </List>
-                                </Grid>
                             </Grid>
                         {/* My Groups */}
-                            <Grid item size={ 12 }>
+                            <Grid item size={{ xs: 12, md: 6 }}>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                                         <Avatar sx={{
                                             bgcolor: 'rgba(255, 152, 0, 0.1)',
@@ -327,6 +306,7 @@ export default function Dashboard({ items = [], groups = [], lendings = [], borr
                                         )}
                                     </List>
                                 </Grid>
+                    </Grid>
                     </Grid>
                 </Grid>
             </AuthenticatedLayout>

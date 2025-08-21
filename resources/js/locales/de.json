@@ -118,7 +118,6 @@
         "returnRequested": "Rückgabe angefordert",
         "active": "Aktiv",
         "overdue": "Überfällig",
-        "lendItem": "Gegenstand verleihen",
         "activeItems": "aktive Gegenstände",
         "borrowedBy": "Ausgeliehen von {{name}}",
         "borrowedFrom": "Ausgeliehen an {{name}}",
@@ -232,7 +231,6 @@
         "createNewGroup": "Neue Gruppe erstellen",
         "lendings": "Ausleihen",
         "myLendings": "Meine Ausleihen",
-        "lendAnItem": "Gegenstand verleihen",
         "borrowRequests": "Leihanfragen",
         "myRequests": "Meine Anfragen",
         "profileSettings": "Profileinstellungen"
@@ -240,7 +238,8 @@
     "groupItemSearch": {
         "searchPlaceholder": "Suche nach Gegenständen in deinen Gruppen...",
         "notApprovedTitle": "Suche nicht verfügbar",
-        "notApprovedMessage": "Du wirst in der Lage sein, in allen deinen genehmigten Gruppen nach Gegenständen zu suchen, sobald du ein genehmigtes Mitglied in mindestens einer Gruppe wirst."
+        "notApprovedMessage": "Du wirst in der Lage sein, in allen deinen genehmigten Gruppen nach Gegenständen zu suchen, sobald du ein genehmigtes Mitglied in mindestens einer Gruppe wirst.",
+        "joinGroupToUseSearch": "Tritt einer Gruppe bei, um die Suche zu nutzen"
     },
     "welcome": {
         "heroTitle": "Ressourcen teilen, Gemeinschaft aufbauen",
@@ -266,4 +265,4 @@
             "poweredBy": "Betrieben mit Laravel v{{laravel}} (PHP v{{php}})"
         }
     }
-} 
+}

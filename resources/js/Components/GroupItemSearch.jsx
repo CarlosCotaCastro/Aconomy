@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import GroupItemSearchUnavailable from './GroupItemSearchUnavailable.jsx';
-import { Icon, OutlinedInput } from '@mui/material';
+import { InputBase } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import { router } from '@inertiajs/react';
 
-export default function GroupItemSearch({ isApprovedMember }) {
+export default function GroupItemSearch({ isApprovedMember, rounded = false }) {
     const { t } = useTranslation();
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
@@ -53,25 +53,32 @@ export default function GroupItemSearch({ isApprovedMember }) {
         return <GroupItemSearchUnavailable />;
     }
 
+    console.log(rounded);
+
     return (
         <div className="py-4">
-            <div className="mb-4 flex items-center gap-2 border bg-white rounded p-4 ">
-                <Search />
-                <input
-                    type="search"
+            <InputBase
+                type="input"
+                    sx={{
+                        borderRadius: rounded ? "9999px" : "8px",
+                        border: "1px solid #e0e0e0",
+                        padding: "10px 16px",
+                        fontSize: "26px",
+                    }}
                     value={query}
+                    startAdornment={<Search sx={{ fontSize: "26px", mr: 1 }} />}
                     onChange={e => setQuery(e.target.value)}
                     placeholder={t('groupItemSearch.searchPlaceholder')}
-                    className="flex-1 border-none text-3xl focus:bg-transparent focus:border-none focus:box-shadow-none  focus:outline-none"
+                    className={"mb-4 w-full bg-white p-4 text-3xl shadow-lg " + (rounded ? "rounded-full" : "rounded")}
                 />
-            </div>
+
             {loading && <div>Loading...</div>}
             {error && <div className="text-red-500 mb-2">{error}</div>}
             {success && <div className="text-green-600 mb-2">{success}</div>}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {results.map(item => (
                     <div key={item.id} className="border rounded p-4 flex flex-col items-center bg-white shadow">
-                        <img src={item.image || '/default-item.png'} alt={item.name} className="w-32 h-32 object-cover mb-2 rounded" />
+                        <img src={item.image || '/placeholder.png'} alt={item.name} className="w-32 h-32 object-cover mb-2 rounded" />
                         <div className="font-bold text-lg">{item.name}</div>
                         <div className="text-gray-600">Status: {item.status}</div>
                         <div className="flex items-center mt-2">
