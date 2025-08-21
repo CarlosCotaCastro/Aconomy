@@ -5,11 +5,11 @@ namespace App\Notifications;
 use App\Models\Group;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class GroupJoinRequestApprovedNotification extends Notification implements ShouldQueue
+class GroupJoinRequestApprovedNotification extends Notification implements ShouldBroadcast
 {
     use Queueable;
 
@@ -33,7 +33,27 @@ class GroupJoinRequestApprovedNotification extends Notification implements Shoul
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        return ['mail', 'database', 'broadcast'];
+    }
+
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return array
+     */
+    public function broadcastOn()
+    {
+        return ['App.Models.User.'.$this->group->user_id];
+    }
+
+    /**
+     * Get the data to broadcast.
+     *
+     * @return array
+     */
+    public function broadcastAs()
+    {
+        return 'notification';
     }
 
     /**

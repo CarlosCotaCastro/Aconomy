@@ -7,7 +7,8 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\GroupUserController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LendingController;
-use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\Notification\NotificationApiController;
+use App\Http\Controllers\Notification\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReturnRequestController;
 use App\Http\Controllers\StoreItemController;
@@ -79,15 +80,15 @@ Route::middleware('auth')->group(function () {
 
     // Notification routes
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
-    Route::get('/api/notifications', [NotificationController::class, 'getLatestNotifications']);
-    Route::get('/api/notifications/count', [NotificationController::class, 'getUnreadCount']);
+    Route::get('/api/notifications', [NotificationApiController::class, 'getLatestNotifications']);
+    Route::get('/api/notifications/count', [NotificationApiController::class, 'getUnreadCount']);
 
     Route::get('/notifications/count', [NotificationController::class, 'getUnreadCount'])->name('notifications.count');
     Route::post('/notifications/{id}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
     Route::post('/notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
 
     // Lendings routes
-    Route::resource('lendings', LendingController::class);
+    Route::resource('lendings', LendingController::class)->except(['create', 'store']);
     Route::post('/lendings/{lending}/return', [LendingController::class, 'return'])->name('lendings.return');
     Route::get('/items/{item}/borrow', [LendingController::class, 'requestBorrow'])->name('lendings.borrow');
     Route::post('/items/{item}/borrow', [LendingController::class, 'storeBorrowRequest'])->name('lendings.borrow.store');

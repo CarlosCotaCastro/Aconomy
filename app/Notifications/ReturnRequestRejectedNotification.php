@@ -4,11 +4,11 @@ namespace App\Notifications;
 
 use App\Models\ReturnRequest;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ReturnRequestRejectedNotification extends Notification implements ShouldQueue
+class ReturnRequestRejectedNotification extends Notification implements ShouldBroadcast
 {
     use Queueable;
 
@@ -32,7 +32,27 @@ class ReturnRequestRejectedNotification extends Notification implements ShouldQu
      */
     public function via(object $notifiable): array
     {
-        return ['mail', 'database'];
+        return ['mail', 'database', 'broadcast'];
+    }
+
+    /**
+     * Get the channels the event should broadcast on.
+     *
+     * @return array
+     */
+    public function broadcastOn()
+    {
+        return ['App.Models.User.'.$this->returnRequest->lending->borrower_id];
+    }
+
+    /**
+     * Get the data to broadcast.
+     *
+     * @return array
+     */
+    public function broadcastAs()
+    {
+        return 'notification';
     }
 
     /**

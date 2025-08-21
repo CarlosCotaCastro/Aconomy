@@ -10,6 +10,7 @@ use App\Notifications\BorrowRequestDeniedNotification;
 use App\Notifications\BorrowRequestNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -111,8 +112,32 @@ class BorrowRequestController extends Controller
             'expires_at' => now()->addDays(7), // Request expires in 7 days
         ]);
 
+        Log::info('BorrowRequest created', [
+            'borrow_request_id' => $borrowRequest->id,
+            'item_id' => $borrowRequest->item_id,
+            'lender_id' => $borrowRequest->lender_id,
+            'borrower_id' => $borrowRequest->borrower_id,
+        ]);
+
         // Notify the lender about the borrow request
-        $item->user->notify(new BorrowRequestNotification($borrowRequest));
+        try {
+            Log::info('Attempting to send notification to lender', [
+                'lender_email' => $item->user->email,
+                'lender_id' => $item->user->id,
+            ]);
+
+            $item->user->notify(new BorrowRequestNotification($borrowRequest));
+
+            Log::info('BorrowRequestNotification sent successfully', [
+                'lender_email' => $item->user->email,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Failed to send BorrowRequestNotification', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+                'lender_email' => $item->user->email,
+            ]);
+        }
 
         return redirect()->route('borrow-requests.index')->with('success', 'Borrow request sent successfully.');
     }
