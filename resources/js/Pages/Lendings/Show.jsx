@@ -1,6 +1,7 @@
 import { Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Box, Button, Card, CardContent, Typography, Grid, Chip, TextField, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Avatar, useTheme } from '@mui/material';
+import { Box, Button, Card, CardContent, Typography, Grid, Chip, TextField, DialogContentText, Avatar, useTheme } from '@mui/material';
+import GlassDialog from '@/Components/GlassDialog';
 import { useState } from 'react';
 
 export default function Show({ auth, lending }) {
@@ -296,83 +297,69 @@ export default function Show({ auth, lending }) {
                         </Grid>
                     </Grid>
                 
-                    <Dialog 
-                        open={openDialog} 
+                    <GlassDialog
+                        open={openDialog}
                         onClose={handleCloseDialog}
-                        PaperProps={{
-                            sx: {
-                                background: theme.palette.mode === 'dark' 
-                                    ? 'rgba(18, 18, 18, 0.95)'
-                                    : 'rgba(255, 255, 255, 0.95)',
-                                backdropFilter: 'blur(10px)',
-                                border: theme.palette.mode === 'dark' 
-                                    ? '1px solid rgba(255, 255, 255, 0.1)'
-                                    : '1px solid rgba(0, 0, 0, 0.1)',
-                                borderRadius: 2,
-                            }
-                        }}
+                        title="Request to Return Item"
+                        actions={
+                            <>
+                                <Button 
+                                    onClick={handleCloseDialog}
+                                    variant="outlined"
+                                    sx={{
+                                        borderColor: theme.palette.mode === 'dark' 
+                                            ? 'rgba(255, 255, 255, 0.3)'
+                                            : 'rgba(0, 0, 0, 0.23)',
+                                        color: theme.palette.mode === 'dark' 
+                                            ? 'white'
+                                            : 'text.primary',
+                                    }}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button 
+                                    onClick={handleSubmitRequest} 
+                                    disabled={processing}
+                                    variant="contained"
+                                    sx={{ fontWeight: 500 }}
+                                >
+                                    Submit Request
+                                </Button>
+                            </>
+                        }
                     >
-                        <DialogTitle sx={{ fontWeight: 600 }}>
-                            Request to Return Item
-                        </DialogTitle>
-                        <DialogContent>
-                            <DialogContentText sx={{ mb: 2 }}>
-                                Request to return this item to the lender. They will receive an email notification and will need to approve the return.
-                            </DialogContentText>
-                            <TextField
-                                autoFocus
-                                margin="dense"
-                                id="notes"
-                                label="Notes (optional)"
-                                type="text"
-                                fullWidth
-                                variant="outlined"
-                                value={notes}
-                                onChange={(e) => setNotes(e.target.value)}
-                                multiline
-                                rows={3}
-                                placeholder="Add any details about the return (condition, location for return, etc.)"
-                                sx={{
-                                    '& .MuiOutlinedInput-root': {
-                                        '& fieldset': {
-                                            borderColor: theme.palette.mode === 'dark' 
-                                                ? 'rgba(255, 255, 255, 0.3)'
-                                                : 'rgba(0, 0, 0, 0.23)',
-                                        },
-                                        '&:hover fieldset': {
-                                            borderColor: theme.palette.mode === 'dark' 
-                                                ? 'rgba(255, 255, 255, 0.5)'
-                                                : 'rgba(0, 0, 0, 0.87)',
-                                        },
+                        <DialogContentText sx={{ mb: 2 }}>
+                            Request to return this item to the lender. They will receive an email notification and will need to approve the return.
+                        </DialogContentText>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="notes"
+                            label="Notes (optional)"
+                            type="text"
+                            fullWidth
+                            variant="outlined"
+                            value={notes}
+                            onChange={(e) => setNotes(e.target.value)}
+                            multiline
+                            rows={3}
+                            placeholder="Add any details about the return (condition, location for return, etc.)"
+                            sx={{
+                                '& .MuiOutlinedInput-root': {
+                                    '& fieldset': {
+                                        borderColor: theme.palette.mode === 'dark' 
+                                            ? 'rgba(255, 255, 255, 0.3)'
+                                            : 'rgba(0, 0, 0, 0.23)',
                                     },
-                                }}
-                            />
-                        </DialogContent>
-                        <DialogActions sx={{ p: 3, pt: 1 }}>
-                            <Button 
-                                onClick={handleCloseDialog}
-                                variant="outlined"
-                                sx={{
-                                    borderColor: theme.palette.mode === 'dark' 
-                                        ? 'rgba(255, 255, 255, 0.3)'
-                                        : 'rgba(0, 0, 0, 0.23)',
-                                    color: theme.palette.mode === 'dark' 
-                                        ? 'white'
-                                        : 'text.primary',
-                                }}
-                            >
-                                Cancel
-                            </Button>
-                            <Button 
-                                onClick={handleSubmitRequest} 
-                                disabled={processing}
-                                variant="contained"
-                                sx={{ fontWeight: 500 }}
-                            >
-                                Submit Request
-                            </Button>
-                        </DialogActions>
-                    </Dialog>
+                                    '&:hover fieldset': {
+                                        borderColor: theme.palette.mode === 'dark' 
+                                            ? 'rgba(255, 255, 255, 0.5)'
+                                            : 'rgba(0, 0, 0, 0.87)',
+                                    },
+                                },
+                            }}
+                        />
+                    </GlassDialog>
                 </Box>
             </Box>
         </AuthenticatedLayout>

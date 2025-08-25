@@ -1,8 +1,9 @@
 import React from 'react';
-import { Box, Typography, Paper } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { Search as SearchIcon } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@mui/material/styles';
+import GlassPaper from '@/Components/GlassPaper';
 
 export default function GroupItemSearchUnavailable() {
     const { t } = useTranslation();
@@ -11,16 +12,13 @@ export default function GroupItemSearchUnavailable() {
 
     return (
         <Box sx={{ py: 3 }}>
-            <Paper 
-                elevation={0}
+            <GlassPaper 
                 sx={{
                     p: 4,
                     textAlign: 'center',
                     background: isDark 
                         ? 'rgba(255, 255, 255, 0.02)' 
                         : 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
-                    backdropFilter: isDark ? 'blur(10px)' : 'none',
-                    border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid #e2e8f0'
                 }}
             >
                 <img src="/group.png" className="max-h-48 mx-auto" />
@@ -45,7 +43,7 @@ export default function GroupItemSearchUnavailable() {
                 >
                     {t('groupItemSearch.notApprovedMessage')}
                 </Typography>
-            </Paper>
+            </GlassPaper>
         </Box>
     );
 } 
