@@ -1,3 +1,5 @@
+import { Button, useTheme } from "@mui/material";
+
 export default function SecondaryButton({
     type = 'button',
     className = '',
@@ -5,18 +7,51 @@ export default function SecondaryButton({
     children,
     ...props
 }) {
+    const theme = useTheme();
+
     return (
-        <button
+        <Button
+            component={props.href ? 'a' : 'button'}
             {...props}
             type={type}
-            className={
-                `inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-700 shadow-sm transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-25 ${
-                    disabled && 'opacity-25'
-                } ` + className
-            }
+            variant="outlined"
+            className={className}
+            sx={{
+                border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : theme.palette.grey[300]}`,
+                backgroundColor: theme.palette.mode === 'dark' 
+                    ? 'rgba(255, 255, 255, 0.02)' 
+                    : theme.palette.common.white,
+                backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                color: theme.palette.mode === 'dark' 
+                    ? theme.palette.grey[300] 
+                    : theme.palette.grey[700],
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                padding: '8px 16px',
+                borderRadius: '6px',
+                transition: 'all 0.15s ease-in-out',
+                '&:hover': {
+                    backgroundColor: theme.palette.mode === 'dark' 
+                        ? 'rgba(255, 255, 255, 0.05)' 
+                        : theme.palette.grey[50],
+                    border: `1px solid ${theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.2)' : theme.palette.grey[400]}`,
+                },
+                '&:focus': {
+                    outline: 'none',
+                    ring: 2,
+                    ringColor: theme.palette.primary.main,
+                    ringOffset: 2,
+                },
+                '&:disabled': {
+                    opacity: 0.25,
+                },
+                ...props.sx
+            }}
             disabled={disabled}
         >
             {children}
-        </button>
+        </Button>
     );
 }
