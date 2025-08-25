@@ -53,11 +53,15 @@ export default function DeleteUserForm({ className = '' }) {
     return (
         <section className={`space-y-6 ${className}`}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">
+                <h2 className={`text-lg font-medium ${
+                    isDark ? 'text-white' : 'text-gray-900'
+                }`}>
                     {t('profile.deleteAccount')}
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-600">
+                <p className={`mt-1 text-sm ${
+                    isDark ? 'text-gray-300' : 'text-gray-600'
+                }`}>
                     {t('profile.deleteAccountDescription')}
                 </p>
             </header>

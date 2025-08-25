@@ -20,7 +20,8 @@ import {
     DialogContentText,
     DialogActions,
     Paper,
-    CircularProgress
+    CircularProgress,
+    useTheme
 } from '@mui/material';
 import {
     ArrowBack as ArrowBackIcon,
@@ -34,6 +35,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
     const { t } = useTranslation();
+    const theme = useTheme();
     const [openQrDialog, setOpenQrDialog] = useState(false);
     const [openDenyDialog, setOpenDenyDialog] = useState(false);
     const [openVerifyDialog, setOpenVerifyDialog] = useState(false);
@@ -101,7 +103,18 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
 
             <Grid container spacing={3}>
                 <Grid size={{md:6, xs:12}}>
-                    <Card>
+                    <Card
+                        sx={{
+                            background: theme.palette.mode === 'dark' 
+                                ? 'rgba(255, 255, 255, 0.02)' 
+                                : 'rgba(255, 255, 255, 0.8)',
+                            backdropFilter: 'blur(10px)',
+                            border: theme.palette.mode === 'dark' 
+                                ? '1px solid rgba(255, 255, 255, 0.1)' 
+                                : '1px solid rgba(255, 255, 255, 0.2)',
+                            borderRadius: 2,
+                        }}
+                    >
                         <CardContent>
                             <Typography variant="h6" gutterBottom>
                                 {t('borrowRequests.itemDetails')}
@@ -158,7 +171,18 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                                     <Typography variant="subtitle2" gutterBottom>
                                         {t('borrowRequests.messageFromBorrower')}:
                                     </Typography>
-                                    <Paper variant="outlined" sx={{ p: 2, bgcolor: 'background.paper' }}>
+                                    <Paper 
+                                        variant="outlined" 
+                                        sx={{ 
+                                            p: 2, 
+                                            background: theme.palette.mode === 'dark' 
+                                                ? 'rgba(255, 255, 255, 0.03)' 
+                                                : 'rgba(0, 0, 0, 0.02)',
+                                            border: theme.palette.mode === 'dark' 
+                                                ? '1px solid rgba(255, 255, 255, 0.08)' 
+                                                : '1px solid rgba(0, 0, 0, 0.08)',
+                                        }}
+                                    >
                                         <Typography variant="body2" fontStyle="italic">
                                             "{borrowRequest.message}"
                                         </Typography>
@@ -170,7 +194,18 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                 </Grid>
 
                 <Grid size={{md:6, xs:12}}>
-                    <Card>
+                    <Card
+                        sx={{
+                            background: theme.palette.mode === 'dark' 
+                                ? 'rgba(255, 255, 255, 0.02)' 
+                                : 'rgba(255, 255, 255, 0.8)',
+                            backdropFilter: 'blur(10px)',
+                            border: theme.palette.mode === 'dark' 
+                                ? '1px solid rgba(255, 255, 255, 0.1)' 
+                                : '1px solid rgba(255, 255, 255, 0.2)',
+                            borderRadius: 2,
+                        }}
+                    >
                         <CardContent>
                             <Typography variant="h6" gutterBottom>
                                 {t('borrowRequests.requestStatus')}
@@ -289,14 +324,38 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
             </Grid>
 
             {/* QR Code Dialog */}
-            <Dialog open={openQrDialog} onClose={() => setOpenQrDialog(false)}>
+            <Dialog 
+                open={openQrDialog} 
+                onClose={() => setOpenQrDialog(false)}
+                PaperProps={{
+                    sx: {
+                        background: theme.palette.mode === 'dark' 
+                            ? 'rgba(18, 18, 18, 0.95)' 
+                            : 'rgba(255, 255, 255, 0.95)',
+                        backdropFilter: 'blur(10px)',
+                        border: theme.palette.mode === 'dark' 
+                            ? '1px solid rgba(255, 255, 255, 0.1)' 
+                            : '1px solid rgba(0, 0, 0, 0.1)',
+                    }
+                }}
+            >
                 <DialogTitle>{t('borrowRequests.qrCodeForItemHandoverTitle')}</DialogTitle>
                 <DialogContent>
                     <DialogContentText sx={{ mb: 2 }}>
                         {t('borrowRequests.qrCodeForItemHandoverInfo')}
                     </DialogContentText>
 
-                    <Box sx={{ textAlign: 'center', p: 2 }}>
+                    <Box sx={{ 
+                        textAlign: 'center', 
+                        p: 2,
+                        background: theme.palette.mode === 'dark' 
+                            ? 'rgba(255, 255, 255, 0.03)' 
+                            : 'rgba(0, 0, 0, 0.02)',
+                        borderRadius: 2,
+                        border: theme.palette.mode === 'dark' 
+                            ? '1px solid rgba(255, 255, 255, 0.08)' 
+                            : '1px solid rgba(0, 0, 0, 0.08)',
+                    }}>
                         {qrCode ? (
                             <div dangerouslySetInnerHTML={{ __html: atob(qrCode) }} />
                         ) : (
@@ -305,11 +364,22 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                     </Box>
 
                     {borrowRequest.handover_code && (
-                        <Box sx={{ textAlign: 'center', mt: 2 }}>
+                        <Box sx={{ 
+                            textAlign: 'center', 
+                            mt: 2,
+                            p: 2,
+                            background: theme.palette.mode === 'dark' 
+                                ? 'rgba(255, 255, 255, 0.05)' 
+                                : 'rgba(0, 0, 0, 0.03)',
+                            borderRadius: 2,
+                            border: theme.palette.mode === 'dark' 
+                                ? '1px solid rgba(255, 255, 255, 0.1)' 
+                                : '1px solid rgba(0, 0, 0, 0.1)',
+                        }}>
                             <Typography variant="subtitle2" gutterBottom>
                                 {t('borrowRequests.manualCode')}
                             </Typography>
-                            <Typography variant="h5" sx={{ letterSpacing: 2 }}>
+                            <Typography variant="h5" sx={{ letterSpacing: 2, fontFamily: 'monospace' }}>
                                 {borrowRequest.handover_code}
                             </Typography>
                         </Box>
@@ -321,7 +391,21 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
             </Dialog>
 
             {/* Deny Dialog */}
-            <Dialog open={openDenyDialog} onClose={() => setOpenDenyDialog(false)}>
+            <Dialog 
+                open={openDenyDialog} 
+                onClose={() => setOpenDenyDialog(false)}
+                PaperProps={{
+                    sx: {
+                        background: theme.palette.mode === 'dark' 
+                            ? 'rgba(18, 18, 18, 0.95)' 
+                            : 'rgba(255, 255, 255, 0.95)',
+                        backdropFilter: 'blur(10px)',
+                        border: theme.palette.mode === 'dark' 
+                            ? '1px solid rgba(255, 255, 255, 0.1)' 
+                            : '1px solid rgba(0, 0, 0, 0.1)',
+                    }
+                }}
+            >
                 <DialogTitle>{t('borrowRequests.denyBorrowRequestTitle')}</DialogTitle>
                 <DialogContent>
                     <DialogContentText sx={{ mb: 2 }}>
@@ -348,7 +432,21 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
             </Dialog>
 
             {/* Verify Code Dialog */}
-            <Dialog open={openVerifyDialog} onClose={() => setOpenVerifyDialog(false)}>
+            <Dialog 
+                open={openVerifyDialog} 
+                onClose={() => setOpenVerifyDialog(false)}
+                PaperProps={{
+                    sx: {
+                        background: theme.palette.mode === 'dark' 
+                            ? 'rgba(18, 18, 18, 0.95)' 
+                            : 'rgba(255, 255, 255, 0.95)',
+                        backdropFilter: 'blur(10px)',
+                        border: theme.palette.mode === 'dark' 
+                            ? '1px solid rgba(255, 255, 255, 0.1)' 
+                            : '1px solid rgba(0, 0, 0, 0.1)',
+                    }
+                }}
+            >
                 <DialogTitle>{t('borrowRequests.verifyItemHandoverTitle')}</DialogTitle>
                 <DialogContent>
                     <DialogContentText sx={{ mb: 2 }}>

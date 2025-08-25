@@ -1,4 +1,5 @@
 import { useState, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import ReactCrop, { centerCrop, makeAspectCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import InputError from '@/Components/InputError';
@@ -155,8 +156,8 @@ export default function ProfileImageUpload({ user, className = '' }) {
                 </div>
             </div>
 
-            {showCrop && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+            {showCrop && createPortal(
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm" style={{ zIndex: 9999 }}>
                     <div className={`w-full max-w-lg rounded-lg p-6 ${
                         isDark 
                             ? 'bg-gray-800/95 backdrop-blur-md border border-gray-700/50' 
@@ -214,7 +215,8 @@ export default function ProfileImageUpload({ user, className = '' }) {
                             </PrimaryButton>
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );

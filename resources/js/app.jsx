@@ -22,7 +22,7 @@ function ThemeWrapper({ App, props }) {
                 paper: prefersDarkMode ? '#1a1a1f' : '#fff'
             },
             primary: {
-                main: prefersDarkMode ? '#bb86fc' : '#1976d2',
+                main: prefersDarkMode ? '#1976d2' : '#1976d2',
             },
             success: {
                 main: '#4caf50',

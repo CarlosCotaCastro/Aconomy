@@ -6,6 +6,7 @@ import ProfileImageUpload from '@/Components/ProfileImageUpload';
 import { Transition } from '@headlessui/react';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '@mui/material/styles';
 
 export default function UpdateProfileInformation({
     mustVerifyEmail,
@@ -13,6 +14,8 @@ export default function UpdateProfileInformation({
     className = '',
 }) {
     const { t } = useTranslation();
+    const theme = useTheme();
+    const isDark = theme.palette.mode === 'dark';
     const user = usePage().props.auth.user;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } =
@@ -42,11 +45,15 @@ export default function UpdateProfileInformation({
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">
+                <h2 className={`text-lg font-medium ${
+                    isDark ? 'text-white' : 'text-gray-900'
+                }`}>
                     {t('profile.profileInformation')}
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-600">
+                <p className={`mt-1 text-sm ${
+                    isDark ? 'text-gray-300' : 'text-gray-600'
+                }`}>
                     {t('profile.profileInformationDescription')}
                 </p>
             </header>
@@ -88,18 +95,26 @@ export default function UpdateProfileInformation({
 
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
-                        <p className="mt-2 text-sm text-gray-800">
+                        <p className={`mt-2 text-sm ${
+                            isDark ? 'text-gray-200' : 'text-gray-800'
+                        }`}>
                             {t('profile.emailUnverified')}
                             <button
                                 onClick={handleResendVerification}
-                                className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                                className={`rounded-md text-sm underline focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
+                                    isDark 
+                                        ? 'text-gray-300 hover:text-white' 
+                                        : 'text-gray-600 hover:text-gray-900'
+                                }`}
                             >
                                 {t('profile.resendVerificationEmail')}
                             </button>
                         </p>
 
                         {status === 'verification-link-sent' && (
-                            <div className="mt-2 text-sm font-medium text-green-600">
+                            <div className={`mt-2 text-sm font-medium ${
+                                isDark ? 'text-green-400' : 'text-green-600'
+                            }`}>
                                 {t('profile.verificationLinkSent')}
                             </div>
                         )}
@@ -116,7 +131,9 @@ export default function UpdateProfileInformation({
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600">
+                        <p className={`text-sm ${
+                            isDark ? 'text-green-400' : 'text-gray-600'
+                        }`}>
                             {t('profile.saved')}
                         </p>
                     </Transition>
