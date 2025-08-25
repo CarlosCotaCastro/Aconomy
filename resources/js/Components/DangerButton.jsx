@@ -1,20 +1,50 @@
+import { Button, useTheme } from "@mui/material";
+
 export default function DangerButton({
     className = '',
     disabled,
     children,
     ...props
 }) {
+    const theme = useTheme();
+
     return (
-        <button
+        <Button
+            component={props.href ? 'a' : 'button'}
             {...props}
-            className={
-                `inline-flex items-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 active:bg-red-700 ${
-                    disabled && 'opacity-25'
-                } ` + className
-            }
+            variant="contained"
+            className={className}
+            sx={{
+                backgroundColor: theme.palette.error.main,
+                color: theme.palette.error.contrastText,
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                padding: '8px 16px',
+                borderRadius: '6px',
+                border: 'none',
+                transition: 'all 0.15s ease-in-out',
+                '&:hover': {
+                    backgroundColor: theme.palette.error.dark,
+                },
+                '&:focus': {
+                    outline: 'none',
+                    ring: 2,
+                    ringColor: theme.palette.error.main,
+                    ringOffset: 2,
+                },
+                '&:active': {
+                    backgroundColor: theme.palette.error.dark,
+                },
+                '&:disabled': {
+                    opacity: 0.25,
+                },
+                ...props.sx
+            }}
             disabled={disabled}
         >
             {children}
-        </button>
+        </Button>
     );
 }
