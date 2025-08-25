@@ -13,6 +13,7 @@ import {
     InputAdornment,
     Chip,
     CardMedia,
+    useTheme,
 } from '@mui/material';
 import {
     Search as SearchIcon,
@@ -22,6 +23,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function GroupItems({ group, items, auth }) {
     const { t } = useTranslation();
+    const theme = useTheme();
     const [searchQuery, setSearchQuery] = useState('');
     const filteredItems = items.filter(item => 
         item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -30,7 +32,25 @@ export default function GroupItems({ group, items, auth }) {
 
     return (
         <AuthenticatedLayout>
-            <Box sx={{ mb: 4 }}>
+            <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <Box
+                        sx={{
+                            backgroundColor: theme.palette.mode === 'dark' 
+                                ? 'rgba(255, 255, 255, 0.02)' 
+                                : 'rgba(255, 255, 255, 1)',
+                            backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                            border: theme.palette.mode === 'dark' 
+                                ? '1px solid rgba(255, 255, 255, 0.1)' 
+                                : '1px solid rgba(0, 0, 0, 0.1)',
+                            borderRadius: 2,
+                            p: 3,
+                            boxShadow: theme.palette.mode === 'dark' 
+                                ? '0 8px 32px rgba(0, 0, 0, 0.4)' 
+                                : '0 1px 3px rgba(0, 0, 0, 0.1)',
+                        }}
+                    >
+                        <Box sx={{ mb: 4 }}>
                 <Typography variant="h4" component="h1" gutterBottom>
                     {t('items.groupItemsTitle', { groupName: group.name })}
                 </Typography>
@@ -53,7 +73,26 @@ export default function GroupItems({ group, items, auth }) {
             <Grid container spacing={3}>
                 {filteredItems.map((item) => (
                     <Grid md={4} sm={6} key={item.id}>
-                        <Card>
+                        <Card
+                            sx={{
+                                backgroundColor: theme.palette.mode === 'dark' 
+                                    ? 'rgba(255, 255, 255, 0.02)' 
+                                    : 'rgba(255, 255, 255, 1)',
+                                backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                                border: theme.palette.mode === 'dark' 
+                                    ? '1px solid rgba(255, 255, 255, 0.1)' 
+                                    : '1px solid rgba(0, 0, 0, 0.1)',
+                                boxShadow: theme.palette.mode === 'dark' 
+                                    ? '0 4px 16px rgba(0, 0, 0, 0.3)' 
+                                    : '0 2px 4px rgba(0, 0, 0, 0.1)',
+                                transition: 'all 0.3s ease',
+                                '&:hover': {
+                                    boxShadow: theme.palette.mode === 'dark' 
+                                        ? '0 8px 32px rgba(0, 0, 0, 0.4)' 
+                                        : '0 4px 8px rgba(0, 0, 0, 0.15)',
+                                }
+                            }}
+                        >
                             {item.image_path ? (
                                 <CardMedia
                                     component="img"
@@ -66,7 +105,9 @@ export default function GroupItems({ group, items, auth }) {
                                 <Box
                                     sx={{
                                         height: 120,
-                                        bgcolor: 'rgba(0,0,0,0.05)',
+                                        bgcolor: theme.palette.mode === 'dark' 
+                                            ? 'rgba(255, 255, 255, 0.05)' 
+                                            : 'rgba(0, 0, 0, 0.05)',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center'
@@ -116,7 +157,10 @@ export default function GroupItems({ group, items, auth }) {
                         </Card>
                     </Grid>
                 ))}
-            </Grid>
+                        </Grid>
+                    </Box>
+                </div>
+            </div>
         </AuthenticatedLayout>
     );
 }

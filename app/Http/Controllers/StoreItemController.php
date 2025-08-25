@@ -15,7 +15,7 @@ class StoreItemController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:8096',
         ]);
 
         $approvedGroups = auth()->user()->approvedGroups;

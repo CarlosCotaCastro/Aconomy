@@ -5,6 +5,7 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import { useForm } from '@inertiajs/react';
+import { useTheme } from '@mui/material/styles';
 
 export default function ProfileImageUpload({ user, className = '' }) {
     const [imgSrc, setImgSrc] = useState('');
@@ -12,6 +13,8 @@ export default function ProfileImageUpload({ user, className = '' }) {
     const [completedCrop, setCompletedCrop] = useState(null);
     const imgRef = useRef(null);
     const [showCrop, setShowCrop] = useState(false);
+    const theme = useTheme();
+    const isDark = theme.palette.mode === 'dark';
 
     const { data, setData, post, processing, errors, reset } = useForm({
         image: null,
@@ -117,7 +120,7 @@ export default function ProfileImageUpload({ user, className = '' }) {
                             className="h-full w-full object-cover"
                         />
                     ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-gray-100 text-gray-400">
+                        <div className={`flex h-full w-full items-center justify-center ${isDark ? 'bg-gray-700/50 text-gray-400' : 'bg-gray-100 text-gray-400'}`}>
                             <svg
                                 className="h-12 w-12"
                                 fill="none"
@@ -142,21 +145,24 @@ export default function ProfileImageUpload({ user, className = '' }) {
                         id="profile_image"
                         accept="image/*"
                         onChange={onSelectFile}
-                        className="mt-1 block w-full text-sm text-gray-500
-                            file:mr-4 file:py-2 file:px-4
-                            file:rounded-full file:border-0
-                            file:text-sm file:font-semibold
-                            file:bg-violet-50 file:text-violet-700
-                            hover:file:bg-violet-100"
+                        className={`mt-1 block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold ${
+                            isDark 
+                                ? 'text-gray-300 file:bg-violet-900/50 file:text-violet-300 hover:file:bg-violet-800/50' 
+                                : 'text-gray-500 file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100'
+                        }`}
                     />
                     <InputError message={errors.image} className="mt-2" />
                 </div>
             </div>
 
             {showCrop && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="w-full max-w-lg rounded-lg bg-white p-6">
-                        <h3 className="mb-4 text-lg font-medium text-gray-900">
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+                    <div className={`w-full max-w-lg rounded-lg p-6 ${
+                        isDark 
+                            ? 'bg-gray-800/95 backdrop-blur-md border border-gray-700/50' 
+                            : 'bg-white'
+                    }`}>
+                        <h3 className={`mb-4 text-lg font-medium ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
                             Crop Profile Image
                         </h3>
                         <div className="mb-4">
@@ -183,7 +189,11 @@ export default function ProfileImageUpload({ user, className = '' }) {
                                     setShowCrop(false);
                                     setImgSrc('');
                                 }}
-                                className="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                                className={`rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset transition duration-150 ease-in-out ${
+                                    isDark 
+                                        ? 'bg-gray-700/50 text-gray-200 ring-gray-600 hover:bg-gray-600/50' 
+                                        : 'bg-white text-gray-900 ring-gray-300 hover:bg-gray-50'
+                                }`}
                             >
                                 Cancel
                             </button>
