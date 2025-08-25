@@ -12,6 +12,7 @@ import {
     Avatar,
     Alert,
     Divider,
+    useTheme,
 } from '@mui/material';
 import {
     ArrowBack as ArrowBackIcon,
@@ -23,6 +24,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function Create({ item, auth }) {
     const { t } = useTranslation();
+    const theme = useTheme();
     const { data, setData, post, processing, errors } = useForm({
         item_id: item.id,
         message: '',
@@ -52,7 +54,18 @@ export default function Create({ item, auth }) {
 
             <Grid container spacing={3}>
                 <Grid md={6}>
-                    <Card>
+                    <Card
+                        sx={{
+                            background: theme.palette.mode === 'dark' 
+                                ? 'rgba(255, 255, 255, 0.02)' 
+                                : 'rgba(255, 255, 255, 0.8)',
+                            backdropFilter: 'blur(10px)',
+                            border: theme.palette.mode === 'dark' 
+                                ? '1px solid rgba(255, 255, 255, 0.1)' 
+                                : '1px solid rgba(255, 255, 255, 0.2)',
+                            borderRadius: 2,
+                        }}
+                    >
                         <CardContent>
                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                                 <Avatar sx={{ bgcolor: 'primary.light', mr: 2 }}>
@@ -93,7 +106,18 @@ export default function Create({ item, auth }) {
                 </Grid>
                 
                 <Grid md={6}>
-                    <Card>
+                    <Card
+                        sx={{
+                            background: theme.palette.mode === 'dark' 
+                                ? 'rgba(255, 255, 255, 0.02)' 
+                                : 'rgba(255, 255, 255, 0.8)',
+                            backdropFilter: 'blur(10px)',
+                            border: theme.palette.mode === 'dark' 
+                                ? '1px solid rgba(255, 255, 255, 0.1)' 
+                                : '1px solid rgba(255, 255, 255, 0.2)',
+                            borderRadius: 2,
+                        }}
+                    >
                         <CardContent>
                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                                 <Avatar sx={{ bgcolor: 'secondary.light', mr: 2 }}>

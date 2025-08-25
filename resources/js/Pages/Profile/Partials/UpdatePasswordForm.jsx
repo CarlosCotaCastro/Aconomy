@@ -6,9 +6,12 @@ import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '@mui/material/styles';
 
 export default function UpdatePasswordForm({ className = '' }) {
     const { t } = useTranslation();
+    const theme = useTheme();
+    const isDark = theme.palette.mode === 'dark';
     const passwordInput = useRef();
     const currentPasswordInput = useRef();
 
@@ -49,11 +52,15 @@ export default function UpdatePasswordForm({ className = '' }) {
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">
+                <h2 className={`text-lg font-medium ${
+                    isDark ? 'text-white' : 'text-gray-900'
+                }`}>
                     {t('profile.updatePassword')}
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-600">
+                <p className={`mt-1 text-sm ${
+                    isDark ? 'text-gray-300' : 'text-gray-600'
+                }`}>
                     {t('profile.updatePasswordDescription')}
                 </p>
             </header>
@@ -137,7 +144,9 @@ export default function UpdatePasswordForm({ className = '' }) {
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600">
+                        <p className={`text-sm ${
+                            isDark ? 'text-green-400' : 'text-gray-600'
+                        }`}>
                             {t('profile.saved')}
                         </p>
                     </Transition>

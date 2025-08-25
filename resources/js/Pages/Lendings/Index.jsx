@@ -16,6 +16,8 @@ import {
     useMediaQuery,
     useTheme,
     Avatar,
+    Card,
+    CardContent,
 } from '@mui/material';
 import {
     Visibility as VisibilityIcon,
@@ -133,11 +135,15 @@ export default function Index({ auth, lendings }) {
         const isLender = auth.user.id === lending.lender.id;
 
         return (
-            <TableRow
+                            <TableRow
                 key={lending.id}
                 sx={{
                     '&:last-child td, &:last-child th': { border: 0 },
-                    '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.02)' }
+                    '&:hover': { 
+                        backgroundColor: theme.palette.mode === 'dark' 
+                            ? 'rgba(255, 255, 255, 0.05)' 
+                            : 'rgba(0, 0, 0, 0.02)' 
+                    }
                 }}
             >
                 {visibleColumns.includes('item') && (
@@ -248,28 +254,58 @@ export default function Index({ auth, lendings }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                {t('lendings.activeLendings')}
-            </h2>}
+            header={
+                <Typography variant="h4" component="h1" sx={{ 
+                    fontWeight: 600,
+                    color: theme.palette.mode === 'dark' ? 'white' : 'text.primary'
+                }}>
+                    {t('lendings.activeLendings')}
+                </Typography>
+            }
         >
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
+            <Box sx={{ py: 3 }}>
+                <Box sx={{ maxWidth: '1200px', mx: 'auto', px: { xs: 2, sm: 3 } }}>
+                    <Card sx={{
+                        background: theme.palette.mode === 'dark' 
+                            ? 'rgba(255, 255, 255, 0.02)'
+                            : 'rgba(255, 255, 255, 0.9)',
+                        backdropFilter: 'blur(10px)',
+                        border: theme.palette.mode === 'dark' 
+                            ? '1px solid rgba(255, 255, 255, 0.1)'
+                            : '1px solid rgba(255, 255, 255, 0.2)',
+                        boxShadow: theme.palette.mode === 'dark'
+                            ? '0 8px 32px rgba(0, 0, 0, 0.3)'
+                            : '0 8px 32px rgba(0, 0, 0, 0.1)',
+                    }}>
+                        <CardContent sx={{ p: 4 }}>
                             <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <Typography variant="h5" component="h1">
+                                <Typography variant="h5" component="h1" sx={{ fontWeight: 600 }}>
                                     {t('lendings.activeLendings')}
                                 </Typography>
                             </Box>
 
                             {lendings.length === 0 ? (
-                                <Box sx={{ textAlign: 'center', py: 4 }}>
-                                    <Typography color="text.secondary">
+                                <Box sx={{ textAlign: 'center', py: 8 }}>
+                                    <Typography variant="h6" color="text.secondary" sx={{ mb: 2 }}>
                                         {t('lendings.noActiveLendings')}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        When you have active lendings, they will appear here.
                                     </Typography>
                                 </Box>
                             ) : (
-                                <TableContainer component={Paper}>
+                                <TableContainer 
+                                    component={Paper} 
+                                    sx={{
+                                        background: theme.palette.mode === 'dark' 
+                                            ? 'rgba(255, 255, 255, 0.03)'
+                                            : 'rgba(255, 255, 255, 0.7)',
+                                        backdropFilter: 'blur(10px)',
+                                        border: theme.palette.mode === 'dark' 
+                                            ? '1px solid rgba(255, 255, 255, 0.08)'
+                                            : '1px solid rgba(255, 255, 255, 0.3)',
+                                    }}
+                                >
                                     <Table>
                                         {renderTableHeader()}
                                         <TableBody>
@@ -278,10 +314,10 @@ export default function Index({ auth, lendings }) {
                                     </Table>
                                 </TableContainer>
                             )}
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        </CardContent>
+                    </Card>
+                </Box>
+            </Box>
         </AuthenticatedLayout>
     );
 } 

@@ -83,7 +83,15 @@ export default function RecentItemsGrid({ items, currentUserId }) {
     return (
         <Box sx={{ mb: 4 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                <Avatar sx={{ bgcolor: 'secondary.light', mr: 2 }}>
+                <Avatar sx={{ 
+                    bgcolor: (theme) => theme.palette.mode === 'dark' 
+                        ? 'rgba(187, 134, 252, 0.2)'
+                        : 'secondary.light',
+                    mr: 2,
+                    border: (theme) => theme.palette.mode === 'dark' 
+                        ? '1px solid rgba(255, 255, 255, 0.1)'
+                        : 'none',
+                }}>
                     <InventoryIcon />
                 </Avatar>
                 <Typography variant="h6">
@@ -107,10 +115,22 @@ export default function RecentItemsGrid({ items, currentUserId }) {
                                 height: '100%',
                                 display: 'flex',
                                 flexDirection: 'column',
-                                transition: 'transform 0.2s, box-shadow 0.2s',
+                                background: (theme) => theme.palette.mode === 'dark' 
+                                    ? 'rgba(255, 255, 255, 0.02)'
+                                    : 'rgba(255, 255, 255, 1)',
+                                backdropFilter: 'blur(10px)',
+                                border: (theme) => theme.palette.mode === 'dark' 
+                                    ? '1px solid rgba(255, 255, 255, 0.1)'
+                                    : '1px solid rgba(0, 0, 0, 0.1)',
+                                transition: 'all 0.3s ease',
                                 '&:hover': {
                                     transform: 'translateY(-4px)',
-                                    boxShadow: theme.shadows[4],
+                                    background: (theme) => theme.palette.mode === 'dark' 
+                                        ? 'rgba(255, 255, 255, 0.05)'
+                                        : 'rgba(255, 255, 255, 1)',
+                                    boxShadow: (theme) => theme.palette.mode === 'dark'
+                                        ? '0 12px 40px rgba(187, 134, 252, 0.15)'
+                                        : theme.shadows[4],
                                 }
                             }}
                         >
@@ -118,7 +138,9 @@ export default function RecentItemsGrid({ items, currentUserId }) {
                                 sx={{
                                     position: 'relative',
                                     paddingTop: '56.25%', // 16:9 aspect ratio
-                                    bgcolor: 'grey.100',
+                                    bgcolor: (theme) => theme.palette.mode === 'dark' 
+                                        ? 'rgba(255, 255, 255, 0.05)'
+                                        : 'grey.100',
                                     overflow: 'hidden'
                                 }}
                             >
@@ -147,10 +169,17 @@ export default function RecentItemsGrid({ items, currentUserId }) {
                                             display: 'flex',
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            bgcolor: 'grey.200'
+                                            bgcolor: (theme) => theme.palette.mode === 'dark' 
+                                                ? 'rgba(255, 255, 255, 0.08)'
+                                                : 'grey.200'
                                         }}
                                     >
-                                        <InventoryIcon sx={{ fontSize: 48, color: 'grey.400' }} />
+                                        <InventoryIcon sx={{ 
+                                            fontSize: 48, 
+                                            color: (theme) => theme.palette.mode === 'dark' 
+                                                ? 'rgba(255, 255, 255, 0.3)'
+                                                : 'grey.400'
+                                        }} />
                                     </Box>
                                 )}
                             </Box>

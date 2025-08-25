@@ -8,6 +8,7 @@ import {
     Paper,
     Divider,
     Chip,
+    useTheme,
 } from '@mui/material';
 import {
     Person as PersonIcon,
@@ -19,15 +20,34 @@ import RecentItemsGrid from '@/Pages/Groups/Partials/RecentItemsGrid';
 
 export default function Show({ profileUser, items, borrowedItems, auth }) {
     const { t } = useTranslation();
+    const theme = useTheme();
     const isCurrentUser = auth.user.id === profileUser.id;
 
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title={t('profile.userProfile', { name: profileUser.name })} />
 
-            <Box sx={{ mb: 4 }}>
-                <Paper sx={{ p: 3, mb: 4 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+            <Box sx={{ mb: 4, px: { xs: 2, sm: 3, lg: 4 } }}>
+                <Paper 
+                    elevation={0}
+                    sx={{ 
+                        p: { xs: 2, sm: 3 }, 
+                        mb: 4,
+                        borderRadius: 2,
+                        ...(theme.palette.mode === 'dark' && {
+                            background: 'rgba(255, 255, 255, 0.02)',
+                            backdropFilter: 'blur(10px)',
+                            border: '1px solid rgba(255, 255, 255, 0.1)'
+                        })
+                    }}
+                >
+                    <Box sx={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        gap: 3,
+                        flexDirection: { xs: 'column', sm: 'row' },
+                        textAlign: { xs: 'center', sm: 'left' }
+                    }}>
                         <Avatar
                             src={profileUser.profile_image_path ? `/storage/${profileUser.profile_image_path}` : undefined}
                             alt={profileUser.name}
@@ -35,7 +55,8 @@ export default function Show({ profileUser, items, borrowedItems, auth }) {
                                 width: 120,
                                 height: 120,
                                 bgcolor: !profileUser.profile_image_path ? 'primary.main' : undefined,
-                                fontSize: '3rem'
+                                fontSize: '3rem',
+                                border: theme.palette.mode === 'dark' ? '2px solid rgba(255, 255, 255, 0.1)' : 'none'
                             }}
                         >
                             {!profileUser.profile_image_path && profileUser.name.charAt(0).toUpperCase()}
@@ -52,6 +73,14 @@ export default function Show({ profileUser, items, borrowedItems, auth }) {
                                 label={t('profile.memberSince', { date: new Date(profileUser.created_at).toLocaleDateString() })}
                                 variant="outlined"
                                 size="small"
+                                sx={{
+                                    ...(theme.palette.mode === 'dark' && {
+                                        borderColor: 'rgba(255, 255, 255, 0.2)',
+                                        '& .MuiChip-icon': {
+                                            color: 'text.secondary'
+                                        }
+                                    })
+                                }}
                             />
                         </Box>
                     </Box>
@@ -61,7 +90,13 @@ export default function Show({ profileUser, items, borrowedItems, auth }) {
                     <Grid size={12}>
                         <Box sx={{ mb: 4 }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                                <Avatar sx={{ bgcolor: 'primary.light', mr: 2 }}>
+                                <Avatar sx={{ 
+                                    bgcolor: theme.palette.mode === 'dark' ? 'rgba(25, 118, 210, 0.3)' : 'primary.light',
+                                    mr: 2,
+                                    ...(theme.palette.mode === 'dark' && {
+                                        border: '1px solid rgba(255, 255, 255, 0.1)'
+                                    })
+                                }}>
                                     <InventoryIcon />
                                 </Avatar>
                                 <Typography variant="h6">
@@ -79,7 +114,13 @@ export default function Show({ profileUser, items, borrowedItems, auth }) {
                         <Grid size={12}>
                             <Box>
                                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                                    <Avatar sx={{ bgcolor: 'secondary.light', mr: 2 }}>
+                                    <Avatar sx={{ 
+                                        bgcolor: theme.palette.mode === 'dark' ? 'rgba(156, 39, 176, 0.3)' : 'secondary.light',
+                                        mr: 2,
+                                        ...(theme.palette.mode === 'dark' && {
+                                            border: '1px solid rgba(255, 255, 255, 0.1)'
+                                        })
+                                    }}>
                                         <HistoryIcon />
                                     </Avatar>
                                     <Typography variant="h6">

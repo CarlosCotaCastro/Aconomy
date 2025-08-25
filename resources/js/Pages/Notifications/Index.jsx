@@ -15,6 +15,7 @@ import {
     Divider,
     IconButton,
     Tooltip,
+    useTheme,
 } from '@mui/material';
 import {
     Notifications as NotificationsIcon,
@@ -75,6 +76,7 @@ const formatNotification = (notification) => {
 };
 
 export default function Index({ auth, unreadNotifications, readNotifications }) {
+    const theme = useTheme();
     const { post: markAsRead } = useForm();
     const { post: markAllAsRead } = useForm();
     
@@ -108,20 +110,52 @@ export default function Index({ auth, unreadNotifications, readNotifications }) 
                     )
                 }
                 sx={{ 
-                    bgcolor: isRead ? 'transparent' : 'rgba(25, 118, 210, 0.04)',
+                    bgcolor: isRead ? 'transparent' : (theme.palette.mode === 'dark' 
+                        ? 'rgba(255, 255, 255, 0.02)' 
+                        : 'rgba(25, 118, 210, 0.04)'),
                     borderRadius: 1,
                     mb: 1,
+                    border: isRead ? 'none' : (theme.palette.mode === 'dark' 
+                        ? '1px solid rgba(255, 255, 255, 0.1)' 
+                        : '1px solid rgba(25, 118, 210, 0.1)'),
+                    backdropFilter: !isRead && theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                        bgcolor: theme.palette.mode === 'dark' 
+                            ? 'rgba(255, 255, 255, 0.05)' 
+                            : 'rgba(25, 118, 210, 0.08)',
+                        transform: 'translateY(-1px)',
+                    }
                 }}
             >
                 <ListItemAvatar>
-                    <Avatar>
+                    <Avatar sx={{
+                        bgcolor: theme.palette.mode === 'dark' 
+                            ? 'rgba(255, 255, 255, 0.1)' 
+                            : theme.palette.primary.light,
+                        border: theme.palette.mode === 'dark' 
+                            ? '1px solid rgba(255, 255, 255, 0.2)' 
+                            : 'none',
+                    }}>
                         {getNotificationIcon(notification.data.type)}
                     </Avatar>
                 </ListItemAvatar>
                 <ListItemText
                     primary={
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Typography variant="subtitle1" component={Link} href={url} sx={{ textDecoration: 'none', color: 'inherit' }}>
+                            <Typography 
+                                variant="subtitle1" 
+                                component={Link} 
+                                href={url} 
+                                sx={{ 
+                                    textDecoration: 'none', 
+                                    color: 'text.primary',
+                                    fontWeight: !isRead ? 600 : 400,
+                                    '&:hover': {
+                                        color: 'primary.main',
+                                    }
+                                }}
+                            >
                                 {title}
                             </Typography>
                             {!isRead && (
@@ -129,18 +163,41 @@ export default function Index({ auth, unreadNotifications, readNotifications }) 
                                     label="New" 
                                     size="small" 
                                     color="primary" 
-                                    variant="outlined" 
-                                    sx={{ ml: 1, height: 20 }}
+                                    variant={theme.palette.mode === 'dark' ? 'filled' : 'outlined'}
+                                    sx={{ 
+                                        ml: 1, 
+                                        height: 20,
+                                        fontSize: '0.75rem',
+                                        ...(theme.palette.mode === 'dark' && {
+                                            bgcolor: 'rgba(25, 118, 210, 0.8)',
+                                            color: 'white',
+                                            border: '1px solid rgba(255, 255, 255, 0.2)',
+                                        })
+                                    }}
                                 />
                             )}
                         </Box>
                     }
                     secondary={
                         <>
-                            <Typography variant="body2" color="text.primary" sx={{ display: 'block' }}>
+                            <Typography 
+                                variant="body2" 
+                                sx={{ 
+                                    display: 'block',
+                                    color: 'text.primary',
+                                    opacity: isRead ? 0.7 : 1,
+                                    fontWeight: !isRead ? 500 : 400,
+                                }}
+                            >
                                 {message}
                             </Typography>
-                            <Typography variant="caption" color="text.secondary">
+                            <Typography 
+                                variant="caption" 
+                                sx={{
+                                    color: 'text.secondary',
+                                    opacity: theme.palette.mode === 'dark' ? 0.8 : 0.7,
+                                }}
+                            >
                                 {notificationDate.toLocaleString()}
                             </Typography>
                         </>
@@ -166,9 +223,24 @@ export default function Index({ auth, unreadNotifications, readNotifications }) 
                     )}
                 </Box>
                 
-                <Card sx={{ mb: 4 }}>
+                <Card sx={{ 
+                    mb: 4,
+                    ...(theme.palette.mode === 'dark' && {
+                        bgcolor: 'rgba(255, 255, 255, 0.02)',
+                        backdropFilter: 'blur(10px)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+                    })
+                }}>
                     <CardContent>
-                        <Typography variant="h6" gutterBottom>
+                        <Typography 
+                            variant="h6" 
+                            gutterBottom
+                            sx={{
+                                color: 'text.primary',
+                                fontWeight: 600,
+                            }}
+                        >
                             Unread Notifications
                         </Typography>
                         
@@ -177,16 +249,38 @@ export default function Index({ auth, unreadNotifications, readNotifications }) 
                                 {unreadNotifications.map(notification => renderNotificationItem(notification))}
                             </List>
                         ) : (
-                            <Typography variant="body1" color="text.secondary" sx={{ py: 2 }}>
+                            <Typography 
+                                variant="body1" 
+                                sx={{ 
+                                    py: 2,
+                                    color: 'text.secondary',
+                                    textAlign: 'center',
+                                    opacity: 0.7,
+                                }}
+                            >
                                 You have no unread notifications.
                             </Typography>
                         )}
                     </CardContent>
                 </Card>
                 
-                <Card>
+                <Card sx={{
+                    ...(theme.palette.mode === 'dark' && {
+                        bgcolor: 'rgba(255, 255, 255, 0.02)',
+                        backdropFilter: 'blur(10px)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                        boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+                    })
+                }}>
                     <CardContent>
-                        <Typography variant="h6" gutterBottom>
+                        <Typography 
+                            variant="h6" 
+                            gutterBottom
+                            sx={{
+                                color: 'text.primary',
+                                fontWeight: 600,
+                            }}
+                        >
                             Read Notifications
                         </Typography>
                         
@@ -195,7 +289,15 @@ export default function Index({ auth, unreadNotifications, readNotifications }) 
                                 {readNotifications.map(notification => renderNotificationItem(notification, true))}
                             </List>
                         ) : (
-                            <Typography variant="body1" color="text.secondary" sx={{ py: 2 }}>
+                            <Typography 
+                                variant="body1" 
+                                sx={{ 
+                                    py: 2,
+                                    color: 'text.secondary',
+                                    textAlign: 'center',
+                                    opacity: 0.7,
+                                }}
+                            >
                                 You have no read notifications.
                             </Typography>
                         )}

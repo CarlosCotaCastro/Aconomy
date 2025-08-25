@@ -18,6 +18,7 @@ import {
     ListItemText,
     ListItemAvatar,
     Avatar,
+    useTheme,
 } from '@mui/material';
 import {
     Send as SendIcon,
@@ -64,6 +65,7 @@ const getStatusColor = (status) => {
 
 export default function Index({ outgoingRequests, incomingRequests, auth }) {
     const { t } = useTranslation();
+    const theme = useTheme();
     const [tabValue, setTabValue] = useState(0);
 
     const handleTabChange = (event, newValue) => {
@@ -102,7 +104,30 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                         {outgoingRequests.length > 0 ? (
                             outgoingRequests.map((request) => (
                                 <Grid size={{xs: 12}} key={request.id}>
-                                    <Card sx={{cursor: 'pointer'}} onClick={() => router.get(route('borrow-requests.show', request.id))}>
+                                    <Card 
+                                        sx={{
+                                            cursor: 'pointer',
+                                            background: theme.palette.mode === 'dark' 
+                                                ? 'rgba(255, 255, 255, 0.02)' 
+                                                : 'rgba(255, 255, 255, 0.8)',
+                                            backdropFilter: 'blur(10px)',
+                                            border: theme.palette.mode === 'dark' 
+                                                ? '1px solid rgba(255, 255, 255, 0.1)' 
+                                                : '1px solid rgba(255, 255, 255, 0.2)',
+                                            borderRadius: 2,
+                                            transition: 'all 0.3s ease',
+                                            '&:hover': {
+                                                background: theme.palette.mode === 'dark' 
+                                                    ? 'rgba(255, 255, 255, 0.05)' 
+                                                    : 'rgba(255, 255, 255, 0.9)',
+                                                transform: 'translateY(-2px)',
+                                                boxShadow: theme.palette.mode === 'dark'
+                                                    ? '0 8px 32px rgba(0, 0, 0, 0.3)'
+                                                    : '0 8px 32px rgba(0, 0, 0, 0.1)',
+                                            }
+                                        }} 
+                                        onClick={() => router.get(route('borrow-requests.show', request.id))}
+                                    >
                                         <CardContent>
                                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                                                 <Typography variant="h6" component="h2">
@@ -124,7 +149,17 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                             </Box>
 
                                             {request.message && (
-                                                <Box sx={{ mt: 2, p: 1, bgcolor: 'background.paper', borderRadius: 1 }}>
+                                                <Box sx={{ 
+                                                    mt: 2, 
+                                                    p: 2, 
+                                                    background: theme.palette.mode === 'dark' 
+                                                        ? 'rgba(255, 255, 255, 0.03)' 
+                                                        : 'rgba(0, 0, 0, 0.02)',
+                                                    border: theme.palette.mode === 'dark' 
+                                                        ? '1px solid rgba(255, 255, 255, 0.08)' 
+                                                        : '1px solid rgba(0, 0, 0, 0.08)',
+                                                    borderRadius: 1 
+                                                }}>
                                                     <Typography variant="body2" fontStyle="italic" color="text.secondary">
                                                         "{request.message}"
                                                     </Typography>
@@ -162,7 +197,30 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                         {incomingRequests.length > 0 ? (
                             incomingRequests.map((request) => (
                                 <Grid size={{xs: 12}} key={request.id}>
-                                    <Card sx={{cursor: 'pointer'}} onClick={() => router.get(route('borrow-requests.show', request.id))}>
+                                    <Card 
+                                        sx={{
+                                            cursor: 'pointer',
+                                            background: theme.palette.mode === 'dark' 
+                                                ? 'rgba(255, 255, 255, 0.02)' 
+                                                : 'rgba(255, 255, 255, 0.8)',
+                                            backdropFilter: 'blur(10px)',
+                                            border: theme.palette.mode === 'dark' 
+                                                ? '1px solid rgba(255, 255, 255, 0.1)' 
+                                                : '1px solid rgba(255, 255, 255, 0.2)',
+                                            borderRadius: 2,
+                                            transition: 'all 0.3s ease',
+                                            '&:hover': {
+                                                background: theme.palette.mode === 'dark' 
+                                                    ? 'rgba(255, 255, 255, 0.05)' 
+                                                    : 'rgba(255, 255, 255, 0.9)',
+                                                transform: 'translateY(-2px)',
+                                                boxShadow: theme.palette.mode === 'dark'
+                                                    ? '0 8px 32px rgba(0, 0, 0, 0.3)'
+                                                    : '0 8px 32px rgba(0, 0, 0, 0.1)',
+                                            }
+                                        }} 
+                                        onClick={() => router.get(route('borrow-requests.show', request.id))}
+                                    >
                                         <CardContent>
                                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                                                 <Typography variant="h6" component="h2">
@@ -184,7 +242,17 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                             </Box>
 
                                             {request.message && (
-                                                <Box sx={{ mt: 2, p: 1, bgcolor: 'background.paper', borderRadius: 1 }}>
+                                                <Box sx={{ 
+                                                    mt: 2, 
+                                                    p: 2, 
+                                                    background: theme.palette.mode === 'dark' 
+                                                        ? 'rgba(255, 255, 255, 0.03)' 
+                                                        : 'rgba(0, 0, 0, 0.02)',
+                                                    border: theme.palette.mode === 'dark' 
+                                                        ? '1px solid rgba(255, 255, 255, 0.08)' 
+                                                        : '1px solid rgba(0, 0, 0, 0.08)',
+                                                    borderRadius: 1 
+                                                }}>
                                                     <Typography variant="body2" fontStyle="italic" color="text.secondary">
                                                         "{request.message}"
                                                     </Typography>

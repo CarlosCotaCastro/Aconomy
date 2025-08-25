@@ -12,7 +12,6 @@ import {
     Menu,
     MenuItem,
     ListItemIcon,
-    Tooltip,
     IconButton,
     useMediaQuery,
     Drawer,
@@ -22,12 +21,9 @@ import {
     ListItemText,
     Divider,
     useTheme,
-    Paper,
-    Badge,
 } from '@mui/material';
 import {
     Menu as MenuIcon,
-    Dashboard as DashboardIcon,
     Inventory as InventoryIcon,
     Group as GroupIcon,
     SwapHoriz as SwapHorizIcon,
@@ -35,27 +31,114 @@ import {
     Settings as SettingsIcon,
     Logout as LogoutIcon,
     ArrowDropDown as ArrowDropDownIcon,
-    Notifications as NotificationsIcon,
     Search as SearchIcon,
     Home as HomeIcon,
     RequestQuote as RequestQuoteIcon,
 } from '@mui/icons-material';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+
 import NotificationMenu from '@/Components/Notifications/NotificationMenu';
 import LanguageSwitcher from '@/Components/LanguageSwitcher';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import { useTranslation } from 'react-i18next';
+
+// Logo color palette - extracted from the actual circular logo
+const LOGO_COLORS = {
+    lightBlue: '#4A90E2',   // Bright blue from left side of logo
+    blue: '#1E90FF',        // Primary blue from logo gradient
+    purple: '#6A4C93',      // Deep purple from right side of logo  
+    darkPurple: '#5A3D6B',  // Darker purple variant
+    accent: '#7B68EE'       // Medium slate blue accent
+};
+
+// Unified navigation configuration
+const getNavigationConfig = (t) => [
+    {
+        id: 'items',
+        label: t('navigation.items'),
+        icon: InventoryIcon,
+        type: 'menu',
+        showOnDesktop: true,
+        showOnMobile: true,
+        color: LOGO_COLORS.lightBlue, // Bright blue from logo left side
+        items: [
+            {
+                id: 'my-items',
+                label: t('navigation.myItems'),
+                href: 'items.index',
+                icon: InventoryIcon
+            },
+            {
+                id: 'add-item',
+                label: t('navigation.addNewItem'),
+                href: 'items.create',
+                icon: AddIcon
+            }
+        ]
+    },
+    {
+        id: 'groups',
+        label: t('navigation.groups'),
+        icon: GroupIcon,
+        type: 'menu',
+        showOnDesktop: true,
+        showOnMobile: true,
+        color: LOGO_COLORS.accent, // Medium slate blue from logo
+        items: [
+            {
+                id: 'my-groups',
+                label: t('navigation.myGroups'),
+                href: 'groups.my-groups',
+                icon: GroupIcon
+            },
+            {
+                id: 'find-groups',
+                label: t('navigation.findGroups'),
+                href: 'groups.index',
+                icon: SearchIcon
+            },
+            {
+                id: 'create-group',
+                label: t('navigation.createNewGroup'),
+                href: 'groups.create',
+                icon: AddIcon
+            }
+        ]
+    },
+    {
+        id: 'lendings',
+        label: t('navigation.lendings'),
+        icon: SwapHorizIcon,
+        type: 'menu',
+        showOnDesktop: true,
+        showOnMobile: true,
+        color: LOGO_COLORS.purple, // Deep purple from logo right side
+        items: [
+            {
+                id: 'my-lendings',
+                label: t('navigation.myLendings'),
+                href: 'lendings.index',
+                icon: SwapHorizIcon
+            },
+            {
+                id: 'my-requests',
+                label: t('navigation.myRequests'),
+                href: 'borrow-requests.index',
+                icon: RequestQuoteIcon
+            }
+        ]
+    }
+];
 
 export default function AuthenticatedLayout({ user, children }) {
     const { t } = useTranslation();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const [mobileOpen, setMobileOpen] = useState(false);
-    const [itemsAnchorEl, setItemsAnchorEl] = useState(null);
-    const [groupsAnchorEl, setGroupsAnchorEl] = useState(null);
-    const [lendingsAnchorEl, setLendingsAnchorEl] = useState(null);
-    const [borrowRequestsAnchorEl, setBorrowRequestsAnchorEl] = useState(null);
+    const [menuAnchors, setMenuAnchors] = useState({});
     const [userAnchorEl, setUserAnchorEl] = useState(null);
+    
+    // Get navigation configuration
+    const navigationConfig = getNavigationConfig(t);
 
     // Fallback to usePage if user prop is not provided
     const pageProps = usePage().props;
@@ -101,20 +184,11 @@ export default function AuthenticatedLayout({ user, children }) {
         setMobileOpen(!mobileOpen);
     };
 
-    const handleItemsMenuOpen = (event) => {
-        setItemsAnchorEl(event.currentTarget);
-    };
-
-    const handleGroupsMenuOpen = (event) => {
-        setGroupsAnchorEl(event.currentTarget);
-    };
-
-    const handleLendingsMenuOpen = (event) => {
-        setLendingsAnchorEl(event.currentTarget);
-    };
-
-    const handleBorrowRequestsMenuOpen = (event) => {
-        setBorrowRequestsAnchorEl(event.currentTarget);
+    const handleMenuOpen = (menuId, event) => {
+        setMenuAnchors(prev => ({
+            ...prev,
+            [menuId]: event.currentTarget
+        }));
     };
 
     const handleUserMenuOpen = (event) => {
@@ -122,88 +196,117 @@ export default function AuthenticatedLayout({ user, children }) {
     };
 
     const handleMenuClose = () => {
-        setItemsAnchorEl(null);
-        setGroupsAnchorEl(null);
-        setLendingsAnchorEl(null);
-        setBorrowRequestsAnchorEl(null);
+        setMenuAnchors({});
         setUserAnchorEl(null);
     };
 
+    // Render mobile navigation items
+    const renderMobileNavigation = () => {
+        return navigationConfig
+            .filter(item => item.showOnMobile)
+            .map(section => (
+                <div key={section.id}>
+                    <ListItem sx={{ mt: 1.5, mb: 0.5, px: 3 }}>
+                        <Typography variant="overline" color="text.secondary" sx={{ fontWeight: 'bold' }}>
+                            {section.label}
+                        </Typography>
+                    </ListItem>
+                    {section.items.map(item => (
+                        <ListItem key={item.id} disablePadding>
+                            <ListItemButton 
+                                component={Link} 
+                                href={route(item.href)} 
+                                sx={{ borderRadius: '0 20px 20px 0', mx: 1 }}
+                            >
+                                <ListItemIcon>
+                                    <item.icon sx={{ color: section.color }} />
+                                </ListItemIcon>
+                                <ListItemText primary={item.label} />
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
+                </div>
+            ));
+    };
+
+    // Render desktop navigation items
+    const renderDesktopNavigation = () => {
+        return navigationConfig
+            .filter(item => item.showOnDesktop)
+            .map(item => {
+                if (item.type === 'single') {
+                    return (
+                        <Button
+                            key={item.id}
+                            component={Link}
+                            href={route(item.href)}
+                            variant="text"
+                            color="inherit"
+                            startIcon={<item.icon />}
+                            sx={{
+                                textTransform: 'none',
+                                fontWeight: 600,
+                                borderRadius: '8px'
+                            }}
+                        >
+                            {item.label}
+                        </Button>
+                    );
+                } else {
+                    return (
+                        <div key={item.id}>
+                            <Button
+                                color="inherit"
+                                aria-controls={`${item.id}-menu`}
+                                aria-haspopup="true"
+                                onClick={(e) => handleMenuOpen(item.id, e)}
+                                endIcon={<ArrowDropDownIcon />}
+                                startIcon={<item.icon />}
+                                sx={{
+                                    textTransform: 'none',
+                                    fontWeight: 600,
+                                    borderRadius: '8px'
+                                }}
+                            >
+                                {item.label}
+                            </Button>
+                            <Menu
+                                id={`${item.id}-menu`}
+                                anchorEl={menuAnchors[item.id]}
+                                keepMounted
+                                open={Boolean(menuAnchors[item.id])}
+                                onClose={handleMenuClose}
+                                PaperProps={{
+                                    elevation: 2,
+                                    sx: {
+                                        mt: 1.5,
+                                        width: 200,
+                                        borderRadius: 2
+                                    }
+                                }}
+                            >
+                                {item.items.map(subItem => (
+                                    <MenuItem
+                                        key={subItem.id}
+                                        onClick={handleMenuClose}
+                                        component={Link}
+                                        href={route(subItem.href)}
+                                        sx={{ borderRadius: 1, mx: 0.5 }}
+                                    >
+                                        {subItem.label}
+                                    </MenuItem>
+                                ))}
+                            </Menu>
+                        </div>
+                    );
+                }
+            });
+    };
+
     const drawerContent = (
-        <Box sx={{ width: 250 }} role="presentation" onClick={handleDrawerToggle}>
+        <Box sx={{ width: '100%' }} role="presentation" onClick={handleDrawerToggle}>
             <List>
-                <ListItem sx={{ mt: 1.5, mb: 0.5, px: 3 }}>
-                    <Typography variant="overline" color="text.secondary" sx={{ fontWeight: 'bold' }}>
-                        {t('navigation.items')}
-                    </Typography>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton component={Link} href={route('items.index')} sx={{ borderRadius: '0 20px 20px 0', mx: 1 }}>
-                        <ListItemIcon>
-                            <InventoryIcon color="secondary" />
-                        </ListItemIcon>
-                        <ListItemText primary={t('navigation.myItems')} />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton component={Link} href={route('items.create')} sx={{ borderRadius: '0 20px 20px 0', mx: 1 }}>
-                        <ListItemIcon>
-                            <AddIcon color="secondary" />
-                        </ListItemIcon>
-                        <ListItemText primary={t('navigation.addNewItem')} />
-                    </ListItemButton>
-                </ListItem>
-
-                <ListItem sx={{ mt: 1.5, mb: 0.5, px: 3 }}>
-                    <Typography variant="overline" color="text.secondary" sx={{ fontWeight: 'bold' }}>
-                        {t('navigation.groups')}
-                    </Typography>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton component={Link} href={route('groups.my-groups')} sx={{ borderRadius: '0 20px 20px 0', mx: 1 }}>
-                        <ListItemIcon>
-                            <GroupIcon sx={{ color: '#ff9800' }} />
-                        </ListItemIcon>
-                        <ListItemText primary={t('navigation.myGroups')} />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton component={Link} href={route('groups.create')} sx={{ borderRadius: '0 20px 20px 0', mx: 1 }}>
-                        <ListItemIcon>
-                            <AddIcon sx={{ color: '#ff9800' }} />
-                        </ListItemIcon>
-                        <ListItemText primary={t('navigation.createNewGroup')} />
-                    </ListItemButton>
-                </ListItem>
-
-                <ListItem sx={{ mt: 1.5, mb: 0.5, px: 3 }}>
-                    <Typography variant="overline" color="text.secondary" sx={{ fontWeight: 'bold' }}>
-                        {t('navigation.lendings')}
-                    </Typography>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton component={Link} href={route('lendings.index')} sx={{ borderRadius: '0 20px 20px 0', mx: 1 }}>
-                        <ListItemIcon>
-                            <SwapHorizIcon sx={{ color: '#4caf50' }} />
-                        </ListItemIcon>
-                        <ListItemText primary={t('navigation.myLendings')} />
-                    </ListItemButton>
-                </ListItem>
-
-
-                <ListItem sx={{ mt: 1.5, mb: 0.5, px: 3 }}>
-                    <Typography variant="overline" color="text.secondary" sx={{ fontWeight: 'bold' }}>
-                        {t('navigation.borrowRequests')}
-                    </Typography>
-                </ListItem>
-                <ListItem disablePadding>
-                    <ListItemButton component={Link} href={route('borrow-requests.index')} sx={{ borderRadius: '0 20px 20px 0', mx: 1 }}>
-                        <ListItemIcon>
-                            <RequestQuoteIcon sx={{ color: '#9c27b0' }} />
-                        </ListItemIcon>
-                        <ListItemText primary={t('navigation.myRequests')} />
-                    </ListItemButton>
-                </ListItem>
+                {renderMobileNavigation()}
             </List>
         </Box>
     );
@@ -223,7 +326,7 @@ export default function AuthenticatedLayout({ user, children }) {
                 elevation={0}
                 sx={{
                     background: theme.palette.mode === 'dark' 
-                        ? 'rgba(255, 255, 255, 0.02)' 
+                        ? 'linear-gradient(to right, #0b0a10, #260e1f)' 
                         : 'white',
                     backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
                     borderBottom: theme.palette.mode === 'dark' 
@@ -262,172 +365,7 @@ export default function AuthenticatedLayout({ user, children }) {
                     <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 2 }}>
                         {!isMobile && (
                             <Box sx={{ display: 'flex', gap: 1.5 }}>
-                                <Button
-                                    component={Link}
-                                    href={route('dashboard')}
-                                    variant="text"
-                                    color="inherit"
-                                    startIcon={<HomeIcon />}
-                                    sx={{
-                                        textTransform: 'none',
-                                        fontWeight: 600,
-                                        borderRadius: '8px'
-                                    }}
-                                >
-                                    {t('navigation.home')}
-                                </Button>
-
-                                <Button
-                                    color="inherit"
-                                    aria-controls="items-menu"
-                                    aria-haspopup="true"
-                                    onClick={handleItemsMenuOpen}
-                                    endIcon={<ArrowDropDownIcon />}
-                                    startIcon={<InventoryIcon />}
-                                    sx={{
-                                        textTransform: 'none',
-                                        fontWeight: 600,
-                                        borderRadius: '8px'
-                                    }}
-                                >
-                                    {t('navigation.items')}
-                                </Button>
-                                <Menu
-                                    id="items-menu"
-                                    anchorEl={itemsAnchorEl}
-                                    keepMounted
-                                    open={Boolean(itemsAnchorEl)}
-                                    onClose={handleMenuClose}
-                                    PaperProps={{
-                                        elevation: 2,
-                                        sx: {
-                                            mt: 1.5,
-                                            width: 200,
-                                            borderRadius: 2
-                                        }
-                                    }}
-                                >
-                                    <MenuItem
-                                        onClick={handleMenuClose}
-                                        component={Link}
-                                        href={route('items.index')}
-                                        sx={{ borderRadius: 1, mx: 0.5 }}
-                                    >
-                                        {t('navigation.myItems')}
-                                    </MenuItem>
-                                    <MenuItem
-                                        onClick={handleMenuClose}
-                                        component={Link}
-                                        href={route('items.create')}
-                                        sx={{ borderRadius: 1, mx: 0.5 }}
-                                    >
-                                        {t('navigation.addNewItem')}
-                                    </MenuItem>
-                                </Menu>
-
-                                <Button
-                                    color="inherit"
-                                    aria-controls="groups-menu"
-                                    aria-haspopup="true"
-                                    onClick={handleGroupsMenuOpen}
-                                    endIcon={<ArrowDropDownIcon />}
-                                    startIcon={<GroupIcon />}
-                                    sx={{
-                                        textTransform: 'none',
-                                        fontWeight: 600,
-                                        borderRadius: '8px'
-                                    }}
-                                >
-                                    {t('navigation.groups')}
-                                </Button>
-                                <Menu
-                                    id="groups-menu"
-                                    anchorEl={groupsAnchorEl}
-                                    keepMounted
-                                    open={Boolean(groupsAnchorEl)}
-                                    onClose={handleMenuClose}
-                                    PaperProps={{
-                                        elevation: 2,
-                                        sx: {
-                                            mt: 1.5,
-                                            width: 200,
-                                            borderRadius: 2
-                                        }
-                                    }}
-                                >
-                                    <MenuItem
-                                        onClick={handleMenuClose}
-                                        component={Link}
-                                        href={route('groups.my-groups')}
-                                        sx={{ borderRadius: 1, mx: 0.5 }}
-                                    >
-                                        {t('navigation.myGroups')}
-                                    </MenuItem>
-                                    <MenuItem
-                                        onClick={handleMenuClose}
-                                        component={Link}
-                                        href={route('groups.index')}
-                                        sx={{ borderRadius: 1, mx: 0.5 }}
-                                    >
-                                        {t('navigation.findGroups')}
-                                    </MenuItem>
-                                    <MenuItem
-                                        onClick={handleMenuClose}
-                                        component={Link}
-                                        href={route('groups.create')}
-                                        sx={{ borderRadius: 1, mx: 0.5 }}
-                                    >
-                                        {t('navigation.createNewGroup')}
-                                    </MenuItem>
-                                </Menu>
-
-                                <Button
-                                    color="inherit"
-                                    aria-controls="lendings-menu"
-                                    aria-haspopup="true"
-                                    onClick={handleLendingsMenuOpen}
-                                    endIcon={<ArrowDropDownIcon />}
-                                    startIcon={<SwapHorizIcon />}
-                                    sx={{
-                                        textTransform: 'none',
-                                        fontWeight: 600,
-                                        borderRadius: '8px'
-                                    }}
-                                >
-                                    {t('navigation.lendings')}
-                                </Button>
-                                <Menu
-                                    id="lendings-menu"
-                                    anchorEl={lendingsAnchorEl}
-                                    keepMounted
-                                    open={Boolean(lendingsAnchorEl)}
-                                    onClose={handleMenuClose}
-                                    PaperProps={{
-                                        elevation: 2,
-                                        sx: {
-                                            mt: 1.5,
-                                            width: 200,
-                                            borderRadius: 2
-                                        }
-                                    }}
-                                >
-                                    <MenuItem
-                                        onClick={handleMenuClose}
-                                        component={Link}
-                                        href={route('lendings.index')}
-                                        sx={{ borderRadius: 1, mx: 0.5 }}
-                                    >
-                                        {t('navigation.myLendings')}
-                                    </MenuItem>
-                                    <MenuItem
-                                        onClick={handleMenuClose}
-                                        component={Link}
-                                        href={route('borrow-requests.index')}
-                                        sx={{ borderRadius: 1, mx: 0.5 }}
-                                    >
-                                        {t('navigation.myRequests')}
-                                    </MenuItem>
-                                </Menu>
+                                {renderDesktopNavigation()}
                             </Box>
                         )}
                         <LanguageSwitcher />
@@ -523,12 +461,12 @@ export default function AuthenticatedLayout({ user, children }) {
                     display: { xs: 'block', md: 'none' },
                     '& .MuiDrawer-paper': {
                         boxSizing: 'border-box',
-                        width: 250,
+                        width: '90%',
                         boxShadow: 'none',
                         backgroundColor: theme.palette.mode === 'dark' 
-                            ? 'rgba(255, 255, 255, 0.02)' 
-                            : theme.palette.background.paper,
-                        backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                            ? 'rgba(14, 73, 156, 0.3)' 
+                            : 'rgba(255, 255, 255, 0.8)',
+                        backdropFilter: theme.palette.mode === 'dark' ? 'blur(20px)' : 'blur(5px)',
                         borderRight: theme.palette.mode === 'dark' 
                             ? '1px solid rgba(255, 255, 255, 0.1)' 
                             : '1px solid rgba(0, 0, 0, 0.12)',

@@ -87,10 +87,27 @@ export default ({group, userId, isUserApproved}) => {
         loadInitialItems();
     }, [loadInitialItems]);
 
-    return (<Card sx={{ mb: 4, }}>
+    return (<Card sx={{ 
+        mb: 4,
+        background: (theme) => theme.palette.mode === 'dark' 
+            ? 'rgba(255, 255, 255, 0.02)'
+            : 'rgba(255, 255, 255, 1)',
+        backdropFilter: 'blur(10px)',
+        border: (theme) => theme.palette.mode === 'dark' 
+            ? '1px solid rgba(255, 255, 255, 0.1)'
+            : '1px solid rgba(0, 0, 0, 0.1)',
+    }}>
         <CardContent>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                <Avatar sx={{ bgcolor: 'secondary.light', mr: 3 }}>
+                <Avatar sx={{ 
+                    bgcolor: (theme) => theme.palette.mode === 'dark' 
+                        ? 'rgba(187, 134, 252, 0.2)'
+                        : 'secondary.light',
+                    mr: 3,
+                    border: (theme) => theme.palette.mode === 'dark' 
+                        ? '1px solid rgba(255, 255, 255, 0.1)'
+                        : 'none',
+                }}>
                     <InventoryIcon />
                 </Avatar>
                 <Typography variant="h6">
@@ -127,7 +144,25 @@ export default ({group, userId, isUserApproved}) => {
                     <Grid container spacing={2} sx={{ mt: 1 }}>
                         {searchResults.map((item) => (
                             <Grid key={item.id} size={12}>
-                                <Card variant="outlined">
+                                <Card variant="outlined" sx={{
+                                    background: (theme) => theme.palette.mode === 'dark' 
+                                        ? 'rgba(255, 255, 255, 0.02)'
+                                        : 'rgba(255, 255, 255, 1)',
+                                    backdropFilter: 'blur(10px)',
+                                    border: (theme) => theme.palette.mode === 'dark' 
+                                        ? '1px solid rgba(255, 255, 255, 0.1)'
+                                        : '1px solid rgba(0, 0, 0, 0.1)',
+                                    transition: 'all 0.3s ease',
+                                    '&:hover': {
+                                        background: (theme) => theme.palette.mode === 'dark' 
+                                            ? 'rgba(255, 255, 255, 0.05)'
+                                            : 'rgba(255, 255, 255, 1)',
+                                        transform: 'translateY(-2px)',
+                                        boxShadow: (theme) => theme.palette.mode === 'dark'
+                                            ? '0 8px 32px rgba(187, 134, 252, 0.1)'
+                                            : '0 8px 32px rgba(0, 0, 0, 0.1)',
+                                    }
+                                }}>
                                     <CardContent>
                                         <Typography variant="h6" component="h3" gutterBottom>
                                             {item.name}
