@@ -8,12 +8,16 @@ import {
     CardMedia,
     Grid,
     Typography,
-    IconButton, TextField, InputAdornment,
+    IconButton, 
+    TextField, 
+    InputAdornment,
+    useTheme,
 } from '@mui/material';
 import {
     Add as AddIcon,
     Edit as EditIcon,
-    Delete as DeleteIcon, Search as SearchIcon,
+    Delete as DeleteIcon, 
+    Search as SearchIcon,
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {useState} from "react";
@@ -22,6 +26,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function Index({ items, auth }) {
     const { t } = useTranslation();
+    const theme = useTheme();
     const [searchQuery, setSearchQuery] = useState('');
 
     const filteredItems = items.filter(item =>
@@ -32,14 +37,28 @@ export default function Index({ items, auth }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">
+            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {t('items.myItems')}
             </h2>}
         >
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
+                    <Box
+                        sx={{
+                            backgroundColor: theme.palette.mode === 'dark' 
+                                ? 'rgba(255, 255, 255, 0.02)' 
+                                : 'rgba(255, 255, 255, 1)',
+                            backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                            border: theme.palette.mode === 'dark' 
+                                ? '1px solid rgba(255, 255, 255, 0.1)' 
+                                : '1px solid rgba(0, 0, 0, 0.1)',
+                            borderRadius: 2,
+                            p: 3,
+                            boxShadow: theme.palette.mode === 'dark' 
+                                ? '0 8px 32px rgba(0, 0, 0, 0.4)' 
+                                : '0 1px 3px rgba(0, 0, 0, 0.1)',
+                        }}
+                    >
                             <Grid container sx={{justifyContent: 'space-between', mb: 4 }}>
                                 <Grid item size={{xs: 12, md: 6, lg: 8}}>   
                                 <Typography variant="h5" component="h1">
@@ -79,7 +98,29 @@ export default function Index({ items, auth }) {
                             <Grid container spacing={3}>
                                 {filteredItems.map((item) => (
                                     <Grid size={{xs: 12, sm: 6, md: 4, xl: 2}} key={item.id}>
-                                        <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                                        <Card 
+                                            sx={{ 
+                                                height: '100%', 
+                                                display: 'flex', 
+                                                flexDirection: 'column',
+                                                backgroundColor: theme.palette.mode === 'dark' 
+                                                    ? 'rgba(255, 255, 255, 0.02)' 
+                                                    : 'rgba(255, 255, 255, 1)',
+                                                backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                                                border: theme.palette.mode === 'dark' 
+                                                    ? '1px solid rgba(255, 255, 255, 0.1)' 
+                                                    : '1px solid rgba(0, 0, 0, 0.1)',
+                                                boxShadow: theme.palette.mode === 'dark' 
+                                                    ? '0 4px 16px rgba(0, 0, 0, 0.3)' 
+                                                    : '0 2px 4px rgba(0, 0, 0, 0.1)',
+                                                transition: 'all 0.3s ease',
+                                                '&:hover': {
+                                                    boxShadow: theme.palette.mode === 'dark' 
+                                                        ? '0 8px 32px rgba(0, 0, 0, 0.4)' 
+                                                        : '0 4px 8px rgba(0, 0, 0, 0.15)',
+                                                }
+                                            }}
+                                        >
                                             {item.image_path ? (
                                                 <CardMedia
                                                     component="img"
@@ -96,7 +137,9 @@ export default function Index({ items, auth }) {
                                                 <Box
                                                     sx={{
                                                         height: 140,
-                                                        bgcolor: 'rgba(0,0,0,0.05)',
+                                                        bgcolor: theme.palette.mode === 'dark' 
+                                                            ? 'rgba(255, 255, 255, 0.05)' 
+                                                            : 'rgba(0, 0, 0, 0.05)',
                                                         display: 'flex',
                                                         alignItems: 'center',
                                                         justifyContent: 'center'
@@ -147,8 +190,7 @@ export default function Index({ items, auth }) {
                                     </Grid>
                                 ))}
                             </Grid>
-                        </div>
-                    </div>
+                    </Box>
                 </div>
             </div>
         </AuthenticatedLayout>

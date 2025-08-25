@@ -9,6 +9,7 @@ import {
     Card,
     CardMedia,
     FormHelperText,
+    useTheme,
 } from '@mui/material';
 import { CloudUpload as CloudUploadIcon } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
@@ -17,6 +18,7 @@ import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function Edit({ item }) {
     const { t } = useTranslation();
+    const theme = useTheme();
     const [previewUrl, setPreviewUrl] = useState(null);
 
     const { data, setData, post, processing, errors } = useForm({
@@ -54,12 +56,44 @@ export default function Edit({ item }) {
 
     return (
         <AuthenticatedLayout>
-            <Box sx={{ maxWidth: 600, mx: 'auto' }}>
+            <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <Box
+                        sx={{
+                            backgroundColor: theme.palette.mode === 'dark' 
+                                ? 'rgba(255, 255, 255, 0.02)' 
+                                : 'rgba(255, 255, 255, 1)',
+                            backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                            border: theme.palette.mode === 'dark' 
+                                ? '1px solid rgba(255, 255, 255, 0.1)' 
+                                : '1px solid rgba(0, 0, 0, 0.1)',
+                            borderRadius: 2,
+                            p: 3,
+                            boxShadow: theme.palette.mode === 'dark' 
+                                ? '0 8px 32px rgba(0, 0, 0, 0.4)' 
+                                : '0 1px 3px rgba(0, 0, 0, 0.1)',
+                        }}
+                    >
+                        <Box sx={{ maxWidth: 600, mx: 'auto' }}>
                 <Typography variant="h4" component="h1" gutterBottom>
                     {t('items.editItem')}
                 </Typography>
 
-                <Paper sx={{ p: 3 }}>
+                <Paper 
+                    sx={{ 
+                        p: 3,
+                        backgroundColor: theme.palette.mode === 'dark' 
+                            ? 'rgba(255, 255, 255, 0.02)' 
+                            : 'rgba(255, 255, 255, 1)',
+                        backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                        border: theme.palette.mode === 'dark' 
+                            ? '1px solid rgba(255, 255, 255, 0.1)' 
+                            : '1px solid rgba(0, 0, 0, 0.1)',
+                        boxShadow: theme.palette.mode === 'dark' 
+                            ? '0 4px 16px rgba(0, 0, 0, 0.3)' 
+                            : '0 2px 4px rgba(0, 0, 0, 0.1)',
+                    }}
+                >
                     <form onSubmit={handleSubmit}>
                         <TextField
                             fullWidth
@@ -134,7 +168,10 @@ export default function Edit({ item }) {
                         </Box>
                     </form>
                 </Paper>
-            </Box>
+                        </Box>
+                    </Box>
+                </div>
+            </div>
         </AuthenticatedLayout>
     );
 }

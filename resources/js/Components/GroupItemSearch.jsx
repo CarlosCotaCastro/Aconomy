@@ -2,12 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import GroupItemSearchUnavailable from './GroupItemSearchUnavailable.jsx';
+import ItemCard from './ItemCard.jsx';
 import { InputBase } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import { router } from '@inertiajs/react';
+import { useTheme } from '@mui/material/styles';
 
 export default function GroupItemSearch({ isApprovedMember, rounded = false }) {
     const { t } = useTranslation();
+    const theme = useTheme();
+    const isDark = theme.palette.mode === 'dark';
     const [query, setQuery] = useState('');
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -59,39 +63,39 @@ export default function GroupItemSearch({ isApprovedMember, rounded = false }) {
         <div className="py-4">
             <InputBase
                 type="input"
-                    sx={{
-                        borderRadius: rounded ? "9999px" : "8px",
-                        border: "1px solid #e0e0e0",
-                        padding: "10px 16px",
-                        fontSize: "26px",
-                    }}
-                    value={query}
-                    startAdornment={<Search sx={{ fontSize: "26px", mr: 1 }} />}
-                    onChange={e => setQuery(e.target.value)}
-                    placeholder={t('groupItemSearch.searchPlaceholder')}
-                    className={"mb-4 w-full bg-white p-4 text-3xl shadow-lg " + (rounded ? "rounded-full" : "rounded")}
-                />
+                sx={{
+                    borderRadius: rounded ? "9999px" : "8px",
+                    border: isDark ? "1px solid rgba(255, 255, 255, 0.15)" : "1px solid rgba(0, 0, 0, 0.1)",
+                    padding: "10px 16px",
+                    fontSize: "26px",
+                    backgroundColor: isDark ? "rgba(255, 255, 255, 0.05)" : "rgba(255, 255, 255, 0.7)",
+                    backdropFilter: "blur(12px)",
+                    color: isDark ? "#ffffff" : "#000000",
+                    boxShadow: isDark 
+                        ? "0 8px 32px rgba(0, 0, 0, 0.3)" 
+                        : "0 8px 32px rgba(0, 0, 0, 0.1)",
+                    '& .MuiInputBase-input::placeholder': {
+                        color: isDark ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)',
+                    }
+                }}
+                value={query}
+                startAdornment={<Search sx={{ fontSize: "26px", mr: 1, color: isDark ? "rgba(255, 255, 255, 0.7)" : "rgba(0, 0, 0, 0.7)" }} />}
+                onChange={e => setQuery(e.target.value)}
+                placeholder={t('groupItemSearch.searchPlaceholder')}
+                className={`mb-4 w-full p-4 text-3xl shadow-lg ${rounded ? "rounded-full" : "rounded"}`}
+            />
 
-            {loading && <div>Loading...</div>}
+            {loading && <div className={isDark ? 'text-gray-300' : 'text-gray-600'}>Loading...</div>}
             {error && <div className="text-red-500 mb-2">{error}</div>}
             {success && <div className="text-green-600 mb-2">{success}</div>}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {results.map(item => (
-                    <div key={item.id} className="border rounded p-4 flex flex-col items-center bg-white shadow">
-                        <img src={item.image || '/placeholder.png'} alt={item.name} className="w-32 h-32 object-cover mb-2 rounded" />
-                        <div className="font-bold text-lg">{item.name}</div>
-                        <div className="text-gray-600">Status: {item.status}</div>
-                        <div className="flex items-center mt-2">
-                            <img src={item.owner.avatar || '/default-avatar.png'} alt={item.owner.name} className="w-8 h-8 rounded-full mr-2 border" />
-                            <span>{item.owner.name}</span>
-                        </div>
-                        <button
-                            className="mt-3 px-4 py-1 bg-green-500 text-white rounded hover:bg-green-600"
-                            onClick={() => requestBorrow(item.id)}
-                        >
-                            Request to Borrow
-                        </button>
-                    </div>
+                    <ItemCard 
+                        key={item.id}
+                        item={item}
+                        onRequestBorrow={requestBorrow}
+                        buttonText="Request to Borrow"
+                    />
                 ))}
             </div>
         </div>

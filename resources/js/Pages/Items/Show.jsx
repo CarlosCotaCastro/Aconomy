@@ -11,6 +11,7 @@ import {
     Paper,
     Divider,
     Chip,
+    useTheme,
 } from '@mui/material';
 import { 
     ArrowBack as ArrowBackIcon,
@@ -21,11 +22,30 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function Show({ item, auth }) {
     const { t } = useTranslation();
+    const theme = useTheme();
     const isOwner = auth.user.id === item.user_id;
     
     return (
         <AuthenticatedLayout>
-            <Box sx={{ maxWidth: 800, mx: 'auto' }}>
+            <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <Box
+                        sx={{
+                            backgroundColor: theme.palette.mode === 'dark' 
+                                ? 'rgba(255, 255, 255, 0.02)' 
+                                : 'rgba(255, 255, 255, 1)',
+                            backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                            border: theme.palette.mode === 'dark' 
+                                ? '1px solid rgba(255, 255, 255, 0.1)' 
+                                : '1px solid rgba(0, 0, 0, 0.1)',
+                            borderRadius: 2,
+                            p: 3,
+                            boxShadow: theme.palette.mode === 'dark' 
+                                ? '0 8px 32px rgba(0, 0, 0, 0.4)' 
+                                : '0 1px 3px rgba(0, 0, 0, 0.1)',
+                        }}
+                    >
+                        <Box sx={{ maxWidth: 800, mx: 'auto' }}>
                 <Button
                     component={Link}
                     href={route('items.index')}
@@ -35,7 +55,21 @@ export default function Show({ item, auth }) {
                     {t('items.backToItems')}
                 </Button>
                 
-                <Card sx={{ mb: 4 }}>
+                <Card 
+                    sx={{ 
+                        mb: 4,
+                        backgroundColor: theme.palette.mode === 'dark' 
+                            ? 'rgba(255, 255, 255, 0.02)' 
+                            : 'rgba(255, 255, 255, 1)',
+                        backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                        border: theme.palette.mode === 'dark' 
+                            ? '1px solid rgba(255, 255, 255, 0.1)' 
+                            : '1px solid rgba(0, 0, 0, 0.1)',
+                        boxShadow: theme.palette.mode === 'dark' 
+                            ? '0 4px 16px rgba(0, 0, 0, 0.3)' 
+                            : '0 2px 4px rgba(0, 0, 0, 0.1)',
+                    }}
+                >
                     <Grid container>
                         <Grid size={{xs: 12, md: 8}}>
                             {item.image_path ? (
@@ -52,7 +86,9 @@ export default function Show({ item, auth }) {
                                 <Box 
                                     sx={{ 
                                         height: 300, 
-                                        bgcolor: 'rgba(0,0,0,0.05)', 
+                                        bgcolor: theme.palette.mode === 'dark' 
+                                            ? 'rgba(255, 255, 255, 0.05)' 
+                                            : 'rgba(0, 0, 0, 0.05)', 
                                         display: 'flex', 
                                         alignItems: 'center', 
                                         justifyContent: 'center',
@@ -111,14 +147,41 @@ export default function Show({ item, auth }) {
                 </Card>
                 
                 {item.lendings && (
-                    <Paper sx={{ p: 3 }}>
+                    <Paper 
+                        sx={{ 
+                            p: 3,
+                            backgroundColor: theme.palette.mode === 'dark' 
+                                ? 'rgba(255, 255, 255, 0.02)' 
+                                : 'rgba(255, 255, 255, 1)',
+                            backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                            border: theme.palette.mode === 'dark' 
+                                ? '1px solid rgba(255, 255, 255, 0.1)' 
+                                : '1px solid rgba(0, 0, 0, 0.1)',
+                            boxShadow: theme.palette.mode === 'dark' 
+                                ? '0 4px 16px rgba(0, 0, 0, 0.3)' 
+                                : '0 2px 4px rgba(0, 0, 0, 0.1)',
+                        }}
+                    >
                         <Typography variant="h6" gutterBottom>
                             {t('items.lendingHistory')}
                         </Typography>
                         <Divider sx={{ mb: 2 }} />
                         
                         {item.lendings.length > 0 && item.lendings.map((lending) => (
-                            <Box key={lending.id} sx={{ mb: 2, p: 2, bgcolor: 'background.default', borderRadius: 1 }}>
+                            <Box 
+                                key={lending.id} 
+                                sx={{ 
+                                    mb: 2, 
+                                    p: 2, 
+                                    bgcolor: theme.palette.mode === 'dark' 
+                                        ? 'rgba(255, 255, 255, 0.03)' 
+                                        : 'background.default', 
+                                    borderRadius: 1,
+                                    border: theme.palette.mode === 'dark' 
+                                        ? '1px solid rgba(255, 255, 255, 0.08)' 
+                                        : 'none',
+                                }}
+                            >
                                 <Typography variant="subtitle1">
                                     {t('items.borrowedBy', { name: lending.borrower.name })}
                                 </Typography>
@@ -143,7 +206,10 @@ export default function Show({ item, auth }) {
                         )}
                     </Paper>
                 )}
-            </Box>
+                        </Box>
+                    </Box>
+                </div>
+            </div>
         </AuthenticatedLayout>
     );
 } 

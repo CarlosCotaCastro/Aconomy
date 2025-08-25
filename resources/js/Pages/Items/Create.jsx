@@ -8,6 +8,7 @@ import {
     Card,
     CardMedia,
     FormHelperText,
+    useTheme,
 } from '@mui/material';
 import { CloudUpload as CloudUploadIcon } from '@mui/icons-material';
 import { useState } from 'react';
@@ -17,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function Create() {
     const { t } = useTranslation();
+    const theme = useTheme();
     const [previewUrl, setPreviewUrl] = useState(null);
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -48,20 +50,48 @@ export default function Create() {
 
     return (
         <AuthenticatedLayout
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">
+            header={<h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
                 {t('items.addNewItem')}
             </h2>}
         >
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
+                    <Box
+                        sx={{
+                            backgroundColor: theme.palette.mode === 'dark' 
+                                ? 'rgba(255, 255, 255, 0.02)' 
+                                : 'rgba(255, 255, 255, 1)',
+                            backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                            border: theme.palette.mode === 'dark' 
+                                ? '1px solid rgba(255, 255, 255, 0.1)' 
+                                : '1px solid rgba(0, 0, 0, 0.1)',
+                            borderRadius: 2,
+                            p: 3,
+                            boxShadow: theme.palette.mode === 'dark' 
+                                ? '0 8px 32px rgba(0, 0, 0, 0.4)' 
+                                : '0 1px 3px rgba(0, 0, 0, 0.1)',
+                        }}
+                    >
                             <Box sx={{ maxWidth: 600, mx: 'auto' }}>
                                 <Typography variant="h5" component="h1" gutterBottom>
                                     {t('items.addNewItem')}
                                 </Typography>
 
-                                <Paper sx={{ p: 3 }}>
+                                <Paper 
+                                    sx={{ 
+                                        p: 3,
+                                        backgroundColor: theme.palette.mode === 'dark' 
+                                            ? 'rgba(255, 255, 255, 0.02)' 
+                                            : 'rgba(255, 255, 255, 1)',
+                                        backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                                        border: theme.palette.mode === 'dark' 
+                                            ? '1px solid rgba(255, 255, 255, 0.1)' 
+                                            : '1px solid rgba(0, 0, 0, 0.1)',
+                                        boxShadow: theme.palette.mode === 'dark' 
+                                            ? '0 4px 16px rgba(0, 0, 0, 0.3)' 
+                                            : '0 2px 4px rgba(0, 0, 0, 0.1)',
+                                    }}
+                                >
                                     <form onSubmit={handleSubmit}>
                                         <TextField
                                             fullWidth
@@ -137,8 +167,7 @@ export default function Create() {
                                     </form>
                                 </Paper>
                             </Box>
-                        </div>
-                    </div>
+                    </Box>
                 </div>
             </div>
         </AuthenticatedLayout>

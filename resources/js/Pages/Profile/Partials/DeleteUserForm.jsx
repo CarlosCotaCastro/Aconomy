@@ -7,9 +7,12 @@ import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '@mui/material/styles';
 
 export default function DeleteUserForm({ className = '' }) {
     const { t } = useTranslation();
+    const theme = useTheme();
+    const isDark = theme.palette.mode === 'dark';
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
     const passwordInput = useRef();
 
@@ -65,11 +68,15 @@ export default function DeleteUserForm({ className = '' }) {
 
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">
-                    <h2 className="text-lg font-medium text-gray-900">
+                    <h2 className={`text-lg font-medium ${
+                        isDark ? 'text-white' : 'text-gray-900'
+                    }`}>
                         {t('profile.deleteAccountConfirmation')}
                     </h2>
 
-                    <p className="mt-1 text-sm text-gray-600">
+                    <p className={`mt-1 text-sm ${
+                        isDark ? 'text-gray-300' : 'text-gray-600'
+                    }`}>
                         {t('profile.deleteAccountWarning')}
                     </p>
 
