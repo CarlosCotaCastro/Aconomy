@@ -110,9 +110,9 @@ services:
         networks:
             - sail
         command: >
-            sh -c "npm install -g laravel-echo-server
-            && laravel-echo-server stop
-            && laravel-echo-server start --force"
+            sh -c "npm uninstall -g laravel-echo-server
+            && npm install -g @soketi/echo-server
+            && echo-server start --force"
 networks:
     sail:
         driver: bridge

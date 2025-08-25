@@ -209,20 +209,27 @@ export default function AuthenticatedLayout({ user, children }) {
     );
 
     return (
-        <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            minHeight: '100vh',
-            backgroundColor: theme.palette.background.default,
+        <div style={{ 
+            background: theme.palette.mode === 'dark' ? "var(--bg-primary)" : theme.palette.background.default 
         }}>
-            <CssBaseline />
+            <div className={theme.palette.mode === 'dark' ? "custom-hero-bg" : ""} style={{
+                display: 'flex',
+                flexDirection: 'column',
+                minHeight: '100vh',
+            }}>
+                <CssBaseline />
             <AppBar
                 position="fixed"
                 elevation={0}
                 sx={{
-                    background: 'white',
-                    borderBottom: '1px solid #f0f0f0',
-                    color: 'primary.main',
+                    background: theme.palette.mode === 'dark' 
+                        ? 'rgba(255, 255, 255, 0.02)' 
+                        : 'white',
+                    backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                    borderBottom: theme.palette.mode === 'dark' 
+                        ? '1px solid rgba(255, 255, 255, 0.1)' 
+                        : '1px solid #f0f0f0',
+                    color: theme.palette.mode === 'dark' ? 'white' : 'primary.main',
                     zIndex: (theme) => theme.zIndex.drawer + 1,
                 }}
             >
@@ -517,7 +524,14 @@ export default function AuthenticatedLayout({ user, children }) {
                     '& .MuiDrawer-paper': {
                         boxSizing: 'border-box',
                         width: 250,
-                        boxShadow: 'none'
+                        boxShadow: 'none',
+                        backgroundColor: theme.palette.mode === 'dark' 
+                            ? 'rgba(255, 255, 255, 0.02)' 
+                            : theme.palette.background.paper,
+                        backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                        borderRight: theme.palette.mode === 'dark' 
+                            ? '1px solid rgba(255, 255, 255, 0.1)' 
+                            : '1px solid rgba(0, 0, 0, 0.12)',
                     },
                 }}
             >
@@ -549,8 +563,13 @@ export default function AuthenticatedLayout({ user, children }) {
                     py: 3,
                     px: 2,
                     mt: 'auto',
-                    //backgroundColor: 'white',
-                    borderTop: '1px solid rgba(0, 0, 0, 0.06)',
+                    backgroundColor: theme.palette.mode === 'dark' 
+                        ? 'rgba(255, 255, 255, 0.02)' 
+                        : 'white',
+                    backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                    borderTop: theme.palette.mode === 'dark' 
+                        ? '1px solid rgba(255, 255, 255, 0.1)' 
+                        : '1px solid rgba(0, 0, 0, 0.06)',
                     textAlign: 'center'
                 }}
             >
@@ -558,6 +577,7 @@ export default function AuthenticatedLayout({ user, children }) {
                     © {new Date().getFullYear()} Aconomy - Item Lending Platform
                 </Typography>
             </Box>
-        </Box>
+            </div>
+        </div>
     );
 }
