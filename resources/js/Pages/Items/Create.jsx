@@ -4,7 +4,6 @@ import {
     Button,
     TextField,
     Typography,
-    Paper,
     Card,
     CardMedia,
     FormHelperText,
@@ -14,6 +13,7 @@ import { CloudUpload as CloudUploadIcon } from '@mui/icons-material';
 import { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
+import GlassPaper from '@/Components/GlassPaper';
 import { useTranslation } from 'react-i18next';
 
 export default function Create() {
@@ -77,21 +77,7 @@ export default function Create() {
                                     {t('items.addNewItem')}
                                 </Typography>
 
-                                <Paper 
-                                    sx={{ 
-                                        p: 3,
-                                        backgroundColor: theme.palette.mode === 'dark' 
-                                            ? 'rgba(255, 255, 255, 0.02)' 
-                                            : 'rgba(255, 255, 255, 1)',
-                                        backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
-                                        border: theme.palette.mode === 'dark' 
-                                            ? '1px solid rgba(255, 255, 255, 0.1)' 
-                                            : '1px solid rgba(0, 0, 0, 0.1)',
-                                        boxShadow: theme.palette.mode === 'dark' 
-                                            ? '0 4px 16px rgba(0, 0, 0, 0.3)' 
-                                            : '0 2px 4px rgba(0, 0, 0, 0.1)',
-                                    }}
-                                >
+                                <GlassPaper>
                                     <form onSubmit={handleSubmit}>
                                         <TextField
                                             fullWidth
@@ -165,7 +151,7 @@ export default function Create() {
                                             </Button>
                                         </Box>
                                     </form>
-                                </Paper>
+                                </GlassPaper>
                             </Box>
                     </Box>
                 </div>

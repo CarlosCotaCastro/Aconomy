@@ -1,7 +1,8 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
-import { Box, Paper, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
+import GlassPaper from '@/Components/GlassPaper';
 import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
@@ -32,54 +33,21 @@ export default function Edit({ mustVerifyEmail, status }) {
                     flexDirection: 'column',
                     gap: 3
                 }}>
-                    <Paper 
-                        elevation={0}
-                        sx={{ 
-                            p: { xs: 2, sm: 4 },
-                            borderRadius: 2,
-                            ...(theme.palette.mode === 'dark' && {
-                                background: 'rgba(255, 255, 255, 0.02)',
-                                backdropFilter: 'blur(10px)',
-                                border: '1px solid rgba(255, 255, 255, 0.1)'
-                            })
-                        }}
-                    >
+                    <GlassPaper sx={{ p: { xs: 2, sm: 4 } }}>
                         <UpdateProfileInformationForm
                             mustVerifyEmail={mustVerifyEmail}
                             status={status}
                             className="max-w-xl"
                         />
-                    </Paper>
+                    </GlassPaper>
 
-                    <Paper 
-                        elevation={0}
-                        sx={{ 
-                            p: { xs: 2, sm: 4 },
-                            borderRadius: 2,
-                            ...(theme.palette.mode === 'dark' && {
-                                background: 'rgba(255, 255, 255, 0.02)',
-                                backdropFilter: 'blur(10px)',
-                                border: '1px solid rgba(255, 255, 255, 0.1)'
-                            })
-                        }}
-                    >
+                    <GlassPaper sx={{ p: { xs: 2, sm: 4 } }}>
                         <UpdatePasswordForm className="max-w-xl" />
-                    </Paper>
+                    </GlassPaper>
 
-                    <Paper 
-                        elevation={0}
-                        sx={{ 
-                            p: { xs: 2, sm: 4 },
-                            borderRadius: 2,
-                            ...(theme.palette.mode === 'dark' && {
-                                background: 'rgba(255, 255, 255, 0.02)',
-                                backdropFilter: 'blur(10px)',
-                                border: '1px solid rgba(255, 255, 255, 0.1)'
-                            })
-                        }}
-                    >
+                    <GlassPaper sx={{ p: { xs: 2, sm: 4 } }}>
                         <DeleteUserForm className="max-w-xl" />
-                    </Paper>
+                    </GlassPaper>
                 </Box>
             </Box>
         </AuthenticatedLayout>

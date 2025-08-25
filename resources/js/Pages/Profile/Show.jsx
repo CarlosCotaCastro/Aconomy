@@ -5,11 +5,11 @@ import {
     Avatar,
     Typography,
     Grid,
-    Paper,
     Divider,
     Chip,
     useTheme,
 } from '@mui/material';
+import GlassPaper from '@/Components/GlassPaper';
 import {
     Person as PersonIcon,
     Inventory as InventoryIcon,
@@ -28,19 +28,7 @@ export default function Show({ profileUser, items, borrowedItems, auth }) {
             <Head title={t('profile.userProfile', { name: profileUser.name })} />
 
             <Box sx={{ mb: 4, px: { xs: 2, sm: 3, lg: 4 } }}>
-                <Paper 
-                    elevation={0}
-                    sx={{ 
-                        p: { xs: 2, sm: 3 }, 
-                        mb: 4,
-                        borderRadius: 2,
-                        ...(theme.palette.mode === 'dark' && {
-                            background: 'rgba(255, 255, 255, 0.02)',
-                            backdropFilter: 'blur(10px)',
-                            border: '1px solid rgba(255, 255, 255, 0.1)'
-                        })
-                    }}
-                >
+                <GlassPaper sx={{ p: { xs: 2, sm: 3 }, mb: 4 }}>
                     <Box sx={{ 
                         display: 'flex', 
                         alignItems: 'center', 
@@ -84,7 +72,7 @@ export default function Show({ profileUser, items, borrowedItems, auth }) {
                             />
                         </Box>
                     </Box>
-                </Paper>
+                </GlassPaper>
 
                 <Grid container spacing={3}>
                     <Grid size={12}>

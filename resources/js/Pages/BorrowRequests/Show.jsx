@@ -14,15 +14,12 @@ import {
     Alert,
     Chip,
     Divider,
-    Dialog,
-    DialogTitle,
-    DialogContent,
     DialogContentText,
-    DialogActions,
-    Paper,
     CircularProgress,
     useTheme
 } from '@mui/material';
+import GlassPaper from '@/Components/GlassPaper';
+import GlassDialog from '@/Components/GlassDialog';
 import {
     ArrowBack as ArrowBackIcon,
     Person as PersonIcon,
@@ -171,22 +168,18 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                                     <Typography variant="subtitle2" gutterBottom>
                                         {t('borrowRequests.messageFromBorrower')}:
                                     </Typography>
-                                    <Paper 
-                                        variant="outlined" 
+                                    <GlassPaper 
                                         sx={{ 
                                             p: 2, 
                                             background: theme.palette.mode === 'dark' 
                                                 ? 'rgba(255, 255, 255, 0.03)' 
                                                 : 'rgba(0, 0, 0, 0.02)',
-                                            border: theme.palette.mode === 'dark' 
-                                                ? '1px solid rgba(255, 255, 255, 0.08)' 
-                                                : '1px solid rgba(0, 0, 0, 0.08)',
                                         }}
                                     >
                                         <Typography variant="body2" fontStyle="italic">
                                             "{borrowRequest.message}"
                                         </Typography>
-                                    </Paper>
+                                    </GlassPaper>
                                 </Box>
                             )}
                         </CardContent>
@@ -324,26 +317,19 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
             </Grid>
 
             {/* QR Code Dialog */}
-            <Dialog 
-                open={openQrDialog} 
+            <GlassDialog
+                open={openQrDialog}
                 onClose={() => setOpenQrDialog(false)}
-                PaperProps={{
-                    sx: {
-                        background: theme.palette.mode === 'dark' 
-                            ? 'rgba(18, 18, 18, 0.95)' 
-                            : 'rgba(255, 255, 255, 0.95)',
-                        backdropFilter: 'blur(10px)',
-                        border: theme.palette.mode === 'dark' 
-                            ? '1px solid rgba(255, 255, 255, 0.1)' 
-                            : '1px solid rgba(0, 0, 0, 0.1)',
-                    }
-                }}
+                title={t('borrowRequests.qrCodeForItemHandoverTitle')}
+                actions={
+                    <Button onClick={() => setOpenQrDialog(false)}>
+                        {t('borrowRequests.close')}
+                    </Button>
+                }
             >
-                <DialogTitle>{t('borrowRequests.qrCodeForItemHandoverTitle')}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText sx={{ mb: 2 }}>
-                        {t('borrowRequests.qrCodeForItemHandoverInfo')}
-                    </DialogContentText>
+                <DialogContentText sx={{ mb: 2 }}>
+                    {t('borrowRequests.qrCodeForItemHandoverInfo')}
+                </DialogContentText>
 
                     <Box sx={{ 
                         textAlign: 'center', 
@@ -384,99 +370,77 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                             </Typography>
                         </Box>
                     )}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setOpenQrDialog(false)}>{t('borrowRequests.close')}</Button>
-                </DialogActions>
-            </Dialog>
+            </GlassDialog>
 
             {/* Deny Dialog */}
-            <Dialog 
-                open={openDenyDialog} 
+            <GlassDialog
+                open={openDenyDialog}
                 onClose={() => setOpenDenyDialog(false)}
-                PaperProps={{
-                    sx: {
-                        background: theme.palette.mode === 'dark' 
-                            ? 'rgba(18, 18, 18, 0.95)' 
-                            : 'rgba(255, 255, 255, 0.95)',
-                        backdropFilter: 'blur(10px)',
-                        border: theme.palette.mode === 'dark' 
-                            ? '1px solid rgba(255, 255, 255, 0.1)' 
-                            : '1px solid rgba(0, 0, 0, 0.1)',
-                    }
-                }}
+                title={t('borrowRequests.denyBorrowRequestTitle')}
+                actions={
+                    <>
+                        <Button onClick={() => setOpenDenyDialog(false)}>
+                            {t('borrowRequests.cancel')}
+                        </Button>
+                        <Button onClick={handleDeny} color="error" disabled={denyProcessing}>
+                            {t('borrowRequests.denyRequest')}
+                        </Button>
+                    </>
+                }
             >
-                <DialogTitle>{t('borrowRequests.denyBorrowRequestTitle')}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText sx={{ mb: 2 }}>
-                        {t('borrowRequests.denyBorrowRequestInfo')}
-                    </DialogContentText>
+                <DialogContentText sx={{ mb: 2 }}>
+                    {t('borrowRequests.denyBorrowRequestInfo')}
+                </DialogContentText>
 
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label={t('borrowRequests.reason')}
-                        fullWidth
-                        multiline
-                        rows={3}
-                        value={denyData.reason}
-                        onChange={(e) => setDenyData('reason', e.target.value)}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setOpenDenyDialog(false)}>{t('borrowRequests.cancel')}</Button>
-                    <Button onClick={handleDeny} color="error" disabled={denyProcessing}>
-                        {t('borrowRequests.denyRequest')}
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    label={t('borrowRequests.reason')}
+                    fullWidth
+                    multiline
+                    rows={3}
+                    value={denyData.reason}
+                    onChange={(e) => setDenyData('reason', e.target.value)}
+                />
+            </GlassDialog>
 
             {/* Verify Code Dialog */}
-            <Dialog 
-                open={openVerifyDialog} 
+            <GlassDialog
+                open={openVerifyDialog}
                 onClose={() => setOpenVerifyDialog(false)}
-                PaperProps={{
-                    sx: {
-                        background: theme.palette.mode === 'dark' 
-                            ? 'rgba(18, 18, 18, 0.95)' 
-                            : 'rgba(255, 255, 255, 0.95)',
-                        backdropFilter: 'blur(10px)',
-                        border: theme.palette.mode === 'dark' 
-                            ? '1px solid rgba(255, 255, 255, 0.1)' 
-                            : '1px solid rgba(0, 0, 0, 0.1)',
-                    }
-                }}
+                title={t('borrowRequests.verifyItemHandoverTitle')}
+                actions={
+                    <>
+                        <Button onClick={() => setOpenVerifyDialog(false)}>
+                            {t('borrowRequests.cancel')}
+                        </Button>
+                        <Button
+                            onClick={handleVerifyCode}
+                            color="primary"
+                            disabled={verifyProcessing || !verifyData.code.trim()}
+                        >
+                            {t('borrowRequests.verifyCode')}
+                        </Button>
+                    </>
+                }
             >
-                <DialogTitle>{t('borrowRequests.verifyItemHandoverTitle')}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText sx={{ mb: 2 }}>
-                        {t('borrowRequests.verifyItemHandoverInfo')}
-                    </DialogContentText>
+                <DialogContentText sx={{ mb: 2 }}>
+                    {t('borrowRequests.verifyItemHandoverInfo')}
+                </DialogContentText>
 
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label={t('borrowRequests.handoverCode')}
-                        fullWidth
-                        value={verifyData.code}
-                        onChange={(e) => setVerifyData('code', e.target.value)}
-                        inputProps={{
-                            style: { textTransform: 'uppercase', letterSpacing: 3 },
-                            maxLength: 6
-                        }}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setOpenVerifyDialog(false)}>{t('borrowRequests.cancel')}</Button>
-                    <Button
-                        onClick={handleVerifyCode}
-                        color="primary"
-                        disabled={verifyProcessing || !verifyData.code.trim()}
-                    >
-                        {t('borrowRequests.verifyCode')}
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    label={t('borrowRequests.handoverCode')}
+                    fullWidth
+                    value={verifyData.code}
+                    onChange={(e) => setVerifyData('code', e.target.value)}
+                    inputProps={{
+                        style: { textTransform: 'uppercase', letterSpacing: 3 },
+                        maxLength: 6
+                    }}
+                />
+            </GlassDialog>
         </AuthenticatedLayout>
     );
 }
