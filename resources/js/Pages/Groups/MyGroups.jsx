@@ -54,13 +54,39 @@ export default function Index({ groups, auth }) {
 
                     return (
                         <Grid size={{xs: 12, sm: 6}} key={group.id}>
-                            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                            <Card sx={{ 
+                                height: '100%', 
+                                display: 'flex', 
+                                flexDirection: 'column',
+                                background: theme.palette.mode === 'dark' 
+                                    ? 'rgba(255, 255, 255, 0.02)' 
+                                    : theme.palette.background.paper,
+                                backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                                border: theme.palette.mode === 'dark' 
+                                    ? '1px solid rgba(255, 255, 255, 0.1)' 
+                                    : `1px solid ${theme.palette.divider}`,
+                                transition: 'all 0.3s ease',
+                                '&:hover': {
+                                    background: theme.palette.mode === 'dark' 
+                                        ? 'rgba(255, 255, 255, 0.05)' 
+                                        : theme.palette.background.paper,
+                                    border: theme.palette.mode === 'dark' 
+                                        ? '1px solid rgba(255, 255, 255, 0.2)' 
+                                        : `1px solid ${theme.palette.primary.main}`,
+                                    transform: 'translateY(-2px)',
+                                    boxShadow: theme.palette.mode === 'dark' 
+                                        ? '0 8px 32px rgba(0, 0, 0, 0.3)' 
+                                        : `0 8px 32px ${theme.palette.primary.main}20`,
+                                }
+                            }}>
                                 <CardMedia sx={{
                                     display: 'flex',
                                     aspectRatio: 16/9,
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    backgroundColor: theme.palette.background.paper,
+                                    backgroundColor: theme.palette.mode === 'dark' 
+                                        ? 'rgba(255, 255, 255, 0.05)' 
+                                        : theme.palette.background.paper,
                                 }}>
                                     <GroupIcon  sx={{ fontSize: '4em' }} />
                                 </CardMedia>

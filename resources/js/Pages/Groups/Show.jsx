@@ -26,6 +26,7 @@ import {
     TextField,
     InputAdornment,
     CircularProgress,
+    useTheme,
 } from '@mui/material';
 import {
     Group as GroupIcon,
@@ -45,6 +46,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function Show({group, recentItems, auth}) {
     const { t } = useTranslation();
+    const theme = useTheme();
     const {post, processing} = useForm();
     const {post: joinGroup, processing: joining} = useForm();
     const {delete: leaveGroup, processing: leaving} = useForm();
@@ -114,7 +116,15 @@ export default function Show({group, recentItems, auth}) {
                     />
 
                     {isUserApproved && pendingMembers.length > 0 && (
-                        <Card>
+                        <Card sx={{ 
+                            background: theme.palette.mode === 'dark' 
+                                ? 'rgba(255, 255, 255, 0.02)' 
+                                : theme.palette.background.paper,
+                            backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                            border: theme.palette.mode === 'dark' 
+                                ? '1px solid rgba(255, 255, 255, 0.1)' 
+                                : `1px solid ${theme.palette.divider}`,
+                        }}>
                             <CardContent>
                                 <Typography variant="h6" gutterBottom>
                                     {t('groups.pendingRequestsTitle', { count: pendingMembers.length })}

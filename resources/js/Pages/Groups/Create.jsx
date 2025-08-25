@@ -5,6 +5,7 @@ import {
     TextField,
     Typography,
     Paper,
+    useTheme,
 } from '@mui/material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
@@ -12,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function Create() {
     const { t } = useTranslation();
+    const theme = useTheme();
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         description: '',
@@ -29,7 +31,16 @@ export default function Create() {
                     {t('groups.createNewGroup')}
                 </Typography>
 
-                <Paper sx={{ p: 3 }}>
+                <Paper sx={{ 
+                    p: 3,
+                    background: theme.palette.mode === 'dark' 
+                        ? 'rgba(255, 255, 255, 0.02)' 
+                        : theme.palette.background.paper,
+                    backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                    border: theme.palette.mode === 'dark' 
+                        ? '1px solid rgba(255, 255, 255, 0.1)' 
+                        : `1px solid ${theme.palette.divider}`,
+                }}>
                     <form onSubmit={handleSubmit}>
                         <TextField
                             fullWidth
