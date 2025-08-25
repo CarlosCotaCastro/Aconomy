@@ -74,241 +74,241 @@ export default function Dashboard({ items = [], groups = [], lendings = [], borr
                 {/* Main content card (2/3 width) */}
                 <Grid item size={{ xs: 12, md: 12 }}>
 
-                                    <Typography
-                                        variant="h4"
-                                        component="h1"
-                                        sx={{
-                                            fontWeight: 700,
-                                            mb: 1,
-                                        }}
-                                    >
-                                        {t('dashboard.welcomeBack', { name: auth.user.name })}
-                                    </Typography>
-                                <Box sx={{ minHeight: '40vh'}}>
-                                <GroupItemSearch isApprovedMember={isApprovedMember} rounded={true} />
-                                </Box>
+                    <Typography
+                        variant="h4"
+                        component="h1"
+                        sx={{
+                            fontWeight: 700,
+                            mb: 1,
+                        }}
+                    >
+                        {t('dashboard.welcomeBack', { name: auth.user.name })}
+                    </Typography>
+                    <Box sx={{ minHeight: '40vh' }}>
+                        <GroupItemSearch isApprovedMember={isApprovedMember} rounded={true} />
+                    </Box>
 
-                    </Grid>
+                </Grid>
                 {/* Sidebar (1/3 width) */}
                 <Grid item size={{ xs: 12, md: 12 }}>
-                    
-                        <Grid container spacing={2}>
-                            
-                            {/* Active Lendings/Borrowings */}
-                            <Grid item size={{ xs: 12, md: 6 }}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                                        <Avatar sx={{
-                                            bgcolor: 'rgba(76, 175, 80, 0.1)',
-                                            mr: 2,
-                                            width: 48,
-                                            height: 48
-                                        }}>
-                                            <SwapHorizIcon sx={{ color: '#4caf50' }} />
-                                        </Avatar>
-                                        <Box>
-                                            <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                                                {t('lendings.activeLendings')}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                {activeLendings.length + activeBorrowings.length} {t('lendings.activeItems')}
-                                            </Typography>
-                                        </Box>
-                                    </Box>
 
-                                    <Divider sx={{ my: 2 }} />
-                                    <List sx={{ mb: 2 }}>
-                                        {activeLendings.slice(0, 2).map((lending) => (
-                                            <ListItem
-                                                key={lending.id}
-                                                component={Link}
-                                                href={route('lendings.show', lending.id)}
-                                            >
-                                                <ListItemAvatar>
-                                                    <Avatar sx={{ bgcolor: 'rgba(76, 175, 80, 0.1)' }}>
-                                                        <PersonIcon sx={{ color: '#4caf50' }} />
-                                                    </Avatar>
-                                                </ListItemAvatar>
-                                                <ListItemText
-                                                    primary={
-                                                        <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                                                            {lending.item.name}
-                                                        </Typography>
-                                                    }
-                                                    secondary={t('lendings.borrowedBy', { name: lending.borrower.name })}
-                                                />
-                                                <Chip
-                                                    label={t('lendings.lent')}
-                                                    size="small"
-                                                    sx={{
-                                                        ml: 1,
-                                                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
-                                                        color: '#4caf50'
-                                                    }}
-                                                />
-                                            </ListItem>
-                                        ))}
-                                        {activeBorrowings.slice(0, 2).map((lending) => (
-                                            <ListItem
-                                                key={lending.id}
-                                                component={Link}
-                                                href={route('lendings.show', lending.id)}
-                                                disablePadding={true}
-                                            >
-                                                <ListItemAvatar>
-                                                    <Avatar sx={{ bgcolor: 'rgba(139, 92, 246, 0.1)' }}>
-                                                        <PersonIcon sx={{ color: '#8b5cf6' }} />
-                                                    </Avatar>
-                                                </ListItemAvatar>
-                                                <ListItemText
-                                                    primary={
-                                                        <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                                                            {lending.item.name}
-                                                        </Typography>
-                                                    }
-                                                    secondary={t('lendings.borrowedFrom', { name: lending.lender.name })}
-                                                />
-                                                <Chip
-                                                    label={t('lendings.borrowed')}
-                                                    size="small"
-                                                    sx={{
-                                                        ml: 1,
-                                                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                                                        color: '#8b5cf6'
-                                                    }}
-                                                />
-                                            </ListItem>
-                                        ))}
-                                        {activeLendings.length === 0 && activeBorrowings.length === 0 && (
-                                            <Box sx={{ textAlign: 'center', py: 2 }}>
-                                                <Typography variant="body2" color="text.secondary">
-                                                    {t('lendings.noActiveLendings')}
-                                                </Typography>
-                                            </Box>
-                                        )}
-                                        {(activeLendings.length + activeBorrowings.length) > 4 && (
-                                            <Box sx={{ textAlign: 'right' }}>
-                                                <Button
-                                                    component={Link}
-                                                    href={route('lendings.index')}
-                                                    endIcon={<ChevronRight />}
-                                                    sx={{
-                                                        textTransform: 'none',
-                                                        fontWeight: 500,
-                                                    }}
-                                                >
-                                                    {t('common.viewAll', { type: t('lendings.lendings') })}
-                                                </Button>
-                                            </Box>
-                                        )}
-                                    </List>
-                            </Grid>
-                        {/* My Groups */}
-                            <Grid item size={{ xs: 12, md: 6 }}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                                        <Avatar sx={{
-                                            bgcolor: 'rgba(255, 152, 0, 0.1)',
-                                            mr: 2,
-                                            width: 48,
-                                            height: 48
-                                        }}>
-                                            <GroupIcon sx={{ color: '#ff9800' }} />
-                                        </Avatar>
-                                        <Box>
-                                            <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                                                {t('dashboard.myGroups')}
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                {groups.length} {t('groups.groupsJoined')}
-                                            </Typography>
-                                        </Box>
-                                        <IconButton
+                    <Grid container spacing={2}>
+
+                        {/* Active Lendings/Borrowings */}
+                        <Grid item size={{ xs: 12, md: 6 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                                <Avatar sx={{
+                                    bgcolor: 'rgba(76, 175, 80, 0.1)',
+                                    mr: 2,
+                                    width: 48,
+                                    height: 48
+                                }}>
+                                    <SwapHorizIcon sx={{ color: '#4caf50' }} />
+                                </Avatar>
+                                <Box>
+                                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                                        {t('lendings.activeLendings')}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {activeLendings.length + activeBorrowings.length} {t('lendings.activeItems')}
+                                    </Typography>
+                                </Box>
+                            </Box>
+
+                            <Divider sx={{ my: 2 }} />
+                            <List sx={{ mb: 2 }}>
+                                {activeLendings.slice(0, 2).map((lending) => (
+                                    <ListItem
+                                        key={lending.id}
                                         component={Link}
-                                        href={route('groups.create')}
-                                        variant="outlined"
-                                        color={'warning'}
-                                        fullWidth
-                                        startIcon={<AddCircleIcon />}
+                                        href={route('lendings.show', lending.id)}
+                                    >
+                                        <ListItemAvatar>
+                                            <Avatar sx={{ bgcolor: 'rgba(76, 175, 80, 0.1)' }}>
+                                                <PersonIcon sx={{ color: '#4caf50' }} />
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            primary={
+                                                <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                                                    {lending.item.name}
+                                                </Typography>
+                                            }
+                                            secondary={t('lendings.borrowedBy', { name: lending.borrower.name })}
+                                        />
+                                        <Chip
+                                            label={t('lendings.lent')}
+                                            size="small"
+                                            sx={{
+                                                ml: 1,
+                                                backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                                                color: '#4caf50'
+                                            }}
+                                        />
+                                    </ListItem>
+                                ))}
+                                {activeBorrowings.slice(0, 2).map((lending) => (
+                                    <ListItem
+                                        key={lending.id}
+                                        component={Link}
+                                        href={route('lendings.show', lending.id)}
+                                        disablePadding={true}
+                                    >
+                                        <ListItemAvatar>
+                                            <Avatar sx={{ bgcolor: 'rgba(139, 92, 246, 0.1)' }}>
+                                                <PersonIcon sx={{ color: '#8b5cf6' }} />
+                                            </Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            primary={
+                                                <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                                                    {lending.item.name}
+                                                </Typography>
+                                            }
+                                            secondary={t('lendings.borrowedFrom', { name: lending.lender.name })}
+                                        />
+                                        <Chip
+                                            label={t('lendings.borrowed')}
+                                            size="small"
+                                            sx={{
+                                                ml: 1,
+                                                backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                                                color: '#8b5cf6'
+                                            }}
+                                        />
+                                    </ListItem>
+                                ))}
+                                {activeLendings.length === 0 && activeBorrowings.length === 0 && (
+                                    <Box sx={{ textAlign: 'center', py: 2 }}>
+                                        <Typography variant="body2" color="text.secondary">
+                                            {t('lendings.noActiveLendings')}
+                                        </Typography>
+                                    </Box>
+                                )}
+                                {(activeLendings.length + activeBorrowings.length) > 4 && (
+                                    <Box sx={{ textAlign: 'right' }}>
+                                        <Button
+                                            component={Link}
+                                            href={route('lendings.index')}
+                                            endIcon={<ChevronRight />}
+                                            sx={{
+                                                textTransform: 'none',
+                                                fontWeight: 500,
+                                            }}
+                                        >
+                                            {t('common.viewAll', { type: t('lendings.lendings') })}
+                                        </Button>
+                                    </Box>
+                                )}
+                            </List>
+                        </Grid>
+                        {/* My Groups */}
+                        <Grid item size={{ xs: 12, md: 6 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                                <Avatar sx={{
+                                    bgcolor: 'rgba(255, 152, 0, 0.1)',
+                                    mr: 2,
+                                    width: 48,
+                                    height: 48
+                                }}>
+                                    <GroupIcon sx={{ color: '#ff9800' }} />
+                                </Avatar>
+                                <Box>
+                                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                                        {t('dashboard.myGroups')}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {groups.length} {t('groups.groupsJoined')}
+                                    </Typography>
+                                </Box>
+                                <IconButton
+                                    component={Link}
+                                    href={route('groups.create')}
+                                    variant="outlined"
+                                    color={'warning'}
+                                    fullWidth
+                                    startIcon={<AddCircleIcon />}
+                                    sx={{
+                                        borderRadius: 2,
+                                        p: 1,
+                                        textTransform: 'none',
+                                        fontWeight: 600,
+                                        alignSelf: 'flex-end',
+                                    }}
+                                    title={t('groups.createNewGroup')}
+                                >
+                                    <AddCircleIcon />
+                                </IconButton>
+                            </Box>
+
+                            <Divider sx={{ my: 2 }} />
+                            <List sx={{ mb: 2 }}>
+                                {groups && groups.slice(0, 3).map((group) => (
+                                    <ListItem
+                                        key={group.id}
+                                        component={Link}
+                                        href={route('groups.show', group.id)}
+                                        disablePadding
                                         sx={{
+                                            mb: 1,
                                             borderRadius: 2,
                                             p: 1,
-                                            textTransform: 'none',
-                                            fontWeight: 600,
-                                            alignSelf: 'flex-end',
+                                            textDecoration: 'none',
+                                            color: 'inherit'
                                         }}
-                                        title={t('groups.createNewGroup')}
                                     >
-                                        <AddCircleIcon />
-                                    </IconButton>
-                                    </Box>
-                                    
-                                    <Divider sx={{ my: 2 }} />
-                                    <List sx={{ mb: 2 }}>
-                                        {groups && groups.slice(0, 3).map((group) => (
-                                            <ListItem
-                                                key={group.id}
-                                                component={Link}
-                                                href={route('groups.show', group.id)}
-                                                disablePadding
-                                                sx={{
-                                                    mb: 1,
-                                                    borderRadius: 2,
-                                                    p: 1,
-                                                    textDecoration: 'none',
-                                                    color: 'inherit'
-                                                }}
-                                            >
-                                                <ListItemAvatar>
-                                                    <Avatar {...stringAvatar(group.name)} />
-                                                </ListItemAvatar>
-                                                <ListItemText
-                                                    primary={
-                                                        <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                                                            {group.name}
-                                                        </Typography>
-                                                    }
-                                                    secondary={`${group.users.filter(u => u.pivot.approved).length} ${t('groups.members')}`}
-                                                />
-                                                <Chip
-                                                    label={group.users.find(u => u.id === auth.user.id)?.pivot.approved ? t('common.approved') : t('common.pending')}
-                                                    color={group.users.find(u => u.id === auth.user.id)?.pivot.approved ? 'success' : 'default'}
-                                                    size="small"
-                                                    variant={'filled'}
-                                                    sx={{
-                                                        ml: 1,
-                                                        ...(group.users.find(u => u.id === auth.user.id)?.pivot.approved
-                                                            ? { color: theme.palette.common.white }
-                                                            : {})
-                                                    }}
-                                                />
-                                            </ListItem>
-                                        ))}
-                                        {groups.length === 0 && (
-                                            <Box sx={{ textAlign: 'center', py: 2 }}>
-                                                <Typography variant="body2" color="text.secondary">
-                                                    {t('dashboard.noGroups')}
+                                        <ListItemAvatar>
+                                            <Avatar {...stringAvatar(group.name)} />
+                                        </ListItemAvatar>
+                                        <ListItemText
+                                            primary={
+                                                <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                                                    {group.name}
                                                 </Typography>
-                                            </Box>
-                                        )}
-                                        {groups.length > 3 && (
-                                            <Box sx={{ textAlign: 'right' }}>
-                                                <Button
-                                                    component={Link}
-                                                    href={route('groups.index')}
-                                                    endIcon={<ChevronRight />}
-                                                    sx={{
-                                                        textTransform: 'none',
-                                                        fontWeight: 500,
-                                                    }}
-                                                >
-                                                    {t('common.viewAll', { count: groups.length, type: t('groups.groups') })}
-                                                </Button>
-                                            </Box>
-                                        )}
-                                    </List>
-                                </Grid>
-                    </Grid>
+                                            }
+                                            secondary={`${group.users.filter(u => u.pivot.approved).length} ${t('groups.members')}`}
+                                        />
+                                        <Chip
+                                            label={group.users.find(u => u.id === auth.user.id)?.pivot.approved ? t('common.approved') : t('common.pending')}
+                                            color={group.users.find(u => u.id === auth.user.id)?.pivot.approved ? 'success' : 'default'}
+                                            size="small"
+                                            variant={'filled'}
+                                            sx={{
+                                                ml: 1,
+                                                ...(group.users.find(u => u.id === auth.user.id)?.pivot.approved
+                                                    ? { color: theme.palette.common.white }
+                                                    : {})
+                                            }}
+                                        />
+                                    </ListItem>
+                                ))}
+                                {groups.length === 0 && (
+                                    <Box sx={{ textAlign: 'center', py: 2 }}>
+                                        <Typography variant="body2" color="text.secondary">
+                                            {t('dashboard.noGroups')}
+                                        </Typography>
+                                    </Box>
+                                )}
+                                {groups.length > 3 && (
+                                    <Box sx={{ textAlign: 'right' }}>
+                                        <Button
+                                            component={Link}
+                                            href={route('groups.index')}
+                                            endIcon={<ChevronRight />}
+                                            sx={{
+                                                textTransform: 'none',
+                                                fontWeight: 500,
+                                            }}
+                                        >
+                                            {t('common.viewAll', { count: groups.length, type: t('groups.groups') })}
+                                        </Button>
+                                    </Box>
+                                )}
+                            </List>
+                        </Grid>
                     </Grid>
                 </Grid>
-            </AuthenticatedLayout>
-        );
+            </Grid>
+        </AuthenticatedLayout>
+    );
 }

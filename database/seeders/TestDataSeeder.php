@@ -25,14 +25,7 @@ class TestDataSeeder extends Seeder
             ]);
         }
 
-        $carolUser = User::where('email', 'carol@example.com')->first();
-        if (! $carolUser) {
-            $carolUser = User::create([
-                'name' => 'Carol',
-                'email' => 'carol@example.com',
-                'password' => Hash::make('password'),
-            ]);
-        }
+        $carolUser = User::where('email', 'c@a.de')->first();
 
         // Create a group for testing
         $group = Group::create([

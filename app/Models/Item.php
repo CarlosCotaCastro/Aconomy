@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Scout\Searchable;
+
 
 class Item extends Model
 {
@@ -38,6 +40,7 @@ class Item extends Model
             'user' => $this->user()->value('id'),
             // Other item attributes
             'groups' => $this->groups->pluck('id')->toArray(),
+            'image' => Storage::disk('public')->url($this->image_path),
         ];
     }
 

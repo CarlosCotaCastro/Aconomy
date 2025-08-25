@@ -6,27 +6,41 @@ import {createInertiaApp} from '@inertiajs/react';
 import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers';
 import {createRoot} from 'react-dom/client';
 import {createTheme, ThemeProvider} from "@mui/material/styles";
+import {useMediaQuery} from "@mui/material";
+import {useMemo} from 'react';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
-const theme = createTheme({
-    palette: {
-        background: {
-            default: '#f4f4f4',
-            paper: '#fff'
-        },
-        success: {
-            main: '#4caf50',
-            dark: '#338327',
-            light: '#a5d6a7',
-            contrastText: '#fff'
+function ThemeWrapper({ App, props }) {
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+    
+    const theme = useMemo(() => createTheme({
+        palette: {
+            mode: prefersDarkMode ? 'dark' : 'light',
+            background: {
+                default: prefersDarkMode ? '#0a0a0f' : '#f4f4f4',
+                paper: prefersDarkMode ? '#1a1a1f' : '#fff'
+            },
+            primary: {
+                main: prefersDarkMode ? '#bb86fc' : '#1976d2',
+            },
+            success: {
+                main: '#4caf50',
+                dark: '#338327',
+                light: '#a5d6a7',
+                contrastText: '#fff'
+            },
+            ...(prefersDarkMode && {
+                text: {
+                    primary: '#ffffff',
+                    secondary: '#b3b3b3'
+                }
+            })
         }
-        // text: {
-        //     primary: '#fff',
-        //     secondary: '#f2f2f2'
-        // },
-    }
-});
+    }), [prefersDarkMode]);
+
+    return <ThemeProvider theme={theme}><App {...props} /></ThemeProvider>;
+}
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -55,7 +69,7 @@ createInertiaApp({
             console.warn('CSRF token not found in props');
         }
 
-        root.render(<ThemeProvider theme={theme}><App {...props} /></ThemeProvider>);
+        root.render(<ThemeWrapper App={App} props={props} />);
     },
     progress: {
         color: '#4B5563',
