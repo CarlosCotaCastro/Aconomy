@@ -57,3 +57,4 @@ coverage/
 
 # Laravel Echo Server
 laravel-echo-server.json
+laravel-echo-server.lock
