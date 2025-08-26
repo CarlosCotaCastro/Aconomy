@@ -54,3 +54,6 @@ coverage/
 
 # Project specific
 /rules-draft
+
+# Laravel Echo Server
+laravel-echo-server.json

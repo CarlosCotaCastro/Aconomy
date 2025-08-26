@@ -6,9 +6,6 @@ import {
     Tabs,
     Tab,
     Typography,
-    Card,
-    CardContent,
-    CardActions,
     Grid,
     Button,
     Chip,
@@ -30,6 +27,7 @@ import {
     Category as CategoryIcon,
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import GlassPaper from '@/Components/GlassPaper';
 
 // Helper function to get status icon
 const getStatusIcon = (status) => {
@@ -104,20 +102,13 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                         {outgoingRequests.length > 0 ? (
                             outgoingRequests.map((request) => (
                                 <Grid size={{xs: 12}} key={request.id}>
-                                    <Card 
+                                    <GlassPaper 
                                         sx={{
                                             cursor: 'pointer',
-                                            background: theme.palette.mode === 'dark' 
-                                                ? 'rgba(255, 255, 255, 0.02)' 
-                                                : 'rgba(255, 255, 255, 0.8)',
-                                            backdropFilter: 'blur(10px)',
-                                            border: theme.palette.mode === 'dark' 
-                                                ? '1px solid rgba(255, 255, 255, 0.1)' 
-                                                : '1px solid rgba(255, 255, 255, 0.2)',
                                             borderRadius: 2,
                                             transition: 'all 0.3s ease',
                                             '&:hover': {
-                                                background: theme.palette.mode === 'dark' 
+                                                backgroundColor: theme.palette.mode === 'dark' 
                                                     ? 'rgba(255, 255, 255, 0.05)' 
                                                     : 'rgba(255, 255, 255, 0.9)',
                                                 transform: 'translateY(-2px)',
@@ -128,7 +119,6 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                         }} 
                                         onClick={() => router.get(route('borrow-requests.show', request.id))}
                                     >
-                                        <CardContent>
                                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                                                 <Typography variant="h6" component="h2">
                                                     {request.item.name}
@@ -165,8 +155,7 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                                     </Typography>
                                                 </Box>
                                             )}
-                                        </CardContent>
-                                    </Card>
+                                    </GlassPaper>
                                 </Grid>
                             ))
                         ) : (
@@ -197,20 +186,13 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                         {incomingRequests.length > 0 ? (
                             incomingRequests.map((request) => (
                                 <Grid size={{xs: 12}} key={request.id}>
-                                    <Card 
+                                    <GlassPaper 
                                         sx={{
                                             cursor: 'pointer',
-                                            background: theme.palette.mode === 'dark' 
-                                                ? 'rgba(255, 255, 255, 0.02)' 
-                                                : 'rgba(255, 255, 255, 0.8)',
-                                            backdropFilter: 'blur(10px)',
-                                            border: theme.palette.mode === 'dark' 
-                                                ? '1px solid rgba(255, 255, 255, 0.1)' 
-                                                : '1px solid rgba(255, 255, 255, 0.2)',
                                             borderRadius: 2,
                                             transition: 'all 0.3s ease',
                                             '&:hover': {
-                                                background: theme.palette.mode === 'dark' 
+                                                backgroundColor: theme.palette.mode === 'dark' 
                                                     ? 'rgba(255, 255, 255, 0.05)' 
                                                     : 'rgba(255, 255, 255, 0.9)',
                                                 transform: 'translateY(-2px)',
@@ -221,7 +203,6 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                         }} 
                                         onClick={() => router.get(route('borrow-requests.show', request.id))}
                                     >
-                                        <CardContent>
                                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                                                 <Typography variant="h6" component="h2">
                                                     {request.item.name}
@@ -258,8 +239,7 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                                     </Typography>
                                                 </Box>
                                             )}
-                                        </CardContent>
-                                    </Card>
+                                    </GlassPaper>
                                 </Grid>
                             ))
                         ) : (

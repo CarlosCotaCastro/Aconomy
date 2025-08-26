@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import {
     Box,
     Button,
-    Card,
     CardContent,
     CardActions,
     Grid,
@@ -20,6 +19,7 @@ import {
     Person as PersonIcon,
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import GlassPaper from '@/Components/GlassPaper';
 
 export default function GroupItems({ group, items, auth }) {
     const { t } = useTranslation();
@@ -34,17 +34,9 @@ export default function GroupItems({ group, items, auth }) {
         <AuthenticatedLayout>
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <Box
+                    <GlassPaper
                         sx={{
-                            backgroundColor: theme.palette.mode === 'dark' 
-                                ? 'rgba(255, 255, 255, 0.02)' 
-                                : 'rgba(255, 255, 255, 1)',
-                            backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
-                            border: theme.palette.mode === 'dark' 
-                                ? '1px solid rgba(255, 255, 255, 0.1)' 
-                                : '1px solid rgba(0, 0, 0, 0.1)',
                             borderRadius: 2,
-                            p: 3,
                             boxShadow: theme.palette.mode === 'dark' 
                                 ? '0 8px 32px rgba(0, 0, 0, 0.4)' 
                                 : '0 1px 3px rgba(0, 0, 0, 0.1)',
@@ -73,18 +65,12 @@ export default function GroupItems({ group, items, auth }) {
             <Grid container spacing={3}>
                 {filteredItems.map((item) => (
                     <Grid md={4} sm={6} key={item.id}>
-                        <Card
+                        <GlassPaper
                             sx={{
-                                backgroundColor: theme.palette.mode === 'dark' 
-                                    ? 'rgba(255, 255, 255, 0.02)' 
-                                    : 'rgba(255, 255, 255, 1)',
-                                backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
-                                border: theme.palette.mode === 'dark' 
-                                    ? '1px solid rgba(255, 255, 255, 0.1)' 
-                                    : '1px solid rgba(0, 0, 0, 0.1)',
-                                boxShadow: theme.palette.mode === 'dark' 
-                                    ? '0 4px 16px rgba(0, 0, 0, 0.3)' 
-                                    : '0 2px 4px rgba(0, 0, 0, 0.1)',
+                                p: 0, // Override default padding for Card layout
+                                height: '100%',
+                                display: 'flex',
+                                flexDirection: 'column',
                                 transition: 'all 0.3s ease',
                                 '&:hover': {
                                     boxShadow: theme.palette.mode === 'dark' 
@@ -154,11 +140,11 @@ export default function GroupItems({ group, items, auth }) {
                                     </Button>
                                 )}
                             </CardActions>
-                        </Card>
+                        </GlassPaper>
                     </Grid>
                 ))}
                         </Grid>
-                    </Box>
+                    </GlassPaper>
                 </div>
             </div>
         </AuthenticatedLayout>

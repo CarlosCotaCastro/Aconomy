@@ -4,9 +4,6 @@ import {useState, useEffect, useCallback} from 'react';
 import {
     Box,
     Button,
-    Card,
-    CardContent,
-    CardActions,
     Typography,
     Chip,
     List,
@@ -38,6 +35,7 @@ import GroupMemberList from "@/Pages/Groups/Partials/GroupMemberList";
 import GroupItemSearch from "@/Pages/Groups/Partials/GroupItemSearch.jsx";
 import RecentItemsGrid from "@/Pages/Groups/Partials/RecentItemsGrid.jsx";
 import { useTranslation } from 'react-i18next';
+import GlassPaper from '@/Components/GlassPaper';
 
 export default function Show({group, recentItems, auth}) {
     const { t } = useTranslation();
@@ -111,16 +109,7 @@ export default function Show({group, recentItems, auth}) {
                     />
 
                     {isUserApproved && pendingMembers.length > 0 && (
-                        <Card sx={{ 
-                            background: theme.palette.mode === 'dark' 
-                                ? 'rgba(255, 255, 255, 0.02)' 
-                                : theme.palette.background.paper,
-                            backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
-                            border: theme.palette.mode === 'dark' 
-                                ? '1px solid rgba(255, 255, 255, 0.1)' 
-                                : `1px solid ${theme.palette.divider}`,
-                        }}>
-                            <CardContent>
+                        <GlassPaper>
                                 <Typography variant="h6" gutterBottom>
                                     {t('groups.pendingRequestsTitle', { count: pendingMembers.length })}
                                 </Typography>
@@ -155,8 +144,7 @@ export default function Show({group, recentItems, auth}) {
                                         </ListItem>
                                     ))}
                                 </List>
-                            </CardContent>
-                        </Card>
+                        </GlassPaper>
                     )}
                 </Grid>
 
