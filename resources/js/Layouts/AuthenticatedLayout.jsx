@@ -315,7 +315,7 @@ export default function AuthenticatedLayout({ user, children }) {
         <div style={{ 
             background: theme.palette.mode === 'dark' ? "var(--bg-primary)" : theme.palette.background.default 
         }}>
-            <div className={theme.palette.mode === 'dark' ? "custom-hero-bg" : ""} style={{
+            <div className={theme.palette.mode === 'dark' ? "custom-hero-bg-optimized" : ""} style={{
                 display: 'flex',
                 flexDirection: 'column',
                 minHeight: '100vh',

@@ -17,6 +17,7 @@
 }
 
 
+/* Original gradient background for static pages (GuestLayout, Welcome) */
 .custom-hero-bg {
   position: relative;
   width: 100vw;
@@ -29,10 +30,10 @@
   background: radial-gradient(circle at 20% 80%, rgba(0, 123, 255, 0.15) 0%, transparent 50%),
     radial-gradient(circle at 80% 20%, var(--bg-accent) 0%, transparent 50%),
     radial-gradient(circle at 40% 40%, rgba(138, 43, 226, 0.1) 0%, transparent 50%);
-  /*z-index: -2;*/
   animation: gradientShift 8s ease-in-out infinite;
 }
 
+/* Original pseudo-elements for static pages */
 .custom-hero-bg::before {
   content: '';
   position: absolute;
@@ -57,6 +58,25 @@
   filter: blur(60px);
   z-index: 2;
 }
+
+/* Optimized SVG background for dynamic pages (AuthenticatedLayout) */
+.custom-hero-bg-optimized {
+  position: relative;
+  width: 100vw;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  min-height: 60vh;
+  overflow: hidden;
+  background-image: url('/images/dark-mode-bg.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+
 
 .hero-cta-btn {
   border-radius: 2em !important;
