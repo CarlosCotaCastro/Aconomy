@@ -1,7 +1,8 @@
 import { Link, useForm } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Box, Button, Card, CardContent, Typography, Grid, Chip, TextField, DialogContentText, Avatar, useTheme } from '@mui/material';
+import { Box, Button, Typography, Grid, Chip, TextField, DialogContentText, Avatar, useTheme } from '@mui/material';
 import GlassDialog from '@/Components/GlassDialog';
+import GlassPaper from '@/Components/GlassPaper';
 import { useState } from 'react';
 
 export default function Show({ auth, lending }) {
@@ -134,68 +135,51 @@ export default function Show({ auth, lending }) {
 
                     <Grid container spacing={3}>
                         <Grid md={6}>
-                            <Card sx={{
-                                background: theme.palette.mode === 'dark' 
-                                    ? 'rgba(255, 255, 255, 0.02)'
-                                    : 'rgba(255, 255, 255, 0.9)',
-                                backdropFilter: 'blur(10px)',
-                                border: theme.palette.mode === 'dark' 
-                                    ? '1px solid rgba(255, 255, 255, 0.1)'
-                                    : '1px solid rgba(255, 255, 255, 0.2)',
+                            <GlassPaper sx={{
                                 boxShadow: theme.palette.mode === 'dark'
                                     ? '0 8px 32px rgba(0, 0, 0, 0.3)'
                                     : '0 8px 32px rgba(0, 0, 0, 0.1)',
                             }}>
-                                <CardContent sx={{ p: 3 }}>
-                                    <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
-                                        Item Information
+                                <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
+                                    Item Information
+                                </Typography>
+                                <Box sx={{ mb: 2 }}>
+                                    <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                                        Name
                                     </Typography>
-                                    <Box sx={{ mb: 2 }}>
-                                        <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                                            Name
-                                        </Typography>
-                                        <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                                            {lending.item.name}
-                                        </Typography>
-                                    </Box>
-                                    <Box sx={{ mb: 3 }}>
-                                        <Typography variant="subtitle2" color="text.secondary" gutterBottom>
-                                            Description
-                                        </Typography>
-                                        <Typography variant="body1">
-                                            {lending.item.description || 'No description provided'}
-                                        </Typography>
-                                    </Box>
-                                    <Box sx={{ mt: 2 }}>
-                                        <Chip 
-                                            label={lending.returned_at ? "Returned" : "Active Lending"} 
-                                            color={lending.returned_at ? "success" : "primary"} 
-                                            sx={{
-                                                fontWeight: 500,
-                                                '& .MuiChip-label': {
-                                                    px: 2
-                                                }
-                                            }}
-                                        />
-                                    </Box>
-                                </CardContent>
-                            </Card>
+                                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                                        {lending.item.name}
+                                    </Typography>
+                                </Box>
+                                <Box sx={{ mb: 3 }}>
+                                    <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                                        Description
+                                    </Typography>
+                                    <Typography variant="body1">
+                                        {lending.item.description || 'No description provided'}
+                                    </Typography>
+                                </Box>
+                                <Box sx={{ mt: 2 }}>
+                                    <Chip 
+                                        label={lending.returned_at ? "Returned" : "Active Lending"} 
+                                        color={lending.returned_at ? "success" : "primary"} 
+                                        sx={{
+                                            fontWeight: 500,
+                                            '& .MuiChip-label': {
+                                                px: 2
+                                            }
+                                        }}
+                                    />
+                                </Box>
+                            </GlassPaper>
                         </Grid>
                         
                         <Grid md={6}>
-                            <Card sx={{
-                                background: theme.palette.mode === 'dark' 
-                                    ? 'rgba(255, 255, 255, 0.02)'
-                                    : 'rgba(255, 255, 255, 0.9)',
-                                backdropFilter: 'blur(10px)',
-                                border: theme.palette.mode === 'dark' 
-                                    ? '1px solid rgba(255, 255, 255, 0.1)'
-                                    : '1px solid rgba(255, 255, 255, 0.2)',
+                            <GlassPaper sx={{
                                 boxShadow: theme.palette.mode === 'dark'
                                     ? '0 8px 32px rgba(0, 0, 0, 0.3)'
                                     : '0 8px 32px rgba(0, 0, 0, 0.1)',
                             }}>
-                                <CardContent sx={{ p: 3 }}>
                                     <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
                                         Lending Information
                                     </Typography>
@@ -292,8 +276,7 @@ export default function Show({ auth, lending }) {
                                             )}
                                         </Box>
                                     )}
-                                </CardContent>
-                            </Card>
+                            </GlassPaper>
                         </Grid>
                     </Grid>
                 

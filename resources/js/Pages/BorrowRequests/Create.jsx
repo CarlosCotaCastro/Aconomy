@@ -3,9 +3,6 @@ import { useTranslation } from 'react-i18next';
 import {
     Box,
     Button,
-    Card,
-    CardContent,
-    CardActions,
     Typography,
     TextField,
     Grid,
@@ -21,6 +18,7 @@ import {
     Description as DescriptionIcon
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import GlassPaper from '@/Components/GlassPaper';
 
 export default function Create({ item, auth }) {
     const { t } = useTranslation();
@@ -54,19 +52,11 @@ export default function Create({ item, auth }) {
 
             <Grid container spacing={3}>
                 <Grid md={6}>
-                    <Card
+                    <GlassPaper
                         sx={{
-                            background: theme.palette.mode === 'dark' 
-                                ? 'rgba(255, 255, 255, 0.02)' 
-                                : 'rgba(255, 255, 255, 0.8)',
-                            backdropFilter: 'blur(10px)',
-                            border: theme.palette.mode === 'dark' 
-                                ? '1px solid rgba(255, 255, 255, 0.1)' 
-                                : '1px solid rgba(255, 255, 255, 0.2)',
                             borderRadius: 2,
                         }}
                     >
-                        <CardContent>
                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                                 <Avatar sx={{ bgcolor: 'primary.light', mr: 2 }}>
                                     <DescriptionIcon />
@@ -101,24 +91,15 @@ export default function Create({ item, auth }) {
                                     </Typography>
                                 </Box>
                             </Box>
-                        </CardContent>
-                    </Card>
+                    </GlassPaper>
                 </Grid>
                 
                 <Grid md={6}>
-                    <Card
+                    <GlassPaper
                         sx={{
-                            background: theme.palette.mode === 'dark' 
-                                ? 'rgba(255, 255, 255, 0.02)' 
-                                : 'rgba(255, 255, 255, 0.8)',
-                            backdropFilter: 'blur(10px)',
-                            border: theme.palette.mode === 'dark' 
-                                ? '1px solid rgba(255, 255, 255, 0.1)' 
-                                : '1px solid rgba(255, 255, 255, 0.2)',
                             borderRadius: 2,
                         }}
                     >
-                        <CardContent>
                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                                 <Avatar sx={{ bgcolor: 'secondary.light', mr: 2 }}>
                                     <RequestQuoteIcon />
@@ -158,8 +139,7 @@ export default function Create({ item, auth }) {
                                     {t('borrowRequests.sendRequest')}
                                 </Button>
                             </Box>
-                        </CardContent>
-                    </Card>
+                    </GlassPaper>
                 </Grid>
             </Grid>
         </AuthenticatedLayout>

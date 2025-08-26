@@ -4,9 +4,6 @@ import { useTranslation } from 'react-i18next';
 import {
     Box,
     Button,
-    Card,
-    CardContent,
-    CardActions,
     Typography,
     TextField,
     Grid,
@@ -100,19 +97,11 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
 
             <Grid container spacing={3}>
                 <Grid size={{md:6, xs:12}}>
-                    <Card
+                    <GlassPaper
                         sx={{
-                            background: theme.palette.mode === 'dark' 
-                                ? 'rgba(255, 255, 255, 0.02)' 
-                                : 'rgba(255, 255, 255, 0.8)',
-                            backdropFilter: 'blur(10px)',
-                            border: theme.palette.mode === 'dark' 
-                                ? '1px solid rgba(255, 255, 255, 0.1)' 
-                                : '1px solid rgba(255, 255, 255, 0.2)',
                             borderRadius: 2,
                         }}
                     >
-                        <CardContent>
                             <Typography variant="h6" gutterBottom>
                                 {t('borrowRequests.itemDetails')}
                             </Typography>
@@ -182,24 +171,15 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                                     </GlassPaper>
                                 </Box>
                             )}
-                        </CardContent>
-                    </Card>
+                    </GlassPaper>
                 </Grid>
 
                 <Grid size={{md:6, xs:12}}>
-                    <Card
+                    <GlassPaper
                         sx={{
-                            background: theme.palette.mode === 'dark' 
-                                ? 'rgba(255, 255, 255, 0.02)' 
-                                : 'rgba(255, 255, 255, 0.8)',
-                            backdropFilter: 'blur(10px)',
-                            border: theme.palette.mode === 'dark' 
-                                ? '1px solid rgba(255, 255, 255, 0.1)' 
-                                : '1px solid rgba(255, 255, 255, 0.2)',
                             borderRadius: 2,
                         }}
                     >
-                        <CardContent>
                             <Typography variant="h6" gutterBottom>
                                 {t('borrowRequests.requestStatus')}
                             </Typography>
@@ -311,8 +291,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                                     {t('borrowRequests.completedRequestInfo')}
                                 </Alert>
                             )}
-                        </CardContent>
-                    </Card>
+                    </GlassPaper>
                 </Grid>
             </Grid>
 

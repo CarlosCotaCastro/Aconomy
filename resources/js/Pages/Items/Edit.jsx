@@ -58,17 +58,9 @@ export default function Edit({ item }) {
         <AuthenticatedLayout>
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <Box
+                    <GlassPaper
                         sx={{
-                            backgroundColor: theme.palette.mode === 'dark'
-                                ? 'rgba(255, 255, 255, 0.02)'
-                                : 'rgba(255, 255, 255, 1)',
-                            backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
-                            border: theme.palette.mode === 'dark'
-                                ? '1px solid rgba(255, 255, 255, 0.1)'
-                                : '1px solid rgba(0, 0, 0, 0.1)',
                             borderRadius: 2,
-                            p: 3,
                             boxShadow: theme.palette.mode === 'dark'
                                 ? '0 8px 32px rgba(0, 0, 0, 0.4)'
                                 : '0 1px 3px rgba(0, 0, 0, 0.1)',
@@ -155,7 +147,7 @@ export default function Edit({ item }) {
                                 </form>
                             </GlassPaper>
                         </Box>
-                    </Box>
+                    </GlassPaper>
                 </div>
             </div>
         </AuthenticatedLayout>

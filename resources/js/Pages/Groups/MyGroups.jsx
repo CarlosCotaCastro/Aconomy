@@ -2,7 +2,6 @@ import { Link, useForm } from '@inertiajs/react';
 import {
     Box,
     Button,
-    Card,
     CardContent,
     CardActions,
     Grid,
@@ -19,6 +18,7 @@ import {
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
+import GlassPaper from '@/Components/GlassPaper';
 
 export default function Index({ groups, auth }) {
     const { post, processing } = useForm();
@@ -54,25 +54,19 @@ export default function Index({ groups, auth }) {
 
                     return (
                         <Grid size={{xs: 12, sm: 6}} key={group.id}>
-                            <Card sx={{ 
+                            <GlassPaper sx={{ 
                                 height: '100%', 
                                 display: 'flex', 
                                 flexDirection: 'column',
-                                background: theme.palette.mode === 'dark' 
-                                    ? 'rgba(255, 255, 255, 0.02)' 
-                                    : theme.palette.background.paper,
-                                backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
-                                border: theme.palette.mode === 'dark' 
-                                    ? '1px solid rgba(255, 255, 255, 0.1)' 
-                                    : `1px solid ${theme.palette.divider}`,
+                                p: 0, // Override default padding for Card layout
                                 transition: 'all 0.3s ease',
                                 '&:hover': {
-                                    background: theme.palette.mode === 'dark' 
+                                    backgroundColor: theme.palette.mode === 'dark' 
                                         ? 'rgba(255, 255, 255, 0.05)' 
                                         : theme.palette.background.paper,
-                                    border: theme.palette.mode === 'dark' 
-                                        ? '1px solid rgba(255, 255, 255, 0.2)' 
-                                        : `1px solid ${theme.palette.primary.main}`,
+                                    borderColor: theme.palette.mode === 'dark' 
+                                        ? 'rgba(255, 255, 255, 0.2)' 
+                                        : theme.palette.primary.main,
                                     transform: 'translateY(-2px)',
                                     boxShadow: theme.palette.mode === 'dark' 
                                         ? '0 8px 32px rgba(0, 0, 0, 0.3)' 
@@ -170,7 +164,7 @@ export default function Index({ groups, auth }) {
                                         />
                                     )}
                                 </CardActions>
-                            </Card>
+                            </GlassPaper>
                         </Grid>
                     );
                 })}
