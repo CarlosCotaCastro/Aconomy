@@ -22,6 +22,7 @@ import {
     Divider,
     useTheme,
 } from '@mui/material';
+import UserAvatar from '@/Components/UserAvatar.jsx';
 import {
     Menu as MenuIcon,
     Inventory as InventoryIcon,
@@ -162,23 +163,7 @@ export default function AuthenticatedLayout({ user, children }) {
         });
     };
 
-    function stringToColor(string) {
-        let hash = 0;
-        let i;
 
-        for (i = 0; i < string.length; i += 1) {
-            hash = string.charCodeAt(i) + ((hash << 5) - hash);
-        }
-
-        let color = '#';
-
-        for (i = 0; i < 3; i += 1) {
-            const value = (hash >> (i * 8)) & 0xff;
-            color += `00${value.toString(16)}`.slice(-2);
-        }
-
-        return color;
-    }
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
@@ -381,24 +366,7 @@ export default function AuthenticatedLayout({ user, children }) {
                             onClick={handleUserMenuOpen}
                             color="inherit"
                         >
-                            {authUser.profile_image_path ? (
-                                <Avatar 
-                                    alt={authUser.name}
-                                    src={`/storage/${authUser.profile_image_path}`}
-                                    sx={{ width: 32, height: 32 }}
-                                />
-                            ) : (
-                                <Avatar 
-                                    alt={authUser.name}
-                                    sx={{ 
-                                        width: 32, 
-                                        height: 32,
-                                        bgcolor: stringToColor(authUser.name)
-                                    }}
-                                >
-                                    {authUser.name.charAt(0).toUpperCase()}
-                                </Avatar>
-                            )}
+                            <UserAvatar user={authUser} size={32} />
                         </IconButton>
                         <Menu
                             anchorEl={userAnchorEl}

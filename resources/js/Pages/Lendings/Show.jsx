@@ -4,6 +4,7 @@ import { Box, Button, Typography, Grid, Chip, TextField, DialogContentText, Avat
 import GlassDialog from '@/Components/GlassDialog';
 import GlassPaper from '@/Components/GlassPaper';
 import { useState } from 'react';
+import UserAvatar from '@/Components/UserAvatar.jsx';
 
 export default function Show({ auth, lending }) {
     const [openDialog, setOpenDialog] = useState(false);
@@ -36,47 +37,14 @@ export default function Show({ auth, lending }) {
 
     const hasActiveReturnRequest = lending.active_return_request !== null;
 
-    function stringToColor(string) {
-        let hash = 0;
-        let i;
 
-        for (i = 0; i < string.length; i += 1) {
-            hash = string.charCodeAt(i) + ((hash << 5) - hash);
-        }
-
-        let color = '#';
-
-        for (i = 0; i < 3; i += 1) {
-            const value = (hash >> (i * 8)) & 0xff;
-            color += `00${value.toString(16)}`.slice(-2);
-        }
-
-        return color;
-    }
 
     const renderUserInfo = (user) => {
         const isCurrentUser = user.id === auth.user.id;
         return (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                 {!isCurrentUser && (
-                    user.profile_image_path ? (
-                        <Avatar
-                            src={`/storage/${user.profile_image_path}`}
-                            alt={user.name}
-                            sx={{ width: 32, height: 32 }}
-                        />
-                    ) : (
-                        <Avatar
-                            sx={{
-                                width: 32,
-                                height: 32,
-                                bgcolor: stringToColor(user.name),
-                                fontSize: '1rem'
-                            }}
-                        >
-                            {user.name.charAt(0).toUpperCase()}
-                        </Avatar>
-                    )
+                    <UserAvatar user={user} size={32} />
                 )}
                 <Box>
                     <Typography variant="body2" color="text.secondary">

@@ -20,24 +20,7 @@ import {
     ArrowForward as ArrowForwardIcon,
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
-
-function stringToColor(string) {
-    let hash = 0;
-    let i;
-
-    for (i = 0; i < string.length; i += 1) {
-        hash = string.charCodeAt(i) + ((hash << 5) - hash);
-    }
-
-    let color = '#';
-
-    for (i = 0; i < 3; i += 1) {
-        const value = (hash >> (i * 8)) & 0xff;
-        color += `00${value.toString(16)}`.slice(-2);
-    }
-
-    return color;
-}
+import UserAvatar from '@/Components/UserAvatar.jsx';
 
 export default function RecentItemsGrid({ items, currentUserId }) {
     const { t } = useTranslation();
@@ -64,18 +47,7 @@ export default function RecentItemsGrid({ items, currentUserId }) {
                 size="small"
                 sx={{ p: 0 }}
             >
-                <Avatar
-                    src={user.profile_image_path ? `/storage/${user.profile_image_path}` : undefined}
-                    alt={user.name}
-                    sx={{
-                        width: size,
-                        height: size,
-                        bgcolor: !user.profile_image_path ? stringToColor(user.name) : undefined,
-                        fontSize: `${size * 0.4}px`
-                    }}
-                >
-                    {!user.profile_image_path && user.name.charAt(0).toUpperCase()}
-                </Avatar>
+                <UserAvatar user={user} size={size} />
             </IconButton>
         </Tooltip>
     );

@@ -9,6 +9,7 @@ import {
     Chip,
     useTheme,
 } from '@mui/material';
+import UserAvatar from '@/Components/UserAvatar.jsx';
 import GlassPaper from '@/Components/GlassPaper';
 import {
     Person as PersonIcon,
@@ -36,19 +37,14 @@ export default function Show({ profileUser, items, borrowedItems, auth }) {
                         flexDirection: { xs: 'column', sm: 'row' },
                         textAlign: { xs: 'center', sm: 'left' }
                     }}>
-                        <Avatar
-                            src={profileUser.profile_image_path ? `/storage/${profileUser.profile_image_path}` : undefined}
-                            alt={profileUser.name}
+                        <UserAvatar
+                            user={profileUser}
+                            size={120}
                             sx={{
-                                width: 120,
-                                height: 120,
-                                bgcolor: !profileUser.profile_image_path ? 'primary.main' : undefined,
                                 fontSize: '3rem',
                                 border: theme.palette.mode === 'dark' ? '2px solid rgba(255, 255, 255, 0.1)' : 'none'
                             }}
-                        >
-                            {!profileUser.profile_image_path && profileUser.name.charAt(0).toUpperCase()}
-                        </Avatar>
+                        />
                         <Box>
                             <Typography variant="h4" component="h1" gutterBottom>
                                 {profileUser.name}
