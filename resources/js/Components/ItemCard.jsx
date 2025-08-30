@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTheme } from '@mui/material/styles';
+import UserAvatar from './UserAvatar.jsx';
 import SecondaryButton from './SecondaryButton.jsx';
 
 export default function ItemCard({ item, onRequestBorrow, buttonText = "Request to Borrow" }) {
@@ -24,10 +25,10 @@ export default function ItemCard({ item, onRequestBorrow, buttonText = "Request 
                 Status: {item.status}
             </div>
             <div className="flex items-center my-4">
-                <img 
-                    src={item.owner.avatar || '/default-avatar.png'} 
-                    alt={item.owner.name} 
-                    className={`w-8 h-8 rounded-full mr-2 border ${isDark ? 'border-gray-600' : 'border-gray-300'}`} 
+                <UserAvatar 
+                    user={item.owner}
+                    size={32}
+                    sx={{ mr: 1 }}
                 />
                 <span className={`text-sm ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>
                     {item.owner.name}

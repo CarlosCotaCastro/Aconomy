@@ -19,6 +19,7 @@ import {
     Card,
     CardContent,
 } from '@mui/material';
+import UserAvatar from '@/Components/UserAvatar.jsx';
 import {
     Visibility as VisibilityIcon,
 } from '@mui/icons-material';
@@ -81,47 +82,14 @@ export default function Index({ auth, lendings }) {
         </TableHead>
     );
 
-    function stringToColor(string) {
-        let hash = 0;
-        let i;
 
-        for (i = 0; i < string.length; i += 1) {
-            hash = string.charCodeAt(i) + ((hash << 5) - hash);
-        }
-
-        let color = '#';
-
-        for (i = 0; i < 3; i += 1) {
-            const value = (hash >> (i * 8)) & 0xff;
-            color += `00${value.toString(16)}`.slice(-2);
-        }
-
-        return color;
-    }
 
     const renderUserCell = (user) => {
         const isCurrentUser = user.id === auth.user.id;
         return (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 {!isCurrentUser && (
-                    user.profile_image_path ? (
-                        <Avatar
-                            src={`/storage/${user.profile_image_path}`}
-                            alt={user.name}
-                            sx={{ width: 24, height: 24 }}
-                        />
-                    ) : (
-                        <Avatar
-                            sx={{
-                                width: 24,
-                                height: 24,
-                                bgcolor: stringToColor(user.name),
-                                fontSize: '0.875rem'
-                            }}
-                        >
-                            {user.name.charAt(0).toUpperCase()}
-                        </Avatar>
-                    )
+                    <UserAvatar user={user} size={24} />
                 )}
                 <Typography variant="body2">
                     {isCurrentUser ? t('common.me') : user.name}
