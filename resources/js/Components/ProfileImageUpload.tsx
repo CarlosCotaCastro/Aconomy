@@ -1,28 +1,39 @@
 import { useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import ReactCrop, { centerCrop, makeAspectCrop } from 'react-image-crop';
+import ReactCrop, { centerCrop, makeAspectCrop, type Crop, type PixelCrop } from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
-import { useForm } from '@inertiajs/react';
+import { useForm, router, usePage } from '@inertiajs/react';
 import { useTheme } from '@mui/material/styles';
+import { User } from '@/types';
 
-export default function ProfileImageUpload({ user, className = '' }) {
-    const [imgSrc, setImgSrc] = useState('');
-    const [crop, setCrop] = useState();
-    const [completedCrop, setCompletedCrop] = useState(null);
-    const imgRef = useRef(null);
+// Declare global route function
+declare global {
+    function route(name: string, params?: any): string;
+}
+
+interface ProfileImageUploadProps {
+    user: User;
+    className?: string;
+}
+
+export default function ProfileImageUpload({ user, className = '' }: ProfileImageUploadProps) {
+    const [imgSrc, setImgSrc] = useState<string>('');
+    const [crop, setCrop] = useState<Crop>();
+    const [completedCrop, setCompletedCrop] = useState<PixelCrop | null>(null);
+    const imgRef = useRef<HTMLImageElement>(null);
     const [showCrop, setShowCrop] = useState(false);
     const theme = useTheme();
     const isDark = theme.palette.mode === 'dark';
 
     const { data, setData, post, processing, errors, reset } = useForm({
-        image: null,
-        crop: null,
+        image: null as File | null,
+        crop: null as PixelCrop | null,
     });
 
-    function onSelectFile(e) {
+    function onSelectFile(e: React.ChangeEvent<HTMLInputElement>) {
         if (e.target.files && e.target.files.length > 0) {
             const reader = new FileReader();
             reader.addEventListener('load', () => {
@@ -33,7 +44,7 @@ export default function ProfileImageUpload({ user, className = '' }) {
         }
     }
 
-    function onImageLoad(e) {
+    function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
         const { width, height } = e.currentTarget;
         const crop = centerCrop(
             makeAspectCrop(
@@ -52,7 +63,7 @@ export default function ProfileImageUpload({ user, className = '' }) {
     }
 
     async function onCropComplete() {
-        if (!imgRef.current || !completedCrop) return;
+        if (!imgRef.current || !completedCrop) return null;
 
         try {
             const image = imgRef.current;
@@ -60,6 +71,9 @@ export default function ProfileImageUpload({ user, className = '' }) {
             const scaleX = image.naturalWidth / image.width;
             const scaleY = image.naturalHeight / image.height;
             const ctx = canvas.getContext('2d');
+            if (!ctx) {
+                throw new Error('Could not get canvas context');
+            }
 
             canvas.width = completedCrop.width;
             canvas.height = completedCrop.height;
@@ -77,34 +91,39 @@ export default function ProfileImageUpload({ user, className = '' }) {
             );
 
             // Convert canvas to blob
-            const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.95));
+            const blob = await new Promise<Blob>((resolve) => {
+                canvas.toBlob((blob) => {
+                    if (blob) resolve(blob);
+                }, 'image/jpeg', 0.95);
+            });
             const file = new File([blob], 'profile-image.jpg', { type: 'image/jpeg' });
 
-            setData({
+            return {
                 image: file,
                 crop: completedCrop,
-            });
+            };
         } catch (error) {
             console.error('Error processing image:', error);
-            setData('image', null);
+            return null;
         }
     }
 
-    function submit(e) {
-        if (e) e.preventDefault();
-        
-        if (!data.image) {
+    function submitWithImageData(imageData: { image: File; crop: PixelCrop }) {
+        if (!imageData || !imageData.image) {
             console.error('No image data available');
             return;
         }
 
-        post(route('profile.update-image'), {
+        // Only send the image file, not the crop data (backend doesn't need it)
+        router.post(route('profile.update-image'), {
+            image: imageData.image
+        }, {
             onSuccess: () => {
                 setShowCrop(false);
                 setImgSrc('');
                 reset();
             },
-            onError: (errors) => {
+            onError: (errors: any) => {
                 console.error('Error uploading image:', errors);
             },
         });
@@ -140,7 +159,7 @@ export default function ProfileImageUpload({ user, className = '' }) {
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="profile_image" value="Profile Image" />
+                    <InputLabel htmlFor="profile_image" value="Profile Image" color="" children={null} />
                     <input
                         type="file"
                         id="profile_image"
@@ -201,9 +220,9 @@ export default function ProfileImageUpload({ user, className = '' }) {
                             <PrimaryButton
                                 onClick={async () => {
                                     try {
-                                        await onCropComplete();
-                                        if (data.image) {
-                                            submit();
+                                        const imageData = await onCropComplete();
+                                        if (imageData && imageData.image) {
+                                            submitWithImageData(imageData);
                                         }
                                     } catch (error) {
                                         console.error('Error saving image:', error);
