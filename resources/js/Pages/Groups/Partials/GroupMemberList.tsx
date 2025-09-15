@@ -1,5 +1,4 @@
 import {
-    Avatar,
     Card,
     CardContent,
     Divider,
@@ -9,9 +8,9 @@ import {
     ListItemText,
     Typography
 } from "@mui/material";
-import {Person as PersonIcon} from "@mui/icons-material";
 import {useState} from "react";
 import { useTranslation } from 'react-i18next';
+import UserAvatar from '@/Components/UserAvatar';
 
 export default function GroupMemberList({approvedMembers}) {
     const { t } = useTranslation();
@@ -54,16 +53,7 @@ export default function GroupMemberList({approvedMembers}) {
                             }}
                         >
                             <ListItemAvatar>
-                                <Avatar sx={{
-                                    bgcolor: (theme) => theme.palette.mode === 'dark' 
-                                        ? 'rgba(187, 134, 252, 0.2)'
-                                        : 'primary.main',
-                                    border: (theme) => theme.palette.mode === 'dark' 
-                                        ? '1px solid rgba(255, 255, 255, 0.1)'
-                                        : 'none',
-                                }}>
-                                    <PersonIcon/>
-                                </Avatar>
+                                <UserAvatar user={user} size={40} />
                             </ListItemAvatar>
                             <ListItemText
                                 primary={user.name}

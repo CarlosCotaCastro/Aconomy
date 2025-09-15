@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Scout\Searchable;
 
-
 class Item extends Model
 {
     use HasFactory, Searchable;

@@ -16,6 +16,7 @@
         "save": "Speichern",
         "delete": "Löschen",
         "edit": "Bearbeiten",
+        "update": "Aktualisieren",
         "create": "Erstellen",
         "search": "Suchen",
         "loading": "Wird geladen...",
@@ -104,7 +105,14 @@
         "pendingRequests": "{{count}} ausstehende Anfrage",
         "pendingRequests_plural": "{{count}} ausstehende Anfragen",
         "backToGroups": "Zurück zu Gruppen",
-        "pendingRequestsTitle": "Ausstehende Anfragen ({{count}})"
+        "pendingRequestsTitle": "Ausstehende Anfragen ({{count}})",
+        "noMembers": "Noch keine Mitglieder",
+        "sharedItems": "Geteilte Gegenstände",
+        "searchItemsPlaceholder": "Gegenstände in dieser Gruppe durchsuchen...",
+        "itemsFound": "{{count}} Gegenstände gefunden",
+        "noItemsFound": "Keine Gegenstände in dieser Gruppe gefunden",
+        "recentItems": "Letzte Gegenstände",
+        "createGroup": "Gruppe erstellen"
     },
     "lendings": {
         "activeLendings": "Aktive Ausleihen",

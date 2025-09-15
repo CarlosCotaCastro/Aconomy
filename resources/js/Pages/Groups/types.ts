@@ -8,11 +8,11 @@ export interface Group extends Timestamps {
     name: string;
     description?: string;
     image_path?: string;
-    owner_id: number;
+    banner_image_path?: string;
+    avatar_image_path?: string;
     is_public: boolean;
     join_code?: string;
-    owner?: User;
-    members?: User[];
+    users?: User[];
     items?: Item[];
     members_count?: number;
     items_count?: number;
@@ -45,6 +45,7 @@ export interface GroupShowPageProps extends PageProps {
     group: Group;
     items?: PaginatedData<Item>;
     members?: User[];
+    isGroupCreator?: boolean;
     canEdit?: boolean;
     canDelete?: boolean;
     canLeave?: boolean;

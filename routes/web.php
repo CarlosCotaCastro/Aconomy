@@ -69,6 +69,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/groups/{group}/join', [GroupUserController::class, 'store'])->name('groups.join');
     Route::delete('/groups/{group}/leave', [GroupUserController::class, 'destroy'])->name('groups.leave');
     Route::post('/groups/{group}/users/{user}/approve', [GroupController::class, 'approve'])->name('groups.approve');
+    Route::post('/groups/{group}/images', [GroupController::class, 'updateImages'])->name('groups.update-images');
     Route::get('/groups/{group}/search-items', GroupSearchItems::class)->name('groups.search-items');
     Route::get('/my-groups', \App\Http\Controllers\Group\MyGroups::class)->name('groups.my-groups');
 

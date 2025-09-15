@@ -16,8 +16,10 @@
         "save": "Save",
         "delete": "Delete",
         "edit": "Edit",
+        "update": "Update",
         "create": "Create",
         "search": "Search",
+        "filter": "Filter",
         "loading": "Loading...",
         "error": "Error",
         "success": "Success",
@@ -27,7 +29,8 @@
         "viewDetails": "View Details",
         "pendingApproval": "Pending Approval",
         "me": "me",
-        "or": "or"
+        "or": "or",
+        "tryAdjustingSearch": "Try adjusting your search terms or filters."
     },
     "auth": {
         "loginTitle": "Log in to your account",
@@ -111,7 +114,15 @@
         "searchItemsPlaceholder": "Search items in this group...",
         "itemsFound": "{{count}} items found",
         "noItemsFound": "No items found in this group",
-        "recentItems": "Recent Items"
+        "recentItems": "Recent Items",
+        "searchGroups": "Search groups...",
+        "filterAll": "All Groups",
+        "filterMyGroups": "My Groups",
+        "filterDiscover": "Discover New Groups",
+        "noGroupsFound": "No groups found",
+        "groupsFound": "{{count}} groups found",
+        "noGroupsYet": "No groups available yet. Create the first group!",
+        "createGroup": "Create Group"
     },
     "lendings": {
         "activeLendings": "Active Lendings",

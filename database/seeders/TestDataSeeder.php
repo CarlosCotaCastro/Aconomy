@@ -33,9 +33,9 @@ class TestDataSeeder extends Seeder
             'description' => 'A group for testing item sharing and searching',
         ]);
 
-        // Add users to the group
-        $group->users()->attach($testUser->id, ['approved' => true]);
-        $group->users()->attach($carolUser->id, ['approved' => true]);
+        // Add users to the group (testUser is the creator)
+        $group->users()->attach($testUser->id, ['approved' => true, 'created_at' => now()]);
+        $group->users()->attach($carolUser->id, ['approved' => true, 'created_at' => now()->addMinutes(1)]);
 
         // Create items for Test User
         $testUserItems = [

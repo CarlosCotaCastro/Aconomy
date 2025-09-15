@@ -1,43 +1,34 @@
-import {Link, useForm} from '@inertiajs/react';
-import axios from 'axios';
-import {useState, useEffect, useCallback} from 'react';
+import { useForm, Link } from '@inertiajs/react';
 import {
     Box,
     Button,
     Typography,
-    Chip,
+    Grid,
+    Avatar,
+    IconButton,
     List,
     ListItem,
-    ListItemText,
     ListItemAvatar,
-    Avatar,
+    ListItemText,
     Divider,
-    Paper,
-    Grid,
-    IconButton,
-    TextField,
-    InputAdornment,
-    CircularProgress,
     useTheme,
 } from '@mui/material';
 import {
-    Group as GroupIcon,
     ArrowBack as ArrowBackIcon,
-    Person as PersonIcon,
+    Edit as EditIcon,
     Check as CheckIcon,
     Close as CloseIcon,
-    Search as SearchIcon,
-    Inventory as InventoryIcon,
-    AccessTime as AccessTimeIcon,
+    Group as GroupIcon,
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import GroupMemberList from "@/Pages/Groups/Partials/GroupMemberList";
-import GroupItemSearch from "@/Pages/Groups/Partials/GroupItemSearch.jsx";
-import RecentItemsGrid from "@/Pages/Groups/Partials/RecentItemsGrid.jsx";
-import { useTranslation } from 'react-i18next';
 import GlassPaper from '@/Components/GlassPaper';
+import GroupAvatar from '@/Components/GroupAvatar';
+import GroupBanner from '@/Components/GroupBanner';
+import { useTranslation } from 'react-i18next';
+import GroupMemberList from "@/Pages/Groups/Partials/GroupMemberList";
+import RecentItemsGrid from "@/Pages/Groups/Partials/RecentItemsGrid.jsx";
 
-export default function Show({group, recentItems, auth}) {
+export default function Show({group, recentItems, auth, isGroupCreator}) {
     const { t } = useTranslation();
     const theme = useTheme();
     const {post, processing} = useForm();
@@ -84,22 +75,14 @@ export default function Show({group, recentItems, auth}) {
                     {t('groups.backToGroups')}
                 </Button>
 
-                <Box sx={{display: 'flex', alignItems: 'center', mb: 3, justifyContent: 'space-between'}}>
-                    <Box sx={{display: 'flex', alignItems: 'center'}}>
-                        <Avatar sx={{bgcolor: 'primary.light', mr: 2}}>
-                            <GroupIcon/>
-                        </Avatar>
-                        <Typography variant="h4" component="h1">
-                            {group.name}
-                        </Typography>
-                    </Box>
-                </Box>
-
-                {group.description && (
-                    <Typography color="text.secondary" sx={{mb: 3}}>
-                        {group.description}
-                    </Typography>
-                )}
+                {/* Group Banner */}
+                <GroupBanner
+                    group={group}
+                    height={200}
+                    sx={{ mb: 3 }}
+                    isGroupCreator={isGroupCreator}
+                />
+                
             </Box>
 
             <Grid container spacing={3}>
@@ -126,15 +109,19 @@ export default function Show({group, recentItems, auth}) {
                                                         color="success"
                                                         onClick={() => handleApproveUser(user.id)}
                                                         disabled={processing}
+                                                        title={t('groups.approveUser')}
                                                     >
-                                                        <CheckIcon/>
+                                                        <CheckIcon />
                                                     </IconButton>
                                                 </Box>
                                             }
                                         >
                                             <ListItemAvatar>
-                                                <Avatar>
-                                                    <PersonIcon/>
+                                                <Avatar
+                                                    src={user.profile_image_path ? `/storage/${user.profile_image_path}` : undefined}
+                                                    alt={user.name}
+                                                >
+                                                    {user.name.charAt(0).toUpperCase()}
                                                 </Avatar>
                                             </ListItemAvatar>
                                             <ListItemText
@@ -146,49 +133,52 @@ export default function Show({group, recentItems, auth}) {
                                 </List>
                         </GlassPaper>
                     )}
+
+                    {!isUserApproved && (
+                        <GlassPaper>
+                            <Typography variant="h6" gutterBottom>
+                                {t('groups.joinGroup')}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary" sx={{mb: 2}}>
+                                {t('groups.joinGroupDescription')}
+                            </Typography>
+                            <Button
+                                variant="contained"
+                                onClick={handleJoinGroup}
+                                disabled={joining}
+                                fullWidth
+                            >
+                                {joining ? t('groups.joining') : t('groups.joinGroup')}
+                            </Button>
+                        </GlassPaper>
+                    )}
+
+                    {isUserApproved && (
+                        <GlassPaper>
+                            <Typography variant="h6" gutterBottom>
+                                {t('groups.groupActions')}
+                            </Typography>
+                            <Button
+                                variant="outlined"
+                                color="error"
+                                onClick={handleLeaveGroup}
+                                disabled={leaving}
+                                fullWidth
+                            >
+                                {leaving ? t('groups.leaving') : t('groups.leaveGroup')}
+                            </Button>
+                        </GlassPaper>
+                    )}
                 </Grid>
 
                 <Grid size={9}>
-                    {isUserApproved && (
-                        <Box>
-                            <GroupItemSearch 
-                                group={group} 
-                                userId={auth.user.id} 
-                                isUserApproved={isUserApproved}
-                            />
-                            <Box sx={{ mt: 4 }}>
-                                <RecentItemsGrid 
-                                    items={recentItems} 
-                                    currentUserId={auth.user.id}
-                                />
-                            </Box>
-                        </Box>
-                    )}
+                    <RecentItemsGrid
+                        items={recentItems}
+                        title={t('groups.recentItems')}
+                        showOwner={true}
+                    />
                 </Grid>
             </Grid>
-
-            {group.users.find(u => u.id === auth.user.id) ? (
-                <Box sx={{mt: 3}}>
-                    <Button
-                        onClick={handleLeaveGroup}
-                        disabled={leaving}
-                        variant="outlined"
-                        color="error"
-                    >
-                        {t('groups.leaveGroup')}
-                    </Button>
-                </Box>
-            ) : (
-                <Box sx={{mt: 3}}>
-                    <Button
-                        onClick={handleJoinGroup}
-                        disabled={joining}
-                        variant="contained"
-                    >
-                        {t('groups.joinGroup')}
-                    </Button>
-                </Box>
-            )}
         </AuthenticatedLayout>
     );
 }

@@ -14,6 +14,8 @@ class Group extends Model
     protected $fillable = [
         'name',
         'description',
+        'banner_image_path',
+        'avatar_image_path',
     ];
 
     public function users()
