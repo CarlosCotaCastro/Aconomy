@@ -7,16 +7,19 @@ import {
     Grid,
     Typography,
     Chip,
-    Tooltip, CardMedia, useTheme,
+    Tooltip, useTheme,
+    CardMedia,
 } from '@mui/material';
 import {
     Add as AddIcon,
-    Group as GroupIcon,
     Person as PersonIcon,
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import GlassPaper from '@/Components/GlassPaper';
+import GroupBanner from '@/Components/GroupBanner';
+import GroupAvatar from '@/Components/GroupAvatar';
+import { useTranslation } from 'react-i18next';
 
 export default function Index({ groups, auth }: any) {
     const { post, processing } = useForm();
@@ -26,21 +29,25 @@ export default function Index({ groups, auth }: any) {
         post(route('groups.join', groupId));
     };
 
+    const { t } = useTranslation();
+
     return (
         <AuthenticatedLayout user={auth.user}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
-                <Typography variant="h4" component="h1">
+                <Typography variant="h2" component="h1">
                     My Groups
                 </Typography>
-                <PrimaryButton
-                    component={Link}
-                    href={route('groups.create')}
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                    disabled={false}
-                >
-                    Create Group
-                </PrimaryButton>
+                <Box>
+                    <PrimaryButton
+                        component={Link}
+                        href={route('groups.create')}
+                        variant="contained"
+                        startIcon={<AddIcon />}
+                        disabled={false}
+                    >
+                        {t('groups.createGroup')}
+                    </PrimaryButton>
+                </Box>
             </Box>
 
             <Grid container spacing={3}>
@@ -52,7 +59,7 @@ export default function Index({ groups, auth }: any) {
                     const isUserApproved = group.users.find((u: any) => u.id === auth.user.id)?.pivot.approved;
 
                     return (
-                        <Grid size={{xs: 12, sm: 6}} key={group.id}>
+                        <Grid size={{xs: 12, sm: 6, md: 4}} key={group.id}>
                             <GlassPaper 
                                 component={Link}
                                 href={route('groups.show', group.id)}
@@ -79,20 +86,20 @@ export default function Index({ groups, auth }: any) {
                                     }
                                 }}
                             >
-                                <CardMedia sx={{
-                                    display: 'flex',
-                                    aspectRatio: 16/9,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    backgroundColor: theme.palette.mode === 'dark' 
-                                        ? 'rgba(255, 255, 255, 0.05)' 
-                                        : theme.palette.background.paper,
-                                }}>
-                                    <GroupIcon  sx={{ fontSize: '4em' }} />
+                                <CardMedia sx={{ height: 200, borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+                                <GroupBanner 
+                                    group={group} 
+                                    height={200}
+                                    sx={{ borderRadius: '8px 8px 0 0' }}
+                                />
                                 </CardMedia>
                                 <CardContent>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-
+                                        <GroupAvatar 
+                                            group={group} 
+                                            size={40}
+                                            sx={{ mr: 2 }}
+                                        />
                                         <Typography variant="h6" component="h2">
                                             {group.name}
                                         </Typography>

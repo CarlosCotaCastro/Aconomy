@@ -16,6 +16,7 @@
         "save": "Guardar",
         "delete": "Eliminar",
         "edit": "Editar",
+        "update": "Actualizar",
         "create": "Crear",
         "search": "Buscar",
         "loading": "Cargando...",
@@ -111,7 +112,8 @@
         "searchItemsPlaceholder": "Buscar objetos en este grupo...",
         "itemsFound": "{{count}} objetos encontrados",
         "noItemsFound": "No se encontraron objetos en este grupo",
-        "recentItems": "Objetos Recientes"
+        "recentItems": "Objetos Recientes",
+        "createGroup": "Crear Grupo"
     },
     "lendings": {
         "activeLendings": "Préstamos Activos",

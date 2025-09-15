@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             TestDataSeeder::class,
             ProfileImageSeeder::class,
+            GroupImageSeeder::class,
         ]);
     }
 }

@@ -7,26 +7,74 @@ import {
     Grid,
     Typography,
     Chip,
-    IconButton, Tooltip, CardMedia, useTheme, Pagination,
+    IconButton, Tooltip, useTheme, Pagination,
+    TextField,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    InputAdornment,
+    CircularProgress,
 } from '@mui/material';
 import {
     Add as AddIcon,
     Edit as EditIcon,
     Delete as DeleteIcon,
-    Group as GroupIcon,
     Person as PersonIcon,
+    Search as SearchIcon,
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
-import {useEffect} from "react";
+import {useEffect, useState, useCallback} from "react";
 import { useTranslation } from 'react-i18next';
 import GlassPaper from '@/Components/GlassPaper';
+import GroupAvatar from '@/Components/GroupAvatar';
+import GroupBanner from '@/Components/GroupBanner';
+import debounce from 'lodash/debounce';
 
-export default function Index({ groups, auth }) {
+export default function Index({ groups, auth, filters = {} }) {
     const { t } = useTranslation();
     const { post, processing } = useForm();
-
     const theme = useTheme();
+    
+    // Search and filter state
+    const [searchQuery, setSearchQuery] = useState(filters.search || '');
+    const [filterType, setFilterType] = useState(filters.filter || 'all');
+    const [isSearching, setIsSearching] = useState(false);
+
+    // Debounced search function
+    const debouncedSearch = useCallback(
+        debounce((search, filter) => {
+            setIsSearching(true);
+            router.get(
+                route('groups.index'),
+                { 
+                    search: search || undefined,
+                    filter: filter || 'all'
+                },
+                { 
+                    preserveScroll: true, 
+                    preserveState: true,
+                    onFinish: () => setIsSearching(false)
+                }
+            );
+        }, 300),
+        []
+    );
+
+    // Handle search input change
+    const handleSearchChange = (e) => {
+        const value = e.target.value;
+        setSearchQuery(value);
+        debouncedSearch(value, filterType);
+    };
+
+    // Handle filter change
+    const handleFilterChange = (e) => {
+        const value = e.target.value;
+        setFilterType(value);
+        debouncedSearch(searchQuery, value);
+    };
     const handleJoinGroup = (groupId) => {
         post(route('groups.join', groupId));
     };
@@ -34,7 +82,11 @@ export default function Index({ groups, auth }) {
     const handlePageChange = (event, page) => {
         router.get(
             route(route().current()),
-            { page: page },
+            { 
+                page: page,
+                search: searchQuery || undefined,
+                filter: filterType || 'all'
+            },
             { preserveScroll: true, preserveState: true }
         );
     };
@@ -59,7 +111,92 @@ export default function Index({ groups, auth }) {
                 </PrimaryButton>
             </Box>
 
-            <Grid container spacing={3}>
+            {/* Main Content Layout */}
+            <Box sx={{ 
+                display: 'flex', 
+                flexDirection: { xs: 'column', lg: 'row' },
+                gap: 3
+            }}>
+                {/* Search and Filter Form - 1/3 width on large screens */}
+                <Box sx={{ 
+                    width: { xs: '100%', lg: '33.333%' },
+                    flexShrink: 0
+                }}>
+                    <GlassPaper sx={{ p: 3, mb: { xs: 3, lg: 0 } }}>
+                        <Typography variant="h6" gutterBottom>
+                            {t('common.search')} & {t('common.filter')}
+                        </Typography>
+                        
+                        <TextField
+                            fullWidth
+                            variant="outlined"
+                            placeholder={t('groups.searchGroups')}
+                            value={searchQuery}
+                            onChange={handleSearchChange}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <SearchIcon />
+                                    </InputAdornment>
+                                ),
+                                endAdornment: isSearching && (
+                                    <InputAdornment position="end">
+                                        <CircularProgress size={20} />
+                                    </InputAdornment>
+                                )
+                            }}
+                            sx={{ mb: 2 }}
+                        />
+                        
+                        <FormControl fullWidth>
+                            <InputLabel>{t('common.filter')}</InputLabel>
+                            <Select
+                                value={filterType}
+                                label={t('common.filter')}
+                                onChange={handleFilterChange}
+                            >
+                                <MenuItem value="all">{t('groups.filterAll')}</MenuItem>
+                                <MenuItem value="my_groups">{t('groups.filterMyGroups')}</MenuItem>
+                                <MenuItem value="discover">{t('groups.filterDiscover')}</MenuItem>
+                            </Select>
+                        </FormControl>
+
+                        {/* Results count */}
+                        {groups.data && groups.data.length > 0 && (
+                            <Box sx={{ mt: 2 }}>
+                                <Typography variant="body2" color="text.secondary">
+                                    {t('groups.groupsFound', { count: groups.total })}
+                                </Typography>
+                            </Box>
+                        )}
+                    </GlassPaper>
+                </Box>
+
+                {/* Search Results - 2/3 width on large screens */}
+                <Box sx={{ 
+                    width: { xs: '100%', lg: '66.667%' },
+                    flexGrow: 1
+                }}>
+                    {/* No results message */}
+                    {groups.data && groups.data.length === 0 && (
+                        <Box sx={{ 
+                            textAlign: 'center', 
+                            py: 8,
+                            color: 'text.secondary'
+                        }}>
+                            <Typography variant="h6" gutterBottom>
+                                {t('groups.noGroupsFound')}
+                            </Typography>
+                            <Typography variant="body2">
+                                {searchQuery || filterType !== 'all' 
+                                    ? t('common.tryAdjustingSearch') 
+                                    : t('groups.noGroupsYet')}
+                            </Typography>
+                        </Box>
+                    )}
+
+                    {/* Groups Grid */}
+                    <Grid container spacing={3}>
                 {groups.data && groups.data.map((group) => {
                     // Count approved and pending members
                     const approvedMembers = group.users.filter(u => u.pivot.approved).length;
@@ -72,7 +209,7 @@ export default function Index({ groups, auth }) {
                             <GlassPaper sx={{ 
                                 height: '100%', 
                                 display: 'flex', 
-                                flexDirection: 'row',
+                                flexDirection: 'column',
                                 p: 0, // Override default padding for Card layout
                                 transition: 'all 0.3s ease',
                                 '&:hover': {
@@ -88,20 +225,14 @@ export default function Index({ groups, auth }) {
                                         : `0 8px 32px ${theme.palette.primary.main}20`,
                                 }
                             }}>
-                                <CardMedia sx={{
-                                    display: 'flex',
-                                    aspectRatio: 16/9,
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    backgroundColor: theme.palette.mode === 'dark' 
-                                        ? 'rgba(255, 255, 255, 0.05)' 
-                                        : theme.palette.background.paper,
-                                    maxWidth: '15%'
-                                }}>
-                                    <GroupIcon  sx={{ fontSize: '4em' }} className={'m-4'} />
-                                </CardMedia>
-                                <CardContent sx={{ flex: 1, maxWidth: '60%' }}>
+                                {/* Group Banner */}
+                                <Box sx={{ height: 120, overflow: 'hidden' }}>
+                                    <GroupBanner group={group} height={120} />
+                                </Box>
+                                
+                                <CardContent sx={{ flex: 1 }}>
                                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                                        <GroupAvatar group={group} size={40} sx={{ mr: 2 }} />
                                         <Typography variant="h6" component="h2">
                                             {group.name}
                                         </Typography>
@@ -184,6 +315,9 @@ export default function Index({ groups, auth }) {
                     );
                 })}
             </Grid>
+                </Box>
+            </Box>
+            
             <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
                 <Pagination
                     count={groups.last_page}
