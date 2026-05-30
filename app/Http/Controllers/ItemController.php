@@ -52,7 +52,9 @@ class ItemController extends Controller
     {
         $this->authorize('update', $item);
 
-        return Inertia::render('Items/Edit', ['item' => $item]);
+        return Inertia::render('Items/Edit', [
+            'item' => $item,
+        ]);
     }
 
     /**

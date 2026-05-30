@@ -161,7 +161,9 @@ class GroupController extends Controller
             abort(403, 'You can only edit groups you created.');
         }
 
-        return Inertia::render('Groups/Edit', ['group' => $group->load('users')]);
+        return Inertia::render('Groups/Edit', [
+            'group' => $group->load('users'),
+        ]);
     }
 
     /**
