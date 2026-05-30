@@ -97,18 +97,34 @@ export default function Index({ groups, auth, filters = {} }) {
 
     return (
         <AuthenticatedLayout user={auth.user}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 4 }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: { xs: 'column', sm: 'row' },
+                    justifyContent: 'space-between',
+                    alignItems: { xs: 'stretch', sm: 'center' },
+                    gap: 2,
+                    mb: 4,
+                }}
+            >
                 <Typography variant="h4" component="h1">
                     {t('groups.groups')}
                 </Typography>
-                <PrimaryButton
-                    component={Link}
-                    href={route('groups.create')}
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                >
-                    {t('groups.createNewGroup')}
-                </PrimaryButton>
+                <Box sx={{ flexShrink: 0 }}>
+                    <PrimaryButton
+                        component={Link}
+                        href={route('groups.create')}
+                        variant="contained"
+                        startIcon={<AddIcon />}
+                        sx={{
+                            width: { xs: '100%', sm: 'auto' },
+                            marginTop: { xs: 0, sm: 0 },
+                            flexShrink: 0,
+                        }}
+                    >
+                        {t('groups.createNewGroup')}
+                    </PrimaryButton>
+                </Box>
             </Box>
 
             {/* Main Content Layout */}
