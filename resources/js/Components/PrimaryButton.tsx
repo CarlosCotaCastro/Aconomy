@@ -3,8 +3,8 @@ import {Box, Button, useTheme} from "@mui/material";
 
 export default function PrimaryButton({
                                           className = '',
-                                          disabled,
-                                          children,
+                                          disabled = false,
+                                          children = null,
                                           ...props
                                       }) {
 
