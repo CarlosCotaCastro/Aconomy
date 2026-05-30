@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Helpers\PhpIniHelper;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -35,8 +36,10 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'csrf_token' => csrf_token(),
+            'maxImageSizeKB' => PhpIniHelper::getMaxImageSizeKB(),
         ];
     }
+
 
     /**
      * Handle the incoming request.
