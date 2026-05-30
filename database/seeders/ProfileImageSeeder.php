@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileImageSeeder extends Seeder
@@ -14,40 +13,38 @@ class ProfileImageSeeder extends Seeder
      */
     public function run(): void
     {
-        // Map of user emails to their profile image URLs
+        // Map of user emails to dummy avatars shipped in the seeder directory.
         $userImages = [
-            'test@example.com' => 'https://i.pravatar.cc/300?img=1',
-            'alice@example.com' => 'https://i.pravatar.cc/300?img=5',
-            'bob@example.com' => 'https://i.pravatar.cc/300?img=8',
-            'carol@example.com' => 'https://i.pravatar.cc/300?img=9',
-            'david@example.com' => 'https://i.pravatar.cc/300?img=11',
-            'eva@example.com' => 'https://i.pravatar.cc/300?img=12',
+            'test@example.com' => 'test',
+            'alice@example.com' => 'alice',
+            'bob@example.com' => 'bob',
+            'carol@example.com' => 'carol',
+            'david@example.com' => 'david',
+            'eva@example.com' => 'eva',
         ];
 
-        foreach ($userImages as $email => $imageUrl) {
+        $sourceDir = __DIR__.'/images/profiles';
+
+        foreach ($userImages as $email => $imageKey) {
             $user = User::where('email', $email)->first();
 
-            if ($user) {
-                try {
-                    // Download the image
-                    $response = Http::get($imageUrl);
-                    if ($response->successful()) {
-                        // Generate a unique filename
-                        $filename = 'profile_images/'.$user->id.'_'.time().'.jpg';
-
-                        // Store the image
-                        Storage::disk('public')->put($filename, $response->body());
-
-                        // Update user's profile image path
-                        $user->profile_image_path = $filename;
-                        $user->save();
-
-                        $this->command->info("Added profile image for {$user->name}");
-                    }
-                } catch (\Exception $e) {
-                    $this->command->error("Failed to add profile image for {$user->name}: {$e->getMessage()}");
-                }
+            if (! $user) {
+                continue;
             }
+
+            $source = $sourceDir."/{$imageKey}.png";
+
+            if (! is_file($source)) {
+                continue;
+            }
+
+            $filename = 'profile_images/'.$user->id.'.png';
+            Storage::disk('public')->put($filename, file_get_contents($source));
+
+            $user->profile_image_path = $filename;
+            $user->save();
+
+            $this->command->info("Added profile image for {$user->name}");
         }
     }
 }
