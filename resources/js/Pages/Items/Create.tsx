@@ -1,51 +1,36 @@
-import { useForm, Link } from '@inertiajs/react';
+import { useForm, Link, usePage } from '@inertiajs/react';
 import {
     Box,
     Button,
     TextField,
     Typography,
-    Card,
-    CardMedia,
-    FormHelperText,
     useTheme,
 } from '@mui/material';
-import { CloudUpload as CloudUploadIcon } from '@mui/icons-material';
 import { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import GlassPaper from '@/Components/GlassPaper';
+import ImageInput from '@/Components/ImageInput';
 import { useTranslation } from 'react-i18next';
 
 export default function Create() {
     const { t } = useTranslation();
     const theme = useTheme();
-    const [previewUrl, setPreviewUrl] = useState(null);
+    const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         description: '',
-        image: null,
+        image: null as File | null,
     });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         post(route('items.store'));
     };
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0];
+    const handleImageChange = (file: File | null) => {
         setData('image', file);
-
-        // Create preview URL
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                setPreviewUrl(e.target.result);
-            };
-            reader.readAsDataURL(file);
-        } else {
-            setPreviewUrl(null);
-        }
     };
 
     return (
@@ -93,38 +78,15 @@ export default function Create() {
                                             sx={{ mb: 3 }}
                                         />
 
-                                        <Box sx={{ mb: 3 }}>
-                                            <Button
-                                                variant="outlined"
-                                                component="label"
-                                                startIcon={<CloudUploadIcon />}
-                                                sx={{ mb: 2 }}
-                                            >
-                                                {t('items.uploadImage')}
-                                                <input
-                                                    type="file"
-                                                    hidden
-                                                    onChange={handleImageChange}
-                                                    accept="image/*"
-                                                />
-                                            </Button>
-
-                                            {errors.image && (
-                                                <FormHelperText error>{errors.image}</FormHelperText>
-                                            )}
-
-                                            {previewUrl && (
-                                                <Card sx={{ mt: 2, maxWidth: 300 }}>
-                                                    <CardMedia
-                                                        component="img"
-                                                        height="200"
-                                                        image={previewUrl}
-                                                        alt={t('items.imagePreview')}
-                                                        sx={{ objectFit: 'contain' }}
-                                                    />
-                                                </Card>
-                                            )}
-                                        </Box>
+                                        <ImageInput
+                                            value={data.image}
+                                            onChange={handleImageChange}
+                                            error={errors.image}
+                                            showPreview={true}
+                                            previewUrl={previewUrl || undefined}
+                                            onPreviewChange={(url) => setPreviewUrl(url)}
+                                            sx={{ mb: 3 }}
+                                        />
 
                                         <Box sx={{ display: 'flex', gap: 2 }}>
                                             <PrimaryButton
