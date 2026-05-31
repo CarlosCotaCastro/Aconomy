@@ -63,7 +63,7 @@ const Content = ({
     const isDark = theme.palette.mode === 'dark';
     const baseContentClasses = `py-1 ${isDark 
         ? 'bg-gray-800/95 backdrop-blur-md border border-gray-700/50' 
-        : 'bg-white'
+        : 'bg-white/[0.92] backdrop-blur-md border border-black/[0.08]'
     }`;
     const ringClasses = isDark 
         ? 'ring-gray-700/50' 
@@ -81,11 +81,11 @@ const Content = ({
                 leaveTo="opacity-0 scale-95"
             >
                 <div
-                    className={`absolute z-50 mt-2 rounded-md shadow-lg ${alignmentClasses} ${widthClasses}`}
+                    className={`absolute z-50 mt-2 rounded-2xl shadow-lg ${alignmentClasses} ${widthClasses}`}
                     onClick={() => setOpen(false)}
                 >
                     <div
-                        className={`rounded-md ring-1 ${ringClasses} ${baseContentClasses} ${contentClasses}`}
+                        className={`rounded-2xl ring-1 ${ringClasses} ${baseContentClasses} ${contentClasses}`}
                     >
                         {children}
                     </div>
@@ -102,7 +102,7 @@ const DropdownLink = ({ className = '', children, ...props }) => {
     const baseClasses = `block w-full px-4 py-2 text-start text-sm leading-5 transition duration-150 ease-in-out focus:outline-none ${
         isDark 
             ? 'text-gray-200 hover:bg-gray-700/50 focus:bg-gray-700/50' 
-            : 'text-gray-700 hover:bg-gray-100 focus:bg-gray-100'
+            : 'text-[#171717] hover:bg-black/[0.04] focus:bg-black/[0.04]'
     }`;
     
     return (

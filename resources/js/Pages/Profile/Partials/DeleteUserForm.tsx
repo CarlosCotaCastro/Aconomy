@@ -54,13 +54,13 @@ export default function DeleteUserForm({ className = '' }) {
         <section className={`space-y-6 ${className}`}>
             <header>
                 <h2 className={`text-lg font-medium ${
-                    isDark ? 'text-white' : 'text-gray-900'
+                    isDark ? 'text-white' : 'text-[#171717]'
                 }`}>
                     {t('profile.deleteAccount')}
                 </h2>
 
                 <p className={`mt-1 text-sm ${
-                    isDark ? 'text-gray-300' : 'text-gray-600'
+                    isDark ? 'text-gray-300' : 'text-[#66645f]'
                 }`}>
                     {t('profile.deleteAccountDescription')}
                 </p>
@@ -73,13 +73,13 @@ export default function DeleteUserForm({ className = '' }) {
             <Modal show={confirmingUserDeletion} onClose={closeModal}>
                 <form onSubmit={deleteUser} className="p-6">
                     <h2 className={`text-lg font-medium ${
-                        isDark ? 'text-white' : 'text-gray-900'
+                        isDark ? 'text-white' : 'text-[#171717]'
                     }`}>
                         {t('profile.deleteAccountConfirmation')}
                     </h2>
 
                     <p className={`mt-1 text-sm ${
-                        isDark ? 'text-gray-300' : 'text-gray-600'
+                        isDark ? 'text-gray-300' : 'text-[#66645f]'
                     }`}>
                         {t('profile.deleteAccountWarning')}
                     </p>

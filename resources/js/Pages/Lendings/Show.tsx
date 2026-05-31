@@ -5,6 +5,7 @@ import GlassDialog from '@/Components/GlassDialog';
 import GlassPaper from '@/Components/GlassPaper';
 import { useState } from 'react';
 import UserAvatar from '@/Components/UserAvatar.jsx';
+import { lightTokens } from '@/lightTheme';
 
 export default function Show({ auth, lending }) {
     const [openDialog, setOpenDialog] = useState(false);
@@ -93,7 +94,7 @@ export default function Show({ auth, lending }) {
                                         : 'primary.dark',
                                     backgroundColor: theme.palette.mode === 'dark' 
                                         ? 'rgba(255, 255, 255, 0.05)'
-                                        : 'rgba(25, 118, 210, 0.04)',
+                                        : 'rgba(255, 138, 76, 0.08)',
                                 }
                             }}
                         >
@@ -106,7 +107,7 @@ export default function Show({ auth, lending }) {
                             <GlassPaper sx={{
                                 boxShadow: theme.palette.mode === 'dark'
                                     ? '0 8px 32px rgba(0, 0, 0, 0.3)'
-                                    : '0 8px 32px rgba(0, 0, 0, 0.1)',
+                                    : lightTokens.shadow,
                             }}>
                                 <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
                                     Item Information
@@ -146,7 +147,7 @@ export default function Show({ auth, lending }) {
                             <GlassPaper sx={{
                                 boxShadow: theme.palette.mode === 'dark'
                                     ? '0 8px 32px rgba(0, 0, 0, 0.3)'
-                                    : '0 8px 32px rgba(0, 0, 0, 0.1)',
+                                    : lightTokens.shadow,
                             }}>
                                     <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
                                         Lending Information
@@ -228,11 +229,11 @@ export default function Show({ auth, lending }) {
                                                     p: 2, 
                                                     bgcolor: theme.palette.mode === 'dark'
                                                         ? 'rgba(255, 152, 0, 0.1)'
-                                                        : 'rgba(255, 244, 229, 0.7)', 
-                                                    borderRadius: 2,
+                                                        : 'rgba(241, 193, 95, 0.15)', 
+                                                    borderRadius: theme.palette.mode === 'dark' ? 2 : '18px',
                                                     border: theme.palette.mode === 'dark'
                                                         ? '1px solid rgba(255, 152, 0, 0.2)'
-                                                        : '1px solid rgba(255, 152, 0, 0.3)'
+                                                        : `1px solid rgba(255, 138, 76, 0.2)`
                                                 }}>
                                                     <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 600 }}>
                                                         Message from borrower:
@@ -260,7 +261,7 @@ export default function Show({ auth, lending }) {
                                     sx={{
                                         borderColor: theme.palette.mode === 'dark' 
                                             ? 'rgba(255, 255, 255, 0.3)'
-                                            : 'rgba(0, 0, 0, 0.23)',
+                                            : lightTokens.border,
                                         color: theme.palette.mode === 'dark' 
                                             ? 'white'
                                             : 'text.primary',
@@ -300,12 +301,12 @@ export default function Show({ auth, lending }) {
                                     '& fieldset': {
                                         borderColor: theme.palette.mode === 'dark' 
                                             ? 'rgba(255, 255, 255, 0.3)'
-                                            : 'rgba(0, 0, 0, 0.23)',
+                                            : lightTokens.border,
                                     },
                                     '&:hover fieldset': {
                                         borderColor: theme.palette.mode === 'dark' 
                                             ? 'rgba(255, 255, 255, 0.5)'
-                                            : 'rgba(0, 0, 0, 0.87)',
+                                            : lightTokens.text,
                                     },
                                 },
                             }}

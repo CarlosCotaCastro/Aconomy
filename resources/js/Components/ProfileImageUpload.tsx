@@ -140,7 +140,7 @@ export default function ProfileImageUpload({ user, className = '' }: ProfileImag
                             className="h-full w-full object-cover"
                         />
                     ) : (
-                        <div className={`flex h-full w-full items-center justify-center ${isDark ? 'bg-gray-700/50 text-gray-400' : 'bg-gray-100 text-gray-400'}`}>
+                        <div className={`flex h-full w-full items-center justify-center ${isDark ? 'bg-gray-700/50 text-gray-400' : 'bg-[#efe7dc] text-[#66645f]'}`}>
                             <svg
                                 className="h-12 w-12"
                                 fill="none"
@@ -168,7 +168,7 @@ export default function ProfileImageUpload({ user, className = '' }: ProfileImag
                         className={`mt-1 block w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold ${
                             isDark 
                                 ? 'text-gray-300 file:bg-violet-900/50 file:text-violet-300 hover:file:bg-violet-800/50' 
-                                : 'text-gray-500 file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100'
+                                : 'text-[#66645f] file:bg-[rgba(91,108,255,0.12)] file:text-[#5b6cff] hover:file:bg-[rgba(91,108,255,0.2)]'
                         }`}
                     />
                     <InputError message={errors.image} className="mt-2" />
@@ -177,12 +177,12 @@ export default function ProfileImageUpload({ user, className = '' }: ProfileImag
 
             {showCrop && createPortal(
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm" style={{ zIndex: 9999 }}>
-                    <div className={`w-full max-w-lg rounded-lg p-6 ${
+                    <div className={`w-full max-w-lg rounded-[28px] p-6 ${
                         isDark 
                             ? 'bg-gray-800/95 backdrop-blur-md border border-gray-700/50' 
-                            : 'bg-white'
+                            : 'bg-[rgba(255,255,255,0.74)] backdrop-blur-[10px] border border-[rgba(20,20,20,0.08)] shadow-[0_18px_40px_rgba(0,0,0,0.08)]'
                     }`}>
-                        <h3 className={`mb-4 text-lg font-medium ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
+                        <h3 className={`mb-4 text-lg font-medium ${isDark ? 'text-gray-100' : 'text-[#171717]'}`}>
                             Crop Profile Image
                         </h3>
                         <div className="mb-4">
@@ -209,10 +209,10 @@ export default function ProfileImageUpload({ user, className = '' }: ProfileImag
                                     setShowCrop(false);
                                     setImgSrc('');
                                 }}
-                                className={`rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset transition duration-150 ease-in-out ${
+                                className={`rounded-[18px] px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset transition duration-150 ease-in-out ${
                                     isDark 
                                         ? 'bg-gray-700/50 text-gray-200 ring-gray-600 hover:bg-gray-600/50' 
-                                        : 'bg-white text-gray-900 ring-gray-300 hover:bg-gray-50'
+                                        : 'bg-[#ffffff] text-[#171717] ring-[rgba(20,20,20,0.08)] hover:bg-[#f8f4ee]'
                                 }`}
                             >
                                 Cancel

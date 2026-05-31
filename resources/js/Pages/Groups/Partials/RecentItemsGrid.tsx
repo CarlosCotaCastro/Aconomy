@@ -21,6 +21,7 @@ import {
 } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import UserAvatar from '@/Components/UserAvatar.jsx';
+import { lightTokens } from '@/lightTheme';
 
 export default function RecentItemsGrid({ items, currentUserId }) {
     const { t } = useTranslation();
@@ -89,17 +90,19 @@ export default function RecentItemsGrid({ items, currentUserId }) {
                                 flexDirection: 'column',
                                 background: (theme) => theme.palette.mode === 'dark' 
                                     ? 'rgba(255, 255, 255, 0.02)'
-                                    : 'rgba(255, 255, 255, 1)',
+                                    : lightTokens.surface,
                                 backdropFilter: 'blur(10px)',
                                 border: (theme) => theme.palette.mode === 'dark' 
                                     ? '1px solid rgba(255, 255, 255, 0.1)'
-                                    : '1px solid rgba(0, 0, 0, 0.1)',
+                                    : `1px solid ${lightTokens.border}`,
+                                borderRadius: (theme) => theme.palette.mode === 'dark' ? undefined : '28px',
+                                boxShadow: (theme) => theme.palette.mode === 'dark' ? undefined : lightTokens.shadow,
                                 transition: 'all 0.3s ease',
                                 '&:hover': {
                                     transform: 'translateY(-4px)',
                                     background: (theme) => theme.palette.mode === 'dark' 
                                         ? 'rgba(255, 255, 255, 0.05)'
-                                        : 'rgba(255, 255, 255, 1)',
+                                        : lightTokens.surfaceSolid,
                                     boxShadow: (theme) => theme.palette.mode === 'dark'
                                         ? '0 12px 40px rgba(187, 134, 252, 0.15)'
                                         : theme.shadows[4],
@@ -112,7 +115,7 @@ export default function RecentItemsGrid({ items, currentUserId }) {
                                     paddingTop: '56.25%', // 16:9 aspect ratio
                                     bgcolor: (theme) => theme.palette.mode === 'dark' 
                                         ? 'rgba(255, 255, 255, 0.05)'
-                                        : 'grey.100',
+                                        : lightTokens.bg,
                                     overflow: 'hidden'
                                 }}
                             >
@@ -143,14 +146,14 @@ export default function RecentItemsGrid({ items, currentUserId }) {
                                             justifyContent: 'center',
                                             bgcolor: (theme) => theme.palette.mode === 'dark' 
                                                 ? 'rgba(255, 255, 255, 0.08)'
-                                                : 'grey.200'
+                                                : lightTokens.bg2,
                                         }}
                                     >
                                         <InventoryIcon sx={{ 
                                             fontSize: 48, 
                                             color: (theme) => theme.palette.mode === 'dark' 
                                                 ? 'rgba(255, 255, 255, 0.3)'
-                                                : 'grey.400'
+                                                : lightTokens.muted,
                                         }} />
                                     </Box>
                                 )}

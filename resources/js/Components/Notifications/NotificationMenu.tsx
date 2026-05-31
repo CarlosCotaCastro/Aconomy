@@ -14,6 +14,7 @@ import {
     Button,
     ButtonGroup,
     Chip,
+    useTheme,
 } from '@mui/material';
 import {
     Notifications as NotificationsIcon,
@@ -28,6 +29,7 @@ import {
 } from '@mui/icons-material';
 import axios from 'axios';
 import { usePage } from '@inertiajs/react';
+import { lightTokens } from '@/lightTheme';
 
 // Helper function to get icon for notification types
 const getNotificationIcon = (type) => {
@@ -111,6 +113,8 @@ const formatNotification = (notification) => {
 
 export default function NotificationMenu() {
     const { auth } = usePage().props;
+    const theme = useTheme();
+    const isDark = theme.palette.mode === 'dark';
     const [notifications, setNotifications] = useState([]);
     const [count, setCount] = useState(0);
     const [anchorEl, setAnchorEl] = useState(null);
@@ -222,9 +226,15 @@ export default function NotificationMenu() {
                             width: 380,
                             maxWidth: '100%',
                             mt: 1.5,
-                            borderRadius: 2,
+                            borderRadius: isDark ? 2 : '28px',
                             maxHeight: 'calc(100vh - 100px)',
                             overflow: 'auto',
+                            ...(isDark ? {} : {
+                                bgcolor: lightTokens.surface,
+                                backdropFilter: 'blur(10px)',
+                                border: `1px solid ${lightTokens.border}`,
+                                boxShadow: lightTokens.shadow,
+                            }),
                         }
                     }
                 }}
@@ -255,11 +265,21 @@ export default function NotificationMenu() {
                                 return (
                                     <Box key={notification.id} sx={{
                                         p: 2,
-                                        borderBottom: '1px solid rgba(0,0,0,0.08)',
-                                        bgcolor: isRead ? 'transparent' : 'rgba(25, 118, 210, 0.04)',
+                                        borderBottom: isDark
+                                            ? '1px solid rgba(0,0,0,0.08)'
+                                            : `1px solid ${lightTokens.border}`,
+                                        bgcolor: isRead
+                                            ? 'transparent'
+                                            : (isDark
+                                                ? 'rgba(25, 118, 210, 0.04)'
+                                                : 'rgba(255, 138, 76, 0.06)'),
                                     }}>
                                         <Box sx={{ display: 'flex', gap: 2, mb: 1 }}>
-                                            <Avatar sx={{ bgcolor: isRead ? 'grey.300' : 'primary.main' }}>
+                                            <Avatar sx={{
+                                                bgcolor: isRead
+                                                    ? (isDark ? 'grey.300' : 'rgba(20,20,20,0.08)')
+                                                    : 'primary.main',
+                                            }}>
                                                 {formatted.initiatorName
                                                     ? getInitials(formatted.initiatorName)
                                                     : getNotificationIcon(notification.data.type)}

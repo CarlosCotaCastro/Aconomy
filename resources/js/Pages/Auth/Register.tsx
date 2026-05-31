@@ -31,7 +31,7 @@ export default function Register() {
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="name" value="Name" color='text-white' />
+                    <InputLabel htmlFor="name" value="Name" color='text-gray-700 dark:text-white' />
 
                     <TextInput
                         id="name"
@@ -48,7 +48,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" color='text-white' />
+                    <InputLabel htmlFor="email" value="Email" color='text-gray-700 dark:text-white' />
 
                     <TextInput
                         id="email"
@@ -65,7 +65,7 @@ export default function Register() {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" color='text-white' />
+                    <InputLabel htmlFor="password" value="Password" color='text-gray-700 dark:text-white' />
 
                     <TextInput
                         id="password"
@@ -85,7 +85,7 @@ export default function Register() {
                     <InputLabel
                         htmlFor="password_confirmation"
                         value="Confirm Password"
-                        color='dark:text-white text-black'
+                        color='text-black dark:text-white'
                     />
 
                     <TextInput
@@ -111,7 +111,7 @@ export default function Register() {
                     {t('common.register')}
                 </PrimaryButton>
 
-                <Divider variant={"fullWidth"} sx={{color: '#fff'}}>{t('common.or')}</Divider>
+                <Divider variant={"fullWidth"} sx={{color: 'text.secondary'}}>{t('common.or')}</Divider>
 
                     <Button
                         component={'a'}

@@ -12,6 +12,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import GlassPaper from '@/Components/GlassPaper';
 import ImageInput from '@/Components/ImageInput';
+import { lightTokens } from '@/lightTheme';
 
 export default function Edit({ item }: { item: any }) {
     const { t } = useTranslation();
@@ -47,10 +48,10 @@ export default function Edit({ item }: { item: any }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <GlassPaper
                         sx={{
-                            borderRadius: 2,
+                            borderRadius: theme.palette.mode === 'dark' ? 2 : '28px',
                             boxShadow: theme.palette.mode === 'dark'
                                 ? '0 8px 32px rgba(0, 0, 0, 0.4)'
-                                : '0 1px 3px rgba(0, 0, 0, 0.1)',
+                                : lightTokens.shadow,
                         }}
                     >
                         <Box sx={{ maxWidth: 600, mx: 'auto' }}>

@@ -15,6 +15,7 @@ import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import debounce from 'lodash/debounce';
 import { useTranslation } from 'react-i18next';
+import { lightTokens } from '@/lightTheme';
 
 export default ({group, userId, isUserApproved}) => {
     const { t } = useTranslation();
@@ -91,11 +92,13 @@ export default ({group, userId, isUserApproved}) => {
         mb: 4,
         background: (theme) => theme.palette.mode === 'dark' 
             ? 'rgba(255, 255, 255, 0.02)'
-            : 'rgba(255, 255, 255, 1)',
+            : lightTokens.surface,
         backdropFilter: 'blur(10px)',
         border: (theme) => theme.palette.mode === 'dark' 
             ? '1px solid rgba(255, 255, 255, 0.1)'
-            : '1px solid rgba(0, 0, 0, 0.1)',
+            : `1px solid ${lightTokens.border}`,
+        borderRadius: (theme) => theme.palette.mode === 'dark' ? undefined : '28px',
+        boxShadow: (theme) => theme.palette.mode === 'dark' ? undefined : lightTokens.shadow,
     }}>
         <CardContent>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
@@ -147,20 +150,21 @@ export default ({group, userId, isUserApproved}) => {
                                 <Card variant="outlined" sx={{
                                     background: (theme) => theme.palette.mode === 'dark' 
                                         ? 'rgba(255, 255, 255, 0.02)'
-                                        : 'rgba(255, 255, 255, 1)',
+                                        : lightTokens.surfaceSolid,
                                     backdropFilter: 'blur(10px)',
                                     border: (theme) => theme.palette.mode === 'dark' 
                                         ? '1px solid rgba(255, 255, 255, 0.1)'
-                                        : '1px solid rgba(0, 0, 0, 0.1)',
+                                        : `1px solid ${lightTokens.border}`,
+                                    borderRadius: (theme) => theme.palette.mode === 'dark' ? undefined : '28px',
                                     transition: 'all 0.3s ease',
                                     '&:hover': {
                                         background: (theme) => theme.palette.mode === 'dark' 
                                             ? 'rgba(255, 255, 255, 0.05)'
-                                            : 'rgba(255, 255, 255, 1)',
+                                            : lightTokens.surfaceSolid,
                                         transform: 'translateY(-2px)',
                                         boxShadow: (theme) => theme.palette.mode === 'dark'
                                             ? '0 8px 32px rgba(187, 134, 252, 0.1)'
-                                            : '0 8px 32px rgba(0, 0, 0, 0.1)',
+                                            : lightTokens.hoverShadow,
                                     }
                                 }}>
                                     <CardContent>

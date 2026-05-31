@@ -28,6 +28,7 @@ import {
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import GlassPaper from '@/Components/GlassPaper';
+import { lightTokens } from '@/lightTheme';
 
 // Helper function to get status icon
 const getStatusIcon = (status) => {
@@ -105,16 +106,16 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                     <GlassPaper 
                                         sx={{
                                             cursor: 'pointer',
-                                            borderRadius: 2,
+                                            borderRadius: theme.palette.mode === 'dark' ? 2 : '28px',
                                             transition: 'all 0.3s ease',
                                             '&:hover': {
                                                 backgroundColor: theme.palette.mode === 'dark' 
                                                     ? 'rgba(255, 255, 255, 0.05)' 
-                                                    : 'rgba(255, 255, 255, 0.9)',
+                                                    : lightTokens.surfaceSolid,
                                                 transform: 'translateY(-2px)',
                                                 boxShadow: theme.palette.mode === 'dark'
                                                     ? '0 8px 32px rgba(0, 0, 0, 0.3)'
-                                                    : '0 8px 32px rgba(0, 0, 0, 0.1)',
+                                                    : lightTokens.hoverShadow,
                                             }
                                         }} 
                                         onClick={() => router.get(route('borrow-requests.show', request.id))}
@@ -144,11 +145,11 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                                     p: 2, 
                                                     background: theme.palette.mode === 'dark' 
                                                         ? 'rgba(255, 255, 255, 0.03)' 
-                                                        : 'rgba(0, 0, 0, 0.02)',
+                                                        : 'rgba(255, 138, 76, 0.05)',
                                                     border: theme.palette.mode === 'dark' 
                                                         ? '1px solid rgba(255, 255, 255, 0.08)' 
-                                                        : '1px solid rgba(0, 0, 0, 0.08)',
-                                                    borderRadius: 1 
+                                                        : `1px solid ${lightTokens.border}`,
+                                                    borderRadius: theme.palette.mode === 'dark' ? 1 : '18px',
                                                 }}>
                                                     <Typography variant="body2" fontStyle="italic" color="text.secondary">
                                                         "{request.message}"
@@ -189,16 +190,16 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                     <GlassPaper 
                                         sx={{
                                             cursor: 'pointer',
-                                            borderRadius: 2,
+                                            borderRadius: theme.palette.mode === 'dark' ? 2 : '28px',
                                             transition: 'all 0.3s ease',
                                             '&:hover': {
                                                 backgroundColor: theme.palette.mode === 'dark' 
                                                     ? 'rgba(255, 255, 255, 0.05)' 
-                                                    : 'rgba(255, 255, 255, 0.9)',
+                                                    : lightTokens.surfaceSolid,
                                                 transform: 'translateY(-2px)',
                                                 boxShadow: theme.palette.mode === 'dark'
                                                     ? '0 8px 32px rgba(0, 0, 0, 0.3)'
-                                                    : '0 8px 32px rgba(0, 0, 0, 0.1)',
+                                                    : lightTokens.hoverShadow,
                                             }
                                         }} 
                                         onClick={() => router.get(route('borrow-requests.show', request.id))}
@@ -228,11 +229,11 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                                     p: 2, 
                                                     background: theme.palette.mode === 'dark' 
                                                         ? 'rgba(255, 255, 255, 0.03)' 
-                                                        : 'rgba(0, 0, 0, 0.02)',
+                                                        : 'rgba(255, 138, 76, 0.05)',
                                                     border: theme.palette.mode === 'dark' 
                                                         ? '1px solid rgba(255, 255, 255, 0.08)' 
-                                                        : '1px solid rgba(0, 0, 0, 0.08)',
-                                                    borderRadius: 1 
+                                                        : `1px solid ${lightTokens.border}`,
+                                                    borderRadius: theme.palette.mode === 'dark' ? 1 : '18px',
                                                 }}>
                                                     <Typography variant="body2" fontStyle="italic" color="text.secondary">
                                                         "{request.message}"

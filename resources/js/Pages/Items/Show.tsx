@@ -19,6 +19,7 @@ import {
     Edit as EditIcon,
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { lightTokens } from '@/lightTheme';
 
 export default function Show({ item, auth }) {
     const { t } = useTranslation();
@@ -33,16 +34,16 @@ export default function Show({ item, auth }) {
                         sx={{
                             backgroundColor: theme.palette.mode === 'dark'
                                 ? 'rgba(255, 255, 255, 0.02)'
-                                : 'rgba(255, 255, 255, 1)',
-                            backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                                : lightTokens.surface,
+                            backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'blur(10px)',
                             border: theme.palette.mode === 'dark'
                                 ? '1px solid rgba(255, 255, 255, 0.1)'
-                                : '1px solid rgba(0, 0, 0, 0.1)',
-                            borderRadius: 2,
+                                : `1px solid ${lightTokens.border}`,
+                            borderRadius: theme.palette.mode === 'dark' ? 2 : '28px',
                             p: 3,
                             boxShadow: theme.palette.mode === 'dark'
                                 ? '0 8px 32px rgba(0, 0, 0, 0.4)'
-                                : '0 1px 3px rgba(0, 0, 0, 0.1)',
+                                : lightTokens.shadow,
                         }}
                     >
                         <Box sx={{ maxWidth: 800, mx: 'auto' }}>
@@ -60,14 +61,14 @@ export default function Show({ item, auth }) {
                                     mb: 4,
                                     backgroundColor: theme.palette.mode === 'dark'
                                         ? 'rgba(255, 255, 255, 0.02)'
-                                        : 'rgba(255, 255, 255, 1)',
-                                    backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                                        : lightTokens.surfaceSolid,
+                                    backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'blur(10px)',
                                     border: theme.palette.mode === 'dark'
                                         ? '1px solid rgba(255, 255, 255, 0.1)'
-                                        : '1px solid rgba(0, 0, 0, 0.1)',
+                                        : `1px solid ${lightTokens.border}`,
                                     boxShadow: theme.palette.mode === 'dark'
                                         ? '0 4px 16px rgba(0, 0, 0, 0.3)'
-                                        : '0 2px 4px rgba(0, 0, 0, 0.1)',
+                                        : lightTokens.shadow,
                                 }}
                             >
                                 <Grid container>
@@ -89,7 +90,7 @@ export default function Show({ item, auth }) {
                                                     height: 300,
                                                     bgcolor: theme.palette.mode === 'dark'
                                                         ? 'rgba(255, 255, 255, 0.05)'
-                                                        : 'rgba(0, 0, 0, 0.05)',
+                                                        : 'rgba(239, 231, 220, 0.55)',
                                                     display: 'flex',
                                                     alignItems: 'center',
                                                     justifyContent: 'center',
@@ -166,7 +167,7 @@ export default function Show({ item, auth }) {
                                                 borderRadius: 1,
                                                 border: theme.palette.mode === 'dark'
                                                     ? '1px solid rgba(255, 255, 255, 0.08)'
-                                                    : 'none',
+                                                    : `1px solid ${lightTokens.border}`,
                                             }}
                                         >
                                             <Typography variant="subtitle1">

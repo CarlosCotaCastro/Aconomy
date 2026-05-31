@@ -27,6 +27,7 @@ import { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { format } from 'date-fns';
 import { useTranslation } from 'react-i18next';
+import { lightTokens } from '@/lightTheme';
 
 export default function Index({ auth, lendings }) {
     const { t } = useTranslation();
@@ -110,7 +111,7 @@ export default function Index({ auth, lendings }) {
                     '&:hover': { 
                         backgroundColor: theme.palette.mode === 'dark' 
                             ? 'rgba(255, 255, 255, 0.05)' 
-                            : 'rgba(0, 0, 0, 0.02)' 
+                            : 'rgba(255, 138, 76, 0.06)' 
                     }
                 }}
             >
@@ -236,14 +237,15 @@ export default function Index({ auth, lendings }) {
                     <Card sx={{
                         background: theme.palette.mode === 'dark' 
                             ? 'rgba(255, 255, 255, 0.02)'
-                            : 'rgba(255, 255, 255, 0.9)',
+                            : lightTokens.surface,
                         backdropFilter: 'blur(10px)',
                         border: theme.palette.mode === 'dark' 
                             ? '1px solid rgba(255, 255, 255, 0.1)'
-                            : '1px solid rgba(255, 255, 255, 0.2)',
+                            : `1px solid ${lightTokens.border}`,
                         boxShadow: theme.palette.mode === 'dark'
                             ? '0 8px 32px rgba(0, 0, 0, 0.3)'
-                            : '0 8px 32px rgba(0, 0, 0, 0.1)',
+                            : lightTokens.shadow,
+                        ...(theme.palette.mode !== 'dark' && { borderRadius: '28px' }),
                     }}>
                         <CardContent sx={{ p: 4 }}>
                             <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -267,11 +269,12 @@ export default function Index({ auth, lendings }) {
                                     sx={{
                                         background: theme.palette.mode === 'dark' 
                                             ? 'rgba(255, 255, 255, 0.03)'
-                                            : 'rgba(255, 255, 255, 0.7)',
+                                            : lightTokens.surface,
                                         backdropFilter: 'blur(10px)',
                                         border: theme.palette.mode === 'dark' 
                                             ? '1px solid rgba(255, 255, 255, 0.08)'
-                                            : '1px solid rgba(255, 255, 255, 0.3)',
+                                            : `1px solid ${lightTokens.border}`,
+                                        ...(theme.palette.mode !== 'dark' && { borderRadius: '28px' }),
                                     }}
                                 >
                                     <Table>

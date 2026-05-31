@@ -23,6 +23,7 @@ import {useState} from "react";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import { useTranslation } from 'react-i18next';
 import GlassPaper from '@/Components/GlassPaper';
+import { lightTokens } from '@/lightTheme';
 
 export default function Index({ items, auth }) {
     const { t } = useTranslation();
@@ -45,10 +46,10 @@ export default function Index({ items, auth }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <GlassPaper
                         sx={{
-                            borderRadius: 2,
+                            borderRadius: theme.palette.mode === 'dark' ? 2 : '28px',
                             boxShadow: theme.palette.mode === 'dark' 
                                 ? '0 8px 32px rgba(0, 0, 0, 0.4)' 
-                                : '0 1px 3px rgba(0, 0, 0, 0.1)',
+                                : lightTokens.shadow,
                         }}
                     >
                             <Grid container sx={{justifyContent: 'space-between', mb: 4 }}>
@@ -100,7 +101,7 @@ export default function Index({ items, auth }) {
                                                 '&:hover': {
                                                     boxShadow: theme.palette.mode === 'dark' 
                                                         ? '0 8px 32px rgba(0, 0, 0, 0.4)' 
-                                                        : '0 4px 8px rgba(0, 0, 0, 0.15)',
+                                                        : lightTokens.hoverShadow,
                                                 }
                                             }}
                                         >
@@ -122,7 +123,7 @@ export default function Index({ items, auth }) {
                                                         height: 140,
                                                         bgcolor: theme.palette.mode === 'dark' 
                                                             ? 'rgba(255, 255, 255, 0.05)' 
-                                                            : 'rgba(0, 0, 0, 0.05)',
+                                                            : 'rgba(239, 231, 220, 0.55)',
                                                         display: 'flex',
                                                         alignItems: 'center',
                                                         justifyContent: 'center'

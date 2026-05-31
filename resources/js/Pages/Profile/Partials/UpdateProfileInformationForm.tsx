@@ -46,13 +46,13 @@ export default function UpdateProfileInformation({
         <section className={className}>
             <header>
                 <h2 className={`text-lg font-medium ${
-                    isDark ? 'text-white' : 'text-gray-900'
+                    isDark ? 'text-white' : 'text-[#171717]'
                 }`}>
                     {t('profile.profileInformation')}
                 </h2>
 
                 <p className={`mt-1 text-sm ${
-                    isDark ? 'text-gray-300' : 'text-gray-600'
+                    isDark ? 'text-gray-300' : 'text-[#66645f]'
                 }`}>
                     {t('profile.profileInformationDescription')}
                 </p>
@@ -96,15 +96,15 @@ export default function UpdateProfileInformation({
                 {mustVerifyEmail && user.email_verified_at === null && (
                     <div>
                         <p className={`mt-2 text-sm ${
-                            isDark ? 'text-gray-200' : 'text-gray-800'
+                            isDark ? 'text-gray-200' : 'text-[#171717]'
                         }`}>
                             {t('profile.emailUnverified')}
                             <button
                                 onClick={handleResendVerification}
-                                className={`rounded-md text-sm underline focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 ${
+                                className={`rounded-[18px] text-sm underline focus:outline-none focus:ring-2 focus:ring-[#5b6cff] focus:ring-offset-2 ${
                                     isDark 
                                         ? 'text-gray-300 hover:text-white' 
-                                        : 'text-gray-600 hover:text-gray-900'
+                                        : 'text-[#66645f] hover:text-[#171717]'
                                 }`}
                             >
                                 {t('profile.resendVerificationEmail')}
@@ -113,7 +113,7 @@ export default function UpdateProfileInformation({
 
                         {status === 'verification-link-sent' && (
                             <div className={`mt-2 text-sm font-medium ${
-                                isDark ? 'text-green-400' : 'text-green-600'
+                                isDark ? 'text-green-400' : 'text-[#7eb487]'
                             }`}>
                                 {t('profile.verificationLinkSent')}
                             </div>
@@ -132,7 +132,7 @@ export default function UpdateProfileInformation({
                         leaveTo="opacity-0"
                     >
                         <p className={`text-sm ${
-                            isDark ? 'text-green-400' : 'text-gray-600'
+                            isDark ? 'text-green-400' : 'text-[#66645f]'
                         }`}>
                             {t('profile.saved')}
                         </p>

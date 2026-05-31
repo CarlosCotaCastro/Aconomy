@@ -20,6 +20,7 @@ import {
     Schedule as ScheduleIcon,
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { lightTokens } from '@/lightTheme';
 
 export default function RequestBorrow({ item, auth }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -57,7 +58,7 @@ export default function RequestBorrow({ item, auth }) {
                                 '&:hover': {
                                     backgroundColor: theme.palette.mode === 'dark' 
                                         ? 'rgba(255, 255, 255, 0.05)'
-                                        : 'rgba(25, 118, 210, 0.04)',
+                                        : 'rgba(255, 138, 76, 0.08)',
                                 }
                             }}
                         >
@@ -77,14 +78,15 @@ export default function RequestBorrow({ item, auth }) {
                             <Card sx={{
                                 background: theme.palette.mode === 'dark' 
                                     ? 'rgba(255, 255, 255, 0.02)'
-                                    : 'rgba(255, 255, 255, 0.9)',
+                                    : lightTokens.surface,
                                 backdropFilter: 'blur(10px)',
                                 border: theme.palette.mode === 'dark' 
                                     ? '1px solid rgba(255, 255, 255, 0.1)'
-                                    : '1px solid rgba(255, 255, 255, 0.2)',
+                                    : `1px solid ${lightTokens.border}`,
                                 boxShadow: theme.palette.mode === 'dark'
                                     ? '0 8px 32px rgba(0, 0, 0, 0.3)'
-                                    : '0 8px 32px rgba(0, 0, 0, 0.1)',
+                                    : lightTokens.shadow,
+                                ...(theme.palette.mode !== 'dark' && { borderRadius: '28px' }),
                             }}>
                                 <CardContent sx={{ p: 3 }}>
                                     <Typography variant="h6" component="h2" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
@@ -128,14 +130,15 @@ export default function RequestBorrow({ item, auth }) {
                             <Card sx={{
                                 background: theme.palette.mode === 'dark' 
                                     ? 'rgba(255, 255, 255, 0.02)'
-                                    : 'rgba(255, 255, 255, 0.9)',
+                                    : lightTokens.surface,
                                 backdropFilter: 'blur(10px)',
                                 border: theme.palette.mode === 'dark' 
                                     ? '1px solid rgba(255, 255, 255, 0.1)'
-                                    : '1px solid rgba(255, 255, 255, 0.2)',
+                                    : `1px solid ${lightTokens.border}`,
                                 boxShadow: theme.palette.mode === 'dark'
                                     ? '0 8px 32px rgba(0, 0, 0, 0.3)'
-                                    : '0 8px 32px rgba(0, 0, 0, 0.1)',
+                                    : lightTokens.shadow,
+                                ...(theme.palette.mode !== 'dark' && { borderRadius: '28px' }),
                             }}>
                                 <CardContent sx={{ p: 3 }}>
                                     <Typography variant="h6" component="h2" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
@@ -160,12 +163,12 @@ export default function RequestBorrow({ item, auth }) {
                                                     '& fieldset': {
                                                         borderColor: theme.palette.mode === 'dark' 
                                                             ? 'rgba(255, 255, 255, 0.3)'
-                                                            : 'rgba(0, 0, 0, 0.23)',
+                                                            : lightTokens.border,
                                                     },
                                                     '&:hover fieldset': {
                                                         borderColor: theme.palette.mode === 'dark' 
                                                             ? 'rgba(255, 255, 255, 0.5)'
-                                                            : 'rgba(0, 0, 0, 0.87)',
+                                                            : lightTokens.text,
                                                     },
                                                     '&.Mui-focused fieldset': {
                                                         borderColor: 'primary.main',
@@ -174,7 +177,7 @@ export default function RequestBorrow({ item, auth }) {
                                                 '& .MuiInputLabel-root': {
                                                     color: theme.palette.mode === 'dark' 
                                                         ? 'rgba(255, 255, 255, 0.7)'
-                                                        : 'rgba(0, 0, 0, 0.6)',
+                                                        : lightTokens.muted,
                                                 },
                                             }}
                                         />
@@ -186,14 +189,14 @@ export default function RequestBorrow({ item, auth }) {
                                                 mb: 3,
                                                 backgroundColor: theme.palette.mode === 'dark'
                                                     ? 'rgba(2, 136, 209, 0.1)'
-                                                    : 'rgba(229, 246, 253, 1)',
+                                                    : 'rgba(91, 108, 255, 0.1)',
                                                 color: theme.palette.mode === 'dark'
                                                     ? 'rgb(166, 213, 250)'
-                                                    : 'rgb(1, 67, 97)',
+                                                    : lightTokens.indigo,
                                                 '& .MuiAlert-icon': {
                                                     color: theme.palette.mode === 'dark'
                                                         ? 'rgb(166, 213, 250)'
-                                                        : 'rgb(2, 136, 209)',
+                                                        : lightTokens.indigo,
                                                 },
                                             }}
                                         >

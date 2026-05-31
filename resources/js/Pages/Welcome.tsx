@@ -2,26 +2,29 @@ import { Head, Link } from '@inertiajs/react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import { Button, Divider, Icon } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { GitHub } from '@mui/icons-material';
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
     const { t } = useTranslation();
+    const theme = useTheme();
+    const isDark = theme.palette.mode === 'dark';
 
     return (
         <>
             <Head title={t('common.welcome')} />
             <div style={{ background: "var(--bg-primary)" }}>
 
-                <div className="custom-hero-bg min-h-screen relative overflow-hidden">
+                <div className={`${isDark ? 'custom-hero-bg' : 'light-hero-bg'} min-h-screen relative overflow-hidden`}>
                     {/*<div className="min-h-screen bg-gradient-to-br from-teal-950 to-orange-100 relative overflow-hidden">*/}
 
                     {/* Content */}
-                    <div className="relative z-10 px-6 py-8 md:px-12 border-solid border-b-2 border-cyan-950 max-w-7xl mx-auto">
+                    <div className={`relative z-10 px-6 py-8 md:px-12 border-solid border-b-2 ${isDark ? 'border-cyan-950' : 'border-black/10'} max-w-7xl mx-auto`}>
                         {/* Header */}
                         <header className="flex items-center justify-between">
                             <div className="flex items-center">
-                                <div className="text-white">
+                                <div className={isDark ? 'text-white' : 'text-gray-900'}>
                                     <ApplicationLogo />
                                 </div>
                             </div>
@@ -29,7 +32,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                 {auth.user ? (
                                     <Link
                                         href={route('dashboard')}
-                                        className="bg-white bg-opacity-20 backdrop-blur-lg rounded-lg px-6 py-2 text-white border border-white border-opacity-30 shadow-lg hover:bg-opacity-30 transition"
+                                        className={`backdrop-blur-lg rounded-2xl px-6 py-2 shadow-lg transition border ${isDark ? 'bg-white bg-opacity-20 text-white border-white border-opacity-30 hover:bg-opacity-30' : 'bg-white/60 text-gray-900 border-black/10 hover:bg-white/85'}`}
                                     >
                                         {t('dashboard.welcomeBack', { name: auth.user.name })}
                                     </Link>
@@ -37,13 +40,13 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                     <div className="space-x-4">
                                         <Link
                                             href={route('login')}
-                                            className="text-white hover:text-purple-200 transition"
+                                            className={`transition ${isDark ? 'text-white hover:text-purple-200' : 'text-gray-700 hover:text-orange-500'}`}
                                         >
                                             {t('common.login')}
                                         </Link>
                                         <Link
                                             href={route('register')}
-                                            className="bg-white bg-opacity-20 backdrop-blur-lg rounded-lg px-6 py-2 text-white border border-white border-opacity-30 shadow-lg hover:bg-opacity-30 transition"
+                                            className={`backdrop-blur-lg rounded-2xl px-6 py-2 shadow-lg transition border ${isDark ? 'bg-white bg-opacity-20 text-white border-white border-opacity-30 hover:bg-opacity-30' : 'bg-white/60 text-gray-900 border-black/10 hover:bg-white/85'}`}
                                         >
                                             {t('common.register')}
                                         </Link>
@@ -56,10 +59,10 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                         <div className="py-24 md:py-32">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
                                 <div>
-                                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                                    <h2 className={`text-4xl md:text-5xl lg:text-6xl font-bold leading-tight ${isDark ? 'text-white' : 'text-gray-900'}`}>
                                         {t('welcome.heroTitle')}
                                     </h2>
-                                    <p className="mt-6 text-xl text-purple-100">
+                                    <p className={`mt-6 text-xl ${isDark ? 'text-purple-100' : 'text-gray-600'}`}>
                                         {t('welcome.heroSubtitle')}
                                     </p>
                                     <div className="mt-8 text-center">
@@ -85,10 +88,10 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                     {/* Features Section */}
                     <div className="py-24 px-6">
                         <div className="max-w-7xl mx-auto">
-                            <h2 className="text-3xl md:text-4xl font-bold text-center text-white">
+                            <h2 className={`text-3xl md:text-4xl font-bold text-center ${isDark ? 'text-white' : 'text-gray-900'}`}>
                                 {t('welcome.howItWorks')}
                             </h2>
-                            <p className="mt-4 max-w-2xl mx-auto text-center text-xl text-gray-100">
+                            <p className={`mt-4 max-w-2xl mx-auto text-center text-xl ${isDark ? 'text-gray-100' : 'text-gray-600'}`}>
                                 {t('welcome.howItWorksDescription')}
                             </p>
 

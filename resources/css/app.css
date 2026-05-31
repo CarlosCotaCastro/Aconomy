@@ -2,18 +2,98 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Self-hosted fonts (GDPR compliant — no requests to Google).
+   Variable fonts: one file per subset covers the full weight range. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/inter-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/inter-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/space-grotesk-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Space Grotesk';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/space-grotesk-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
 
 :root {
-  /* Sophisticated monochromatic palette */
-  --bg-primary: #fafafa;
-  --bg-accent: rgba(0, 123, 255, 0.15);
+  /* Warm "Progressive Sharing" light design system */
+  --bg-primary: #f8f4ee;
+  --bg-secondary: #efe7dc;
+  --bg-accent: rgba(91, 108, 255, 0.12);
+
+  /* Light primary action gradient (warm orange) */
+  --primary-gradient: linear-gradient(135deg, #ffb36b 0%, #ff8a4c 55%, #ff784f 100%);
+  --primary-gradient-hover: linear-gradient(135deg, #ff8a4c 0%, #ff784f 100%);
+  --primary-shadow: 0 12px 28px rgba(255, 138, 76, 0.28);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
       --bg-primary: #0a0a0f;
       --bg-accent: rgba(255, 0, 150, 0.15);
+
+      --primary-gradient: linear-gradient(135deg, #4a9eff 0%, #7b2cbf 100%);
+      --primary-gradient-hover: linear-gradient(135deg, #7b2cbf 0%, #4a9eff 100%);
+      --primary-shadow: 0 8px 25px rgba(74, 158, 255, 0.3);
   }
+}
+
+/* Light theme typography: Inter body + Space Grotesk headings.
+   Scoped to light mode to leave the dark theme untouched. The `body.font-sans`
+   selector outranks Tailwind's `.font-sans` utility so the override applies. */
+@media (prefers-color-scheme: light) {
+  body.font-sans,
+  body.font-sans input,
+  body.font-sans textarea,
+  body.font-sans button,
+  body.font-sans select {
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: -0.04em;
+  }
+}
+
+/* Warm light background for authenticated pages */
+.light-hero-bg {
+  position: relative;
+  width: 100vw;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  min-height: 60vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top left, rgba(91, 108, 255, 0.12), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(255, 147, 106, 0.14), transparent 24%),
+    linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+  background-attachment: fixed;
 }
 
 
@@ -102,6 +182,12 @@
   margin-top: 1em !important;
 }
 
+@media (prefers-color-scheme: light) {
+  .hero-cta-download {
+    color: #66645f !important;
+  }
+}
+
 .welcome-card {
   background: rgba(255, 255, 255, 0.02);
   backdrop-filter: blur(10px);
@@ -129,6 +215,25 @@
   transform: translateY(-8px);
   border-color: rgba(0, 123, 255, 0.3);
   box-shadow: 0 20px 40px rgba(0, 123, 255, 0.1);
+}
+
+@media (prefers-color-scheme: light) {
+  .welcome-card {
+    background: rgba(255, 255, 255, 0.74);
+    border: 1px solid rgba(20, 20, 20, 0.08);
+    border-radius: 28px;
+    color: #171717;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+  }
+
+  .welcome-card::before {
+    background: linear-gradient(90deg, transparent, rgba(255, 138, 76, 0.5), transparent);
+  }
+
+  .welcome-card:hover {
+    border-color: rgba(255, 138, 76, 0.3);
+    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.12);
+  }
 }
 
 .welcome-card:hover::before {
@@ -160,13 +265,13 @@
 }
 
 .cta-gradient {
-  background: linear-gradient(135deg, #4a9eff 0%, #7b2cbf 100%);
+  background: var(--primary-gradient);
   color: white;
 }
 
 .cta-gradient:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(74, 158, 255, 0.3);
+  box-shadow: var(--primary-shadow);
 }
 
 @keyframes gradientShift {

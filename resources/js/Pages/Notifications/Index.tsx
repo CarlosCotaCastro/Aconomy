@@ -28,6 +28,7 @@ import {
     RequestQuote as RequestQuoteIcon,
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { lightTokens } from '@/lightTheme';
 
 // Helper function to get avatar icon based on notification type
 const getNotificationIcon = (type) => {
@@ -112,18 +113,18 @@ export default function Index({ auth, unreadNotifications, readNotifications }) 
                 sx={{ 
                     bgcolor: isRead ? 'transparent' : (theme.palette.mode === 'dark' 
                         ? 'rgba(255, 255, 255, 0.02)' 
-                        : 'rgba(25, 118, 210, 0.04)'),
-                    borderRadius: 1,
+                        : 'rgba(255, 138, 76, 0.06)'),
+                    borderRadius: theme.palette.mode === 'dark' ? 1 : '18px',
                     mb: 1,
                     border: isRead ? 'none' : (theme.palette.mode === 'dark' 
                         ? '1px solid rgba(255, 255, 255, 0.1)' 
-                        : '1px solid rgba(25, 118, 210, 0.1)'),
-                    backdropFilter: !isRead && theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                        : `1px solid ${lightTokens.border}`),
+                    backdropFilter: !isRead && theme.palette.mode === 'dark' ? 'blur(10px)' : (!isRead ? 'blur(10px)' : 'none'),
                     transition: 'all 0.3s ease',
                     '&:hover': {
                         bgcolor: theme.palette.mode === 'dark' 
                             ? 'rgba(255, 255, 255, 0.05)' 
-                            : 'rgba(25, 118, 210, 0.08)',
+                            : 'rgba(255, 138, 76, 0.1)',
                         transform: 'translateY(-1px)',
                     }
                 }}
@@ -225,11 +226,17 @@ export default function Index({ auth, unreadNotifications, readNotifications }) 
                 
                 <Card sx={{ 
                     mb: 4,
-                    ...(theme.palette.mode === 'dark' && {
+                    ...(theme.palette.mode === 'dark' ? {
                         bgcolor: 'rgba(255, 255, 255, 0.02)',
                         backdropFilter: 'blur(10px)',
                         border: '1px solid rgba(255, 255, 255, 0.1)',
                         boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+                    } : {
+                        bgcolor: lightTokens.surface,
+                        backdropFilter: 'blur(10px)',
+                        border: `1px solid ${lightTokens.border}`,
+                        boxShadow: lightTokens.shadow,
+                        borderRadius: '28px',
                     })
                 }}>
                     <CardContent>
@@ -265,11 +272,17 @@ export default function Index({ auth, unreadNotifications, readNotifications }) 
                 </Card>
                 
                 <Card sx={{
-                    ...(theme.palette.mode === 'dark' && {
+                    ...(theme.palette.mode === 'dark' ? {
                         bgcolor: 'rgba(255, 255, 255, 0.02)',
                         backdropFilter: 'blur(10px)',
                         border: '1px solid rgba(255, 255, 255, 0.1)',
                         boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+                    } : {
+                        bgcolor: lightTokens.surface,
+                        backdropFilter: 'blur(10px)',
+                        border: `1px solid ${lightTokens.border}`,
+                        boxShadow: lightTokens.shadow,
+                        borderRadius: '28px',
                     })
                 }}>
                     <CardContent>
