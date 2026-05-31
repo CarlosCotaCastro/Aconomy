@@ -75,13 +75,13 @@ export default function Modal({
                         style={{
                             background: isDark 
                                 ? 'linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 50%, rgba(3, 7, 18, 0.98) 100%)' 
-                                : 'white',
-                            border: 'none',
-                            backdropFilter: isDark ? 'blur(15px)' : 'none',
-                            borderRadius: '16px',
+                                : 'rgba(255, 255, 255, 0.92)',
+                            border: isDark ? 'none' : '1px solid rgba(20, 20, 20, 0.08)',
+                            backdropFilter: 'blur(15px)',
+                            borderRadius: '28px',
                             boxShadow: isDark 
                                 ? '0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(96, 165, 250, 0.4), 0 0 20px rgba(59, 130, 246, 0.3), 0 0 40px rgba(59, 130, 246, 0.1)' 
-                                : '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+                                : '0 24px 50px rgba(0, 0, 0, 0.12)'
                         }}
                     >
                         {children}

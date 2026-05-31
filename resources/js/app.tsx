@@ -8,6 +8,7 @@ import {createRoot} from 'react-dom/client';
 import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {useMediaQuery} from "@mui/material";
 import {useMemo} from 'react';
+import {lightTokens} from './lightTheme';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -18,25 +19,79 @@ function ThemeWrapper({ App, props }) {
         palette: {
             mode: prefersDarkMode ? 'dark' : 'light',
             background: {
-                default: prefersDarkMode ? '#0a0a0f' : '#f4f4f4',
-                paper: prefersDarkMode ? '#1a1a1f' : '#fff'
+                default: prefersDarkMode ? '#0a0a0f' : lightTokens.bg,
+                paper: prefersDarkMode ? '#1a1a1f' : lightTokens.surfaceSolid
             },
             primary: {
-                main: prefersDarkMode ? '#1976d2' : '#1976d2',
+                main: prefersDarkMode ? '#1976d2' : lightTokens.orange2,
+                light: prefersDarkMode ? '#1976d2' : lightTokens.orange1,
+                dark: prefersDarkMode ? '#1976d2' : lightTokens.orange3,
+                contrastText: '#ffffff',
+            },
+            secondary: {
+                main: prefersDarkMode ? '#9c27b0' : lightTokens.indigo,
+                light: prefersDarkMode ? '#9c27b0' : lightTokens.lavender,
+                contrastText: '#ffffff',
             },
             success: {
-                main: '#4caf50',
+                main: prefersDarkMode ? '#4caf50' : lightTokens.green,
                 dark: '#338327',
                 light: '#a5d6a7',
                 contrastText: '#fff'
             },
-            ...(prefersDarkMode && {
+            ...(prefersDarkMode ? {
                 text: {
                     primary: '#ffffff',
                     secondary: '#b3b3b3'
                 }
+            } : {
+                text: {
+                    primary: lightTokens.text,
+                    secondary: lightTokens.muted,
+                },
+                divider: lightTokens.border,
             })
-        }
+        },
+        shape: {
+            borderRadius: prefersDarkMode ? 4 : 18,
+        },
+        ...(prefersDarkMode ? {} : {
+            typography: {
+                fontFamily: "'Inter', sans-serif",
+                h1: { fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.07em', fontWeight: 700 },
+                h2: { fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.07em', fontWeight: 700 },
+                h3: { fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.06em', fontWeight: 700 },
+                h4: { fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.05em', fontWeight: 700 },
+                h5: { fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.04em', fontWeight: 700 },
+                h6: { fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.03em', fontWeight: 700 },
+                button: { textTransform: 'none', fontWeight: 600 },
+            },
+            components: {
+                MuiButton: {
+                    styleOverrides: {
+                        root: {
+                            borderRadius: 18,
+                            textTransform: 'none',
+                            fontWeight: 600,
+                        },
+                    },
+                },
+                MuiPaper: {
+                    styleOverrides: {
+                        rounded: {
+                            borderRadius: 28,
+                        },
+                    },
+                },
+                MuiChip: {
+                    styleOverrides: {
+                        root: {
+                            borderRadius: 999,
+                        },
+                    },
+                },
+            },
+        }),
     }), [prefersDarkMode]);
 
     return <ThemeProvider theme={theme}><App {...props} /></ThemeProvider>;

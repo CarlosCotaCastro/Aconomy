@@ -53,13 +53,13 @@ export default function UpdatePasswordForm({ className = '' }) {
         <section className={className}>
             <header>
                 <h2 className={`text-lg font-medium ${
-                    isDark ? 'text-white' : 'text-gray-900'
+                    isDark ? 'text-white' : 'text-[#171717]'
                 }`}>
                     {t('profile.updatePassword')}
                 </h2>
 
                 <p className={`mt-1 text-sm ${
-                    isDark ? 'text-gray-300' : 'text-gray-600'
+                    isDark ? 'text-gray-300' : 'text-[#66645f]'
                 }`}>
                     {t('profile.updatePasswordDescription')}
                 </p>
@@ -145,7 +145,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                         leaveTo="opacity-0"
                     >
                         <p className={`text-sm ${
-                            isDark ? 'text-green-400' : 'text-gray-600'
+                            isDark ? 'text-green-400' : 'text-[#66645f]'
                         }`}>
                             {t('profile.saved')}
                         </p>

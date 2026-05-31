@@ -27,7 +27,7 @@ export default function ResetPassword({ token, email }) {
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="email" value="Email" color='text-white' />
+                    <InputLabel htmlFor="email" value="Email" color='text-gray-700 dark:text-white' />
 
                     <TextInput
                         id="email"
@@ -43,7 +43,7 @@ export default function ResetPassword({ token, email }) {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" color='text-white' />
+                    <InputLabel htmlFor="password" value="Password" color='text-gray-700 dark:text-white' />
 
                     <TextInput
                         id="password"
@@ -63,7 +63,7 @@ export default function ResetPassword({ token, email }) {
                     <InputLabel
                         htmlFor="password_confirmation"
                         value="Confirm Password"
-                        color='text-white'
+                        color='text-gray-700 dark:text-white'
                     />
 
                     <TextInput

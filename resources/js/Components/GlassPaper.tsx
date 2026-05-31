@@ -23,16 +23,17 @@ const GlassPaper = ({
 
     const glassStyle = {
         p: 3, // Default padding
+        borderRadius: theme.palette.mode === 'dark' ? undefined : '28px',
         backgroundColor: theme.palette.mode === 'dark' 
             ? 'rgba(255, 255, 255, 0.02)' 
-            : theme.palette.background.paper,
-        backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+            : 'rgba(255, 255, 255, 0.74)',
+        backdropFilter: 'blur(10px)',
         border: theme.palette.mode === 'dark' 
             ? '1px solid rgba(255, 255, 255, 0.1)' 
-            : `1px solid ${theme.palette.divider}`,
+            : '1px solid rgba(20, 20, 20, 0.08)',
         boxShadow: theme.palette.mode === 'dark' 
             ? '0 4px 16px rgba(0, 0, 0, 0.3)' 
-            : '0 2px 4px rgba(0, 0, 0, 0.1)',
+            : '0 18px 40px rgba(0, 0, 0, 0.08)',
         ...sx // Allow custom sx to override defaults
     };
 

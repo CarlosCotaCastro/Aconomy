@@ -7,8 +7,7 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Fonts -->
-
+        <!-- Fonts: self-hosted (see resources/css/app.css @font-face) for GDPR compliance -->
 
         <!-- Scripts -->
         @routes

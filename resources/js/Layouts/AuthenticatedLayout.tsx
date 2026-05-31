@@ -300,7 +300,7 @@ export default function AuthenticatedLayout({ user, children }) {
         <div style={{ 
             background: theme.palette.mode === 'dark' ? "var(--bg-primary)" : theme.palette.background.default 
         }}>
-            <div className={theme.palette.mode === 'dark' ? "custom-hero-bg-optimized" : ""} style={{
+            <div className={theme.palette.mode === 'dark' ? "custom-hero-bg-optimized" : "light-hero-bg"} style={{
                 display: 'flex',
                 flexDirection: 'column',
                 minHeight: '100vh',
@@ -312,12 +312,12 @@ export default function AuthenticatedLayout({ user, children }) {
                 sx={{
                     background: theme.palette.mode === 'dark' 
                         ? 'linear-gradient(to right, #0b0a10, #260e1f)' 
-                        : 'white',
-                    backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                        : 'rgba(255,255,255,0.55)',
+                    backdropFilter: 'blur(10px)',
                     borderBottom: theme.palette.mode === 'dark' 
                         ? '1px solid rgba(255, 255, 255, 0.1)' 
-                        : '1px solid #f0f0f0',
-                    color: theme.palette.mode === 'dark' ? 'white' : 'primary.main',
+                        : '1px solid rgba(20,20,20,0.06)',
+                    color: theme.palette.mode === 'dark' ? 'white' : 'text.primary',
                     zIndex: (theme) => theme.zIndex.drawer + 1,
                 }}
             >
@@ -433,11 +433,11 @@ export default function AuthenticatedLayout({ user, children }) {
                         boxShadow: 'none',
                         backgroundColor: theme.palette.mode === 'dark' 
                             ? 'rgba(14, 73, 156, 0.3)' 
-                            : 'rgba(255, 255, 255, 0.8)',
-                        backdropFilter: theme.palette.mode === 'dark' ? 'blur(20px)' : 'blur(5px)',
+                            : 'rgba(255, 255, 255, 0.74)',
+                        backdropFilter: theme.palette.mode === 'dark' ? 'blur(20px)' : 'blur(10px)',
                         borderRight: theme.palette.mode === 'dark' 
                             ? '1px solid rgba(255, 255, 255, 0.1)' 
-                            : '1px solid rgba(0, 0, 0, 0.12)',
+                            : '1px solid rgba(20, 20, 20, 0.08)',
                     },
                 }}
             >
@@ -471,11 +471,11 @@ export default function AuthenticatedLayout({ user, children }) {
                     mt: 'auto',
                     backgroundColor: theme.palette.mode === 'dark' 
                         ? 'rgba(255, 255, 255, 0.02)' 
-                        : 'white',
-                    backdropFilter: theme.palette.mode === 'dark' ? 'blur(10px)' : 'none',
+                        : 'rgba(255, 255, 255, 0.55)',
+                    backdropFilter: 'blur(10px)',
                     borderTop: theme.palette.mode === 'dark' 
                         ? '1px solid rgba(255, 255, 255, 0.1)' 
-                        : '1px solid rgba(0, 0, 0, 0.06)',
+                        : '1px solid rgba(20, 20, 20, 0.06)',
                     textAlign: 'center'
                 }}
             >

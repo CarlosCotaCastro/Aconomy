@@ -29,6 +29,7 @@ import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import GroupItemSearch from "@/Components/GroupItemSearch.jsx";
 import { useTranslation } from 'react-i18next';
 import React from 'react';
+import { lightTokens } from '@/lightTheme';
 
 
 export default function Dashboard({ items = [], groups = [], lendings = [], borrowings = [], auth }) {
@@ -37,6 +38,7 @@ export default function Dashboard({ items = [], groups = [], lendings = [], borr
     const activeBorrowings = borrowings.filter(l => !l.returned_at);
 
     const theme = useTheme();
+    const isDark = theme.palette.mode === 'dark';
 
     function stringToColor(string) {
         let hash = 0;
@@ -98,12 +100,12 @@ export default function Dashboard({ items = [], groups = [], lendings = [], borr
                         <Grid item size={{ xs: 12, md: 6 }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                                 <Avatar sx={{
-                                    bgcolor: 'rgba(76, 175, 80, 0.1)',
+                                    bgcolor: isDark ? 'rgba(76, 175, 80, 0.1)' : 'rgba(126, 180, 135, 0.15)',
                                     mr: 2,
                                     width: 48,
                                     height: 48
                                 }}>
-                                    <SwapHorizIcon sx={{ color: '#4caf50' }} />
+                                    <SwapHorizIcon sx={{ color: isDark ? '#4caf50' : lightTokens.green }} />
                                 </Avatar>
                                 <Box>
                                     <Typography variant="h6" sx={{ fontWeight: 600 }}>
@@ -124,8 +126,10 @@ export default function Dashboard({ items = [], groups = [], lendings = [], borr
                                         href={route('lendings.show', lending.id)}
                                     >
                                         <ListItemAvatar>
-                                            <Avatar sx={{ bgcolor: 'rgba(76, 175, 80, 0.1)' }}>
-                                                <PersonIcon sx={{ color: '#4caf50' }} />
+                                            <Avatar sx={{
+                                                bgcolor: isDark ? 'rgba(76, 175, 80, 0.1)' : 'rgba(126, 180, 135, 0.15)',
+                                            }}>
+                                                <PersonIcon sx={{ color: isDark ? '#4caf50' : lightTokens.green }} />
                                             </Avatar>
                                         </ListItemAvatar>
                                         <ListItemText
@@ -141,8 +145,8 @@ export default function Dashboard({ items = [], groups = [], lendings = [], borr
                                             size="small"
                                             sx={{
                                                 ml: 1,
-                                                backgroundColor: 'rgba(76, 175, 80, 0.1)',
-                                                color: '#4caf50'
+                                                backgroundColor: isDark ? 'rgba(76, 175, 80, 0.1)' : 'rgba(126, 180, 135, 0.15)',
+                                                color: isDark ? '#4caf50' : lightTokens.green,
                                             }}
                                         />
                                     </ListItem>
@@ -155,8 +159,10 @@ export default function Dashboard({ items = [], groups = [], lendings = [], borr
                                         disablePadding={true}
                                     >
                                         <ListItemAvatar>
-                                            <Avatar sx={{ bgcolor: 'rgba(139, 92, 246, 0.1)' }}>
-                                                <PersonIcon sx={{ color: '#8b5cf6' }} />
+                                            <Avatar sx={{
+                                                bgcolor: isDark ? 'rgba(139, 92, 246, 0.1)' : 'rgba(157, 125, 255, 0.15)',
+                                            }}>
+                                                <PersonIcon sx={{ color: isDark ? '#8b5cf6' : lightTokens.lavender }} />
                                             </Avatar>
                                         </ListItemAvatar>
                                         <ListItemText
@@ -172,8 +178,8 @@ export default function Dashboard({ items = [], groups = [], lendings = [], borr
                                             size="small"
                                             sx={{
                                                 ml: 1,
-                                                backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                                                color: '#8b5cf6'
+                                                backgroundColor: isDark ? 'rgba(139, 92, 246, 0.1)' : 'rgba(157, 125, 255, 0.15)',
+                                                color: isDark ? '#8b5cf6' : lightTokens.lavender,
                                             }}
                                         />
                                     </ListItem>
@@ -206,12 +212,12 @@ export default function Dashboard({ items = [], groups = [], lendings = [], borr
                         <Grid item size={{ xs: 12, md: 6 }}>
                             <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
                                 <Avatar sx={{
-                                    bgcolor: 'rgba(255, 152, 0, 0.1)',
+                                    bgcolor: isDark ? 'rgba(255, 152, 0, 0.1)' : 'rgba(255, 138, 76, 0.15)',
                                     mr: 2,
                                     width: 48,
                                     height: 48
                                 }}>
-                                    <GroupIcon sx={{ color: '#ff9800' }} />
+                                    <GroupIcon sx={{ color: isDark ? '#ff9800' : lightTokens.orange2 }} />
                                 </Avatar>
                                 <Box>
                                     <Typography variant="h6" sx={{ fontWeight: 600 }}>
@@ -251,7 +257,7 @@ export default function Dashboard({ items = [], groups = [], lendings = [], borr
                                         disablePadding
                                         sx={{
                                             mb: 1,
-                                            borderRadius: 2,
+                                            borderRadius: isDark ? 2 : '18px',
                                             p: 1,
                                             textDecoration: 'none',
                                             color: 'inherit'

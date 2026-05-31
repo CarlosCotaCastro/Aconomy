@@ -29,7 +29,7 @@ export default function VerifyEmail({ status }) {
         <GuestLayout>
             <Head title="Email Verification" />
 
-            <div className="mb-4 text-sm text-white">
+            <div className="mb-4 text-sm text-gray-700 dark:text-white">
                 Thanks for signing up! Before getting started, could you verify
                 your email address by clicking on the link we just emailed to
                 you? If you didn't receive the email, we will gladly send you
@@ -51,7 +51,7 @@ export default function VerifyEmail({ status }) {
                     <Button
                         onClick={handleLogout}
                         variant={'text'}
-                        className="w-full rounded-md text-sm text-gray-600 underline hover:text-white-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="w-full rounded-md text-sm text-gray-600 underline hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                         Log Out
                     </Button>

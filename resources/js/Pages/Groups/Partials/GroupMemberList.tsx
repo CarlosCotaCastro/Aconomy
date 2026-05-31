@@ -11,6 +11,7 @@ import {
 import {useState} from "react";
 import { useTranslation } from 'react-i18next';
 import UserAvatar from '@/Components/UserAvatar';
+import { lightTokens } from '@/lightTheme';
 
 export default function GroupMemberList({approvedMembers}) {
     const { t } = useTranslation();
@@ -21,11 +22,13 @@ export default function GroupMemberList({approvedMembers}) {
         <Card sx={{
             background: (theme) => theme.palette.mode === 'dark' 
                 ? 'rgba(255, 255, 255, 0.02)'
-                : 'rgba(255, 255, 255, 1)',
+                : lightTokens.surface,
             backdropFilter: 'blur(10px)',
             border: (theme) => theme.palette.mode === 'dark' 
                 ? '1px solid rgba(255, 255, 255, 0.1)'
-                : '1px solid rgba(0, 0, 0, 0.1)',
+                : `1px solid ${lightTokens.border}`,
+            borderRadius: (theme) => theme.palette.mode === 'dark' ? undefined : '28px',
+            boxShadow: (theme) => theme.palette.mode === 'dark' ? undefined : lightTokens.shadow,
         }}>
             <CardContent>
                 <Typography variant="h6" gutterBottom>
@@ -35,7 +38,7 @@ export default function GroupMemberList({approvedMembers}) {
                     mb: 2,
                     borderColor: (theme) => theme.palette.mode === 'dark' 
                         ? 'rgba(255, 255, 255, 0.1)'
-                        : 'rgba(0, 0, 0, 0.12)',
+                        : lightTokens.border,
                 }}/>
 
                 <List>
@@ -48,7 +51,7 @@ export default function GroupMemberList({approvedMembers}) {
                                 '&:hover': {
                                     backgroundColor: (theme) => theme.palette.mode === 'dark' 
                                         ? 'rgba(255, 255, 255, 0.05)'
-                                        : 'rgba(0, 0, 0, 0.04)',
+                                        : 'rgba(20, 20, 20, 0.04)',
                                 }
                             }}
                         >

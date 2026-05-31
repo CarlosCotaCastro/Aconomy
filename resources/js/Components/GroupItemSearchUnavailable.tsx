@@ -4,6 +4,7 @@ import { Search as SearchIcon } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@mui/material/styles';
 import GlassPaper from '@/Components/GlassPaper';
+import { lightTokens } from '@/lightTheme';
 
 export default function GroupItemSearchUnavailable() {
     const { t } = useTranslation();
@@ -18,7 +19,7 @@ export default function GroupItemSearchUnavailable() {
                     textAlign: 'center',
                     background: isDark 
                         ? 'rgba(255, 255, 255, 0.02)' 
-                        : 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
+                        : lightTokens.pageGradient,
                 }}
             >
                 <img src="/group.png" className="max-h-48 mx-auto" />

@@ -20,6 +20,7 @@ import {
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import GlassPaper from '@/Components/GlassPaper';
+import { lightTokens } from '@/lightTheme';
 
 export default function GroupItems({ group, items, auth }) {
     const { t } = useTranslation();
@@ -36,10 +37,10 @@ export default function GroupItems({ group, items, auth }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <GlassPaper
                         sx={{
-                            borderRadius: 2,
+                            borderRadius: theme.palette.mode === 'dark' ? 2 : '28px',
                             boxShadow: theme.palette.mode === 'dark' 
                                 ? '0 8px 32px rgba(0, 0, 0, 0.4)' 
-                                : '0 1px 3px rgba(0, 0, 0, 0.1)',
+                                : lightTokens.shadow,
                         }}
                     >
                         <Box sx={{ mb: 4 }}>
@@ -75,7 +76,7 @@ export default function GroupItems({ group, items, auth }) {
                                 '&:hover': {
                                     boxShadow: theme.palette.mode === 'dark' 
                                         ? '0 8px 32px rgba(0, 0, 0, 0.4)' 
-                                        : '0 4px 8px rgba(0, 0, 0, 0.15)',
+                                        : lightTokens.hoverShadow,
                                 }
                             }}
                         >
@@ -93,7 +94,7 @@ export default function GroupItems({ group, items, auth }) {
                                         height: 120,
                                         bgcolor: theme.palette.mode === 'dark' 
                                             ? 'rgba(255, 255, 255, 0.05)' 
-                                            : 'rgba(0, 0, 0, 0.05)',
+                                            : 'rgba(239, 231, 220, 0.55)',
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center'

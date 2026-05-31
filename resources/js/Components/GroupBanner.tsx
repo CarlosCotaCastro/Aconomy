@@ -44,11 +44,11 @@ export default function GroupBanner({ group, height = 200, sx = {}, isGroupCreat
                 <Box sx={{ display: 'flex', alignItems: 'flex-start', width: '100%' }}>
                     <GroupAvatar group={group} size={60} sx={{ mr: 2 }} />
                     <Box>
-                        <Typography variant="h4" component="h1">
+                        <Typography variant="h4" component="h1" sx={{ color: '#ffffff' }}>
                             {group.name}
                         </Typography>
                         {group.description && (
-                            <Typography color="text.secondary" variant="body1">
+                            <Typography variant="body1" sx={{ color: 'rgba(255, 255, 255, 0.8)' }}>
                                 {group.description}
                             </Typography>
                         )}

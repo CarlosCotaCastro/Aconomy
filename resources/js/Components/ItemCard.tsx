@@ -8,20 +8,20 @@ export default function ItemCard({ item, onRequestBorrow, buttonText = "Request 
     const isDark = theme.palette.mode === 'dark';
 
     return (
-        <div className={`border rounded p-4 flex flex-col items-center shadow-lg transition-all duration-300 hover:shadow-xl ${
+        <div className={`border p-4 flex flex-col items-center transition-all duration-300 ${
             isDark 
-                ? 'bg-gray-800/20 backdrop-blur-md border-gray-700/30 hover:bg-gray-800/40' 
-                : 'bg-white/30 backdrop-blur-md border-gray-200/50'
+                ? 'rounded bg-gray-800/20 backdrop-blur-md border-gray-700/30 hover:bg-gray-800/40 shadow-lg hover:shadow-xl' 
+                : 'rounded-[28px] bg-white/[0.78] backdrop-blur-md border-black/[0.06] shadow-[0_18px_40px_rgba(0,0,0,0.08)] hover:shadow-[0_24px_50px_rgba(0,0,0,0.12)] hover:-translate-y-1.5'
         }`}>
             <img 
                 src={item.image || '/placeholder.png'} 
                 alt={item.name} 
-                className="w-32 h-32 object-cover mb-2 rounded shadow-md" 
+                className="w-32 h-32 object-cover mb-2 rounded-2xl shadow-md" 
             />
-            <div className={`font-bold text-lg ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
+            <div className={`font-bold text-lg ${isDark ? 'text-gray-100' : 'text-[#171717]'}`}>
                 {item.name}
             </div>
-            <div className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+            <div className={`text-sm ${isDark ? 'text-gray-400' : 'text-[#66645f]'}`}>
                 Status: {item.status}
             </div>
             <div className="flex items-center my-4">
@@ -30,7 +30,7 @@ export default function ItemCard({ item, onRequestBorrow, buttonText = "Request 
                     size={32}
                     sx={{ mr: 1 }}
                 />
-                <span className={`text-sm ${isDark ? 'text-gray-200' : 'text-gray-800'}`}>
+                <span className={`text-sm ${isDark ? 'text-gray-200' : 'text-[#171717]'}`}>
                     {item.owner.name}
                 </span>
             </div>

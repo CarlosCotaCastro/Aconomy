@@ -26,6 +26,7 @@ import {
     Schedule as ScheduleIcon
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
+import { lightTokens } from '@/lightTheme';
 
 export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
     const { t } = useTranslation();
@@ -99,7 +100,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                 <Grid size={{md:6, xs:12}}>
                     <GlassPaper
                         sx={{
-                            borderRadius: 2,
+                            borderRadius: theme.palette.mode === 'dark' ? 2 : '28px',
                         }}
                     >
                             <Typography variant="h6" gutterBottom>
@@ -162,7 +163,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                                             p: 2, 
                                             background: theme.palette.mode === 'dark' 
                                                 ? 'rgba(255, 255, 255, 0.03)' 
-                                                : 'rgba(0, 0, 0, 0.02)',
+                                                : 'rgba(255, 138, 76, 0.05)',
                                         }}
                                     >
                                         <Typography variant="body2" fontStyle="italic">
@@ -177,7 +178,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                 <Grid size={{md:6, xs:12}}>
                     <GlassPaper
                         sx={{
-                            borderRadius: 2,
+                            borderRadius: theme.palette.mode === 'dark' ? 2 : '28px',
                         }}
                     >
                             <Typography variant="h6" gutterBottom>
@@ -315,11 +316,11 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                         p: 2,
                         background: theme.palette.mode === 'dark' 
                             ? 'rgba(255, 255, 255, 0.03)' 
-                            : 'rgba(0, 0, 0, 0.02)',
-                        borderRadius: 2,
+                            : 'rgba(255, 138, 76, 0.05)',
+                        borderRadius: theme.palette.mode === 'dark' ? 2 : '18px',
                         border: theme.palette.mode === 'dark' 
                             ? '1px solid rgba(255, 255, 255, 0.08)' 
-                            : '1px solid rgba(0, 0, 0, 0.08)',
+                            : `1px solid ${lightTokens.border}`,
                     }}>
                         {qrCode ? (
                             <div dangerouslySetInnerHTML={{ __html: atob(qrCode) }} />
@@ -335,11 +336,11 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                             p: 2,
                             background: theme.palette.mode === 'dark' 
                                 ? 'rgba(255, 255, 255, 0.05)' 
-                                : 'rgba(0, 0, 0, 0.03)',
-                            borderRadius: 2,
+                                : lightTokens.surface,
+                            borderRadius: theme.palette.mode === 'dark' ? 2 : '18px',
                             border: theme.palette.mode === 'dark' 
                                 ? '1px solid rgba(255, 255, 255, 0.1)' 
-                                : '1px solid rgba(0, 0, 0, 0.1)',
+                                : `1px solid ${lightTokens.border}`,
                         }}>
                             <Typography variant="subtitle2" gutterBottom>
                                 {t('borrowRequests.manualCode')}
