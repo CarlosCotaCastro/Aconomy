@@ -35,11 +35,36 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'badges' => fn () => $this->badgesFor($request),
             'csrf_token' => csrf_token(),
             'maxImageSizeKB' => PhpIniHelper::getMaxImageSizeKB(),
         ];
     }
 
+    /**
+     * Sidebar/top-bar badge counts for the authenticated user.
+     *
+     * @return array<string, int>|null
+     */
+    protected function badgesFor(Request $request): ?array
+    {
+        $user = $request->user();
+
+        if (! $user) {
+            return null;
+        }
+
+        return [
+            'incomingRequests' => $user->lendRequests()->where('status', 'pending')->count(),
+            'activeBorrowings' => $user->lendingsAsBorrower()->whereNull('returned_at')->count(),
+            'unreadMessages' => \App\Models\Message::query()
+                ->whereHas('conversation', fn ($q) => $q->forUser($user->id))
+                ->where('sender_id', '!=', $user->id)
+                ->whereNull('read_at')
+                ->count(),
+            'unreadNotifications' => $user->unreadNotifications()->count(),
+        ];
+    }
 
     /**
      * Handle the incoming request.

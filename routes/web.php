@@ -7,10 +7,12 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\GroupUserController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LendingController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\Notification\NotificationApiController;
 use App\Http\Controllers\Notification\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReturnRequestController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\StoreItemController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -64,6 +66,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/groups/{group}/items', [ItemController::class, 'groupItems'])->name('groups.items.index');
     Route::get('/search/group-items', [ItemController::class, 'groupSearch'])->name('items.group-search');
 
+    // Global search (items, groups, people)
+    Route::get('/search', [SearchController::class, 'index'])->name('search.global');
+
+    // Messaging routes
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+    Route::post('/messages', [MessageController::class, 'store'])->name('messages.store');
+    Route::post('/messages/start/{user}', [MessageController::class, 'start'])->name('messages.start');
+    Route::get('/messages/{conversation}', [MessageController::class, 'show'])->name('messages.show');
+
     // Groups routes
     Route::resource('groups', GroupController::class);
     Route::post('/groups/{group}/join', [GroupUserController::class, 'store'])->name('groups.join');
@@ -76,6 +87,9 @@ Route::middleware('auth')->group(function () {
     // Borrow Requests routes
     Route::resource('borrow-requests', BorrowRequestController::class)->except(['edit', 'update', 'destroy']);
     Route::post('/borrow-requests/{borrowRequest}/approve', [BorrowRequestController::class, 'approve'])->name('borrow-requests.approve');
+    Route::post('/borrow-requests/{borrowRequest}/counter', [BorrowRequestController::class, 'counter'])->name('borrow-requests.counter');
+    Route::post('/borrow-requests/{borrowRequest}/accept-counter', [BorrowRequestController::class, 'acceptCounter'])->name('borrow-requests.accept-counter');
+    Route::post('/borrow-requests/{borrowRequest}/decline-counter', [BorrowRequestController::class, 'declineCounter'])->name('borrow-requests.decline-counter');
     Route::post('/borrow-requests/{borrowRequest}/deny', [BorrowRequestController::class, 'deny'])->name('borrow-requests.deny');
     Route::post('/borrow-requests/{borrowRequest}/verify-code', [BorrowRequestController::class, 'verifyHandoverCode'])->name('borrow-requests.verify-code');
 

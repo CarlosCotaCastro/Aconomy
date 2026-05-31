@@ -40,6 +40,10 @@ const getNotificationIcon = (type) => {
             return <GroupIcon sx={{ color: '#ff9800' }} />;
         case 'return_request':
             return <SwapHorizIcon sx={{ color: '#4caf50' }} />;
+        case 'new_message':
+            return <CommentIcon sx={{ color: '#5b6cff' }} />;
+        case 'borrow_request_countered':
+            return <RequestQuoteIcon sx={{ color: '#ff8a4c' }} />;
         default:
             return <NotificationsIcon color="primary" />;
     }

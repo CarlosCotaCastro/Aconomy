@@ -19,6 +19,7 @@
         "update": "Actualizar",
         "create": "Crear",
         "search": "Buscar",
+        "filter": "Filtrar",
         "loading": "Cargando...",
         "error": "Error",
         "success": "Éxito",
@@ -28,7 +29,8 @@
         "viewDetails": "Ver Detalles",
         "pendingApproval": "Aprobación Pendiente",
         "me": "yo",
-        "or": "o"
+        "or": "o",
+        "tryAdjustingSearch": "Intenta ajustar tus términos de búsqueda o filtros."
     },
     "auth": {
         "loginTitle": "Inicia sesión en tu cuenta",
@@ -45,10 +47,31 @@
         "myItems": "Mis Objetos",
         "myGroups": "Mis Grupos",
         "recentActivity": "Actividad Reciente",
+        "noActivity": "Aún no hay actividad reciente.",
         "noItems": "Aún no hay objetos. ¡Añade tu primer objeto!",
         "noGroups": "Aún no hay grupos. ¡Crea o únete a un grupo!",
         "addItem": "Añadir Nuevo Objeto",
-        "createGroup": "Crear Nuevo Grupo"
+        "createGroup": "Crear Nuevo Grupo",
+        "incomingRequests": "Solicitudes entrantes",
+        "noIncomingRequests": "No hay solicitudes entrantes en este momento.",
+        "youreBorrowing": "Estás pidiendo prestado",
+        "yourGroups": "Tus grupos",
+        "seeAll": "Ver todo",
+        "manage": "Gestionar",
+        "history": "Historial",
+        "returnReminder": "Recordatorio de devolución",
+        "returnReminderText": "Tu {{item}} debe devolverse a {{name}} {{when}}.",
+        "statItemsShared": "Objetos que compartes",
+        "statBorrowing": "Pidiendo prestado actualmente",
+        "statGroups": "Grupos a los que perteneces",
+        "statRequests": "Solicitudes abiertas",
+        "dueToday": "vence hoy",
+        "dueTomorrow": "vence mañana",
+        "overdue": "vencido",
+        "dueOn": "vence el {{date}}",
+        "wants": "quiere pedir prestado tu",
+        "extend": "Extender",
+        "return": "Devolver"
     },
     "items": {
         "addNewItem": "Añadir Nuevo Objeto",
@@ -116,6 +139,13 @@
         "itemsFound": "{{count}} objetos encontrados",
         "noItemsFound": "No se encontraron objetos en este grupo",
         "recentItems": "Objetos Recientes",
+        "searchGroups": "Buscar grupos...",
+        "filterAll": "Todos los grupos",
+        "filterMyGroups": "Mis grupos",
+        "filterDiscover": "Descubrir nuevos grupos",
+        "noGroupsFound": "No se encontraron grupos",
+        "groupsFound": "{{count}} grupos encontrados",
+        "noGroupsYet": "Aún no hay grupos disponibles. ¡Crea el primer grupo!",
         "createGroup": "Crear Grupo"
     },
     "lendings": {
@@ -138,7 +168,10 @@
         "noActiveLendings": "No hay préstamos activos. ¡Comienza a prestar tus objetos!",
         "lendings": "préstamos",
         "lender": "Prestador",
-        "borrower": "Prestatario"
+        "borrower": "Prestatario",
+        "dueDate": "Fecha de devolución",
+        "dueOn": "Vence el {{date}}",
+        "noDueDate": "Sin fecha de devolución"
     },
     "notifications": {
         "notifications": "Notificaciones",
@@ -178,7 +211,11 @@
         "deleteAccountConfirmation": "¿Estás seguro de que quieres eliminar tu cuenta?",
         "deleteAccountWarning": "Una vez que tu cuenta sea eliminada, todos sus recursos y datos serán eliminados permanentemente. Por favor, ingresa tu contraseña para confirmar que deseas eliminar permanentemente tu cuenta.",
         "password": "Contraseña",
-        "cancel": "Cancelar"
+        "cancel": "Cancelar",
+        "notificationPreferences": "Preferencias de notificación",
+        "notificationPreferencesDescription": "Elige cómo quieres recibir notificaciones sobre la actividad en la plataforma.",
+        "emailOnMessage": "Enviarme un correo cuando reciba un mensaje",
+        "emailOnMessageHint": "Desactiva esto para ver los mensajes nuevos solo dentro de la aplicación."
     },
     "borrowRequests": {
         "requestToBorrow": "Solicitar Préstamo",
@@ -229,28 +266,106 @@
         "reason": "Razón (Opcional)",
         "verifyItemHandoverTitle": "Verificar Entrega",
         "handoverCode": "Código de Entrega",
-        "verifyCode": "Verificar Código"
+        "verifyCode": "Verificar Código",
+        "returnByLabel": "Devolver el objeto antes del",
+        "returnByHelp": "Elige cuándo planeas devolver el objeto.",
+        "requestedReturnDate": "Fecha de devolución solicitada",
+        "proposedReturnDate": "Fecha de devolución propuesta",
+        "agreedReturnDate": "Fecha de devolución acordada",
+        "proposeShorter": "Proponer un período más corto",
+        "proposeShorterTitle": "Proponer una fecha de devolución anterior",
+        "proposeShorterInfo": "Puedes proponer una fecha de devolución anterior a la solicitada. El solicitante debe aceptarla antes de la entrega.",
+        "proposeDate": "Enviar propuesta",
+        "newReturnDate": "Nueva fecha de devolución",
+        "acceptDate": "Aceptar fecha",
+        "declineRequest": "Rechazar",
+        "counteredInfoBorrower": "{{name}} propuso una fecha de devolución anterior. Acéptala para continuar o rechaza la solicitud.",
+        "counteredInfoLender": "Propusiste una fecha de devolución anterior. Esperando a que el solicitante la acepte.",
+        "statusCountered": "Esperando al solicitante",
+        "dueBack": "Devolver antes del {{date}}"
     },
     "navigation": {
         "home": "Inicio",
+        "dashboard": "Panel",
+        "browseItems": "Explorar objetos",
         "items": "Objetos",
         "myItems": "Mis Objetos",
+        "myListings": "Mis publicaciones",
         "addNewItem": "Añadir Nuevo Objeto",
+        "listItem": "Publicar un objeto",
         "groups": "Grupos",
         "myGroups": "Mis Grupos",
         "findGroups": "Encontrar Grupos",
         "createNewGroup": "Crear Nuevo Grupo",
         "lendings": "Préstamos",
         "myLendings": "Mis Préstamos",
+        "borrowed": "Prestados",
         "borrowRequests": "Solicitudes de Préstamo",
+        "requests": "Solicitudes",
         "myRequests": "Mis Solicitudes",
-        "profileSettings": "Configuración del Perfil"
+        "messages": "Mensajes",
+        "profileSettings": "Configuración del Perfil",
+        "settings": "Configuración",
+        "sectionOverview": "Resumen",
+        "sectionMyStuff": "Mis cosas",
+        "sectionCommunity": "Comunidad",
+        "openMenu": "Abrir menú",
+        "logout": "Cerrar sesión"
     },
     "groupItemSearch": {
         "searchPlaceholder": "Buscar objetos en tus grupos...",
         "notApprovedTitle": "Búsqueda no disponible",
         "notApprovedMessage": "Podrás buscar objetos en todos tus grupos aprobados una vez que seas un miembro aprobado en al menos un grupo.",
         "joinGroupToUseSearch": "Unite a un grupo para usar la búsqueda de objetos"
+    },
+    "search": {
+        "trigger": "Buscar objetos, grupos, personas...",
+        "placeholder": "Busca objetos, grupos y personas en tus grupos",
+        "title": "Buscar",
+        "items": "Objetos",
+        "groups": "Grupos",
+        "people": "Personas",
+        "noResults": "No hay resultados para \"{{query}}\"",
+        "startTyping": "Empieza a escribir para buscar en tus grupos",
+        "searching": "Buscando...",
+        "close": "Cerrar",
+        "escToClose": "Pulsa Esc para cerrar",
+        "requestToBorrow": "Solicitar préstamo",
+        "openGroup": "Abrir grupo",
+        "viewProfile": "Ver perfil",
+        "member": "Miembro",
+        "membersCount": "{{count}} miembros",
+        "available": "Disponible",
+        "unavailable": "No disponible"
+    },
+    "messages": {
+        "title": "Mensajes",
+        "conversations": "Conversaciones",
+        "noConversations": "Aún no hay conversaciones",
+        "noConversationsHint": "Inicia una conversación desde un perfil o una solicitud de préstamo.",
+        "typeMessage": "Escribe un mensaje...",
+        "send": "Enviar",
+        "backToMessages": "Volver a mensajes",
+        "you": "Tú",
+        "messageUser": "Enviar mensaje a {{name}}",
+        "emptyThread": "Aún no hay mensajes. ¡Saluda!",
+        "newMessage": "Nuevo mensaje",
+        "openConversation": "Abrir conversación"
+    },
+    "onboarding": {
+        "welcome": "¡Bienvenido a Aconomy, {{name}}!",
+        "subtitle": "Vamos a configurarte. Compartir funciona en tres sencillos pasos.",
+        "step1Title": "Únete o crea un grupo",
+        "step1Desc": "Los grupos son comunidades donde compartes objetos con personas de confianza.",
+        "step1Cta": "Encontrar grupos",
+        "step1CtaAlt": "Crear un grupo",
+        "step2Title": "Publica tu primer objeto",
+        "step2Desc": "Añade algo que estés dispuesto a prestar a los miembros de tu grupo.",
+        "step2Cta": "Publicar un objeto",
+        "step3Title": "Pide prestado lo que necesites",
+        "step3Desc": "Explora los objetos compartidos en tus grupos y envía una solicitud de préstamo.",
+        "step3Cta": "Explorar objetos",
+        "stepLabel": "Paso {{number}}"
     },
     "welcome": {
         "heroTitle": "Comparte recursos, construye comunidad",
@@ -274,6 +389,9 @@
         "footer": {
             "tagline": "Aconomy - Plataforma de Economía Alternativa",
             "poweredBy": "Desarrollado con Laravel v{{laravel}} (PHP v{{php}})"
+        },
+        "download": {
+            "fromGithub": "¡Aloja tu propia instancia!"
         }
     }
-} 
+}

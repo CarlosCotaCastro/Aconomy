@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 import {
     Box,
@@ -7,6 +7,7 @@ import {
     Grid,
     Divider,
     Chip,
+    Button,
     useTheme,
 } from '@mui/material';
 import UserAvatar from '@/Components/UserAvatar.jsx';
@@ -15,6 +16,7 @@ import {
     Person as PersonIcon,
     Inventory as InventoryIcon,
     History as HistoryIcon,
+    ChatBubbleOutline as MessageIcon,
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import RecentItemsGrid from '@/Pages/Groups/Partials/RecentItemsGrid';
@@ -52,20 +54,33 @@ export default function Show({ profileUser, items, borrowedItems, auth }) {
                             <Typography variant="body1" color="text.secondary" gutterBottom>
                                 {profileUser.email}
                             </Typography>
-                            <Chip
-                                icon={<PersonIcon />}
-                                label={t('profile.memberSince', { date: new Date(profileUser.created_at).toLocaleDateString() })}
-                                variant="outlined"
-                                size="small"
-                                sx={{
-                                    ...(theme.palette.mode === 'dark' && {
-                                        borderColor: 'rgba(255, 255, 255, 0.2)',
-                                        '& .MuiChip-icon': {
-                                            color: 'text.secondary'
-                                        }
-                                    })
-                                }}
-                            />
+                            <Box sx={{ display: 'flex', gap: 1.5, alignItems: 'center', flexWrap: 'wrap', justifyContent: { xs: 'center', sm: 'flex-start' } }}>
+                                <Chip
+                                    icon={<PersonIcon />}
+                                    label={t('profile.memberSince', { date: new Date(profileUser.created_at).toLocaleDateString() })}
+                                    variant="outlined"
+                                    size="small"
+                                    sx={{
+                                        ...(theme.palette.mode === 'dark' && {
+                                            borderColor: 'rgba(255, 255, 255, 0.2)',
+                                            '& .MuiChip-icon': {
+                                                color: 'text.secondary'
+                                            }
+                                        })
+                                    }}
+                                />
+                                {!isCurrentUser && (
+                                    <Button
+                                        variant="contained"
+                                        size="small"
+                                        startIcon={<MessageIcon />}
+                                        onClick={() => router.post(route('messages.start', profileUser.id))}
+                                        sx={{ textTransform: 'none', borderRadius: '999px' }}
+                                    >
+                                        {t('messages.messageUser', { name: profileUser.name })}
+                                    </Button>
+                                )}
+                            </Box>
                         </Box>
                     </Box>
                 </GlassPaper>

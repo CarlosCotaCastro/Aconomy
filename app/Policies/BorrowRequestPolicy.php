@@ -81,4 +81,13 @@ class BorrowRequestPolicy
         // Only the borrower can verify the handover code
         return $user->id === $borrowRequest->borrower_id && $borrowRequest->isApproved();
     }
+
+    /**
+     * Determine whether the user can accept or decline a lender's counter-offer.
+     */
+    public function respondToCounter(User $user, BorrowRequest $borrowRequest): bool
+    {
+        // Only the borrower can respond to a counter-offer that is awaiting their decision
+        return $user->id === $borrowRequest->borrower_id && $borrowRequest->isCountered();
+    }
 }

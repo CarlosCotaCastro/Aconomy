@@ -6,6 +6,7 @@ use App\Models\BorrowRequest;
 use App\Models\Item;
 use App\Models\User;
 use App\Notifications\BorrowRequestApprovedNotification;
+use App\Notifications\BorrowRequestCounteredNotification;
 use App\Notifications\BorrowRequestDeniedNotification;
 use App\Notifications\BorrowRequestNotification;
 use Illuminate\Http\Request;
@@ -79,6 +80,7 @@ class BorrowRequestController extends Controller
         $validated = $request->validate([
             'item_id' => 'required|exists:items,id',
             'message' => 'nullable|string|max:500',
+            'requested_due_at' => 'required|date|after:today',
         ]);
 
         $user = Auth::user();
@@ -108,6 +110,7 @@ class BorrowRequestController extends Controller
             'lender_id' => $item->user_id,
             'borrower_id' => $user->id,
             'message' => $validated['message'] ?? null,
+            'requested_due_at' => $validated['requested_due_at'],
             'status' => 'pending',
             'expires_at' => now()->addDays(7), // Request expires in 7 days
         ]);
@@ -191,15 +194,81 @@ class BorrowRequestController extends Controller
             return redirect()->back()->with('error', 'This request has already been processed.');
         }
 
-        // Update the request status
+        // Approve with the return date the borrower requested.
         $borrowRequest->update([
             'status' => 'approved',
+            'agreed_due_at' => $borrowRequest->requested_due_at,
         ]);
 
         // Notify the borrower
         $borrowRequest->borrower->notify(new BorrowRequestApprovedNotification($borrowRequest));
 
         return redirect()->route('borrow-requests.show', $borrowRequest)->with('success', 'Borrow request approved successfully.');
+    }
+
+    /**
+     * Propose a shorter return date than the borrower requested.
+     */
+    public function counter(Request $request, BorrowRequest $borrowRequest)
+    {
+        // Authorize that the user is the lender and the request is still pending
+        $this->authorize('respond', $borrowRequest);
+
+        $validated = $request->validate([
+            'proposed_due_at' => [
+                'required',
+                'date',
+                'after:today',
+                'before_or_equal:'.optional($borrowRequest->requested_due_at)->toDateString(),
+            ],
+        ]);
+
+        $borrowRequest->update([
+            'status' => 'countered',
+            'proposed_due_at' => $validated['proposed_due_at'],
+        ]);
+
+        // Notify the borrower that a shorter period has been proposed
+        $borrowRequest->borrower->notify(new BorrowRequestCounteredNotification($borrowRequest));
+
+        return redirect()->route('borrow-requests.show', $borrowRequest)
+            ->with('success', 'You proposed a shorter borrowing period. The borrower needs to agree.');
+    }
+
+    /**
+     * Borrower accepts the lender's proposed (shorter) return date.
+     */
+    public function acceptCounter(BorrowRequest $borrowRequest)
+    {
+        $this->authorize('respondToCounter', $borrowRequest);
+
+        $borrowRequest->update([
+            'status' => 'approved',
+            'agreed_due_at' => $borrowRequest->proposed_due_at,
+        ]);
+
+        // Notify the lender that the borrower agreed to the shorter period
+        $borrowRequest->lender->notify(new BorrowRequestApprovedNotification($borrowRequest));
+
+        return redirect()->route('borrow-requests.show', $borrowRequest)
+            ->with('success', 'You accepted the proposed return date.');
+    }
+
+    /**
+     * Borrower declines the lender's proposed (shorter) return date.
+     */
+    public function declineCounter(BorrowRequest $borrowRequest)
+    {
+        $this->authorize('respondToCounter', $borrowRequest);
+
+        $borrowRequest->update([
+            'status' => 'denied',
+        ]);
+
+        $borrowRequest->lender->notify(new BorrowRequestDeniedNotification($borrowRequest, null));
+
+        return redirect()->route('borrow-requests.index')
+            ->with('success', 'You declined the proposed return date.');
     }
 
     /**
@@ -254,12 +323,13 @@ class BorrowRequestController extends Controller
             return redirect()->back()->with('error', 'Invalid or expired handover code.');
         }
 
-        // Create a lending record
+        // Create a lending record, carrying over the agreed return date.
         $lending = \App\Models\Lending::create([
             'item_id' => $borrowRequest->item_id,
             'lender_id' => $borrowRequest->lender_id,
             'borrower_id' => $borrowRequest->borrower_id,
             'lent_at' => now(),
+            'due_at' => $borrowRequest->agreed_due_at,
         ]);
 
         // Update the request status

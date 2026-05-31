@@ -14,11 +14,13 @@ class Lending extends Model
         'lender_id',
         'borrower_id',
         'lent_at',
+        'due_at',
         'returned_at',
     ];
 
     protected $casts = [
         'lent_at' => 'datetime',
+        'due_at' => 'datetime',
         'returned_at' => 'datetime',
     ];
 

@@ -15,6 +15,9 @@ class BorrowRequest extends Model
         'lender_id',
         'borrower_id',
         'message',
+        'requested_due_at',
+        'proposed_due_at',
+        'agreed_due_at',
         'status',
         'expires_at',
         'handover_code',
@@ -23,6 +26,9 @@ class BorrowRequest extends Model
     ];
 
     protected $casts = [
+        'requested_due_at' => 'datetime',
+        'proposed_due_at' => 'datetime',
+        'agreed_due_at' => 'datetime',
         'expires_at' => 'datetime',
         'handover_code_expires_at' => 'datetime',
         'completed_at' => 'datetime',
@@ -57,6 +63,15 @@ class BorrowRequest extends Model
     public function isApproved()
     {
         return $this->status === 'approved';
+    }
+
+    /**
+     * Determine if the lender has proposed a different (shorter) return date
+     * that the borrower still needs to accept.
+     */
+    public function isCountered(): bool
+    {
+        return $this->status === 'countered';
     }
 
     /**

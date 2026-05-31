@@ -19,6 +19,7 @@
         "update": "Aktualisieren",
         "create": "Erstellen",
         "search": "Suchen",
+        "filter": "Filtern",
         "loading": "Wird geladen...",
         "error": "Fehler",
         "success": "Erfolg",
@@ -27,8 +28,9 @@
         "viewAll": "Alle {{count}} {{type}} anzeigen",
         "viewDetails": "Details anzeigen",
         "pendingApproval": "Genehmigung ausstehend",
-        "pendingApproval": "Genehmigung ausstehend",
-        "or": "oder"
+        "me": "ich",
+        "or": "oder",
+        "tryAdjustingSearch": "Versuche, deine Suchbegriffe oder Filter anzupassen."
     },
     "auth": {
         "loginTitle": "Melde dich bei Deinem Konto an",
@@ -45,10 +47,31 @@
         "myItems": "Meine Gegenstände",
         "myGroups": "Meine Gruppen",
         "recentActivity": "Letzte Aktivitäten",
+        "noActivity": "Noch keine aktuellen Aktivitäten.",
         "noItems": "Noch keine Gegenstände. Füge deinen ersten Gegenstand hinzu!",
         "noGroups": "Noch keine Gruppen. Erstellen einer Gruppe oder tritt einer bestehenden bei!",
         "addItem": "Neuen Gegenstände hinzufügen",
-        "createGroup": "Neue Gruppe erstellen"
+        "createGroup": "Neue Gruppe erstellen",
+        "incomingRequests": "Eingehende Anfragen",
+        "noIncomingRequests": "Derzeit keine eingehenden Anfragen.",
+        "youreBorrowing": "Du leihst aus",
+        "yourGroups": "Deine Gruppen",
+        "seeAll": "Alle anzeigen",
+        "manage": "Verwalten",
+        "history": "Verlauf",
+        "returnReminder": "Rückgabe-Erinnerung",
+        "returnReminderText": "Dein {{item}} muss {{when}} an {{name}} zurückgegeben werden.",
+        "statItemsShared": "Geteilte Gegenstände",
+        "statBorrowing": "Aktuell ausgeliehen",
+        "statGroups": "Beigetretene Gruppen",
+        "statRequests": "Offene Anfragen",
+        "dueToday": "heute fällig",
+        "dueTomorrow": "morgen fällig",
+        "overdue": "überfällig",
+        "dueOn": "fällig am {{date}}",
+        "wants": "möchte ausleihen",
+        "extend": "Verlängern",
+        "return": "Zurückgeben"
     },
     "items": {
         "addNewItem": "Neuen Gegenstand hinzufügen",
@@ -109,12 +132,20 @@
         "pendingRequests_plural": "{{count}} ausstehende Anfragen",
         "backToGroups": "Zurück zu Gruppen",
         "pendingRequestsTitle": "Ausstehende Anfragen ({{count}})",
+        "membersTitle": "Mitglieder",
         "noMembers": "Noch keine Mitglieder",
         "sharedItems": "Geteilte Gegenstände",
         "searchItemsPlaceholder": "Gegenstände in dieser Gruppe durchsuchen...",
         "itemsFound": "{{count}} Gegenstände gefunden",
         "noItemsFound": "Keine Gegenstände in dieser Gruppe gefunden",
         "recentItems": "Letzte Gegenstände",
+        "searchGroups": "Gruppen durchsuchen...",
+        "filterAll": "Alle Gruppen",
+        "filterMyGroups": "Meine Gruppen",
+        "filterDiscover": "Neue Gruppen entdecken",
+        "noGroupsFound": "Keine Gruppen gefunden",
+        "groupsFound": "{{count}} Gruppen gefunden",
+        "noGroupsYet": "Noch keine Gruppen verfügbar. Erstelle die erste Gruppe!",
         "createGroup": "Gruppe erstellen"
     },
     "lendings": {
@@ -137,7 +168,10 @@
         "noActiveLendings": "Keine aktiven Ausleihen.",
         "lendings": "Ausleihen",
         "lender": "Verleiher",
-        "borrower": "Entleiher"
+        "borrower": "Entleiher",
+        "dueDate": "Fälligkeitsdatum",
+        "dueOn": "Fällig am {{date}}",
+        "noDueDate": "Kein Rückgabedatum festgelegt"
     },
     "notifications": {
         "notifications": "Benachrichtigungen",
@@ -177,7 +211,11 @@
         "deleteAccountConfirmation": "Bist Du sicher, dass Sie Ihr Konto löschen möchten?",
         "deleteAccountWarning": "Sobald Ihr Konto gelöscht wird, werden alle Ressourcen und Daten dauerhaft gelöscht. Bitte geben Sie Ihr Passwort ein, um zu bestätigen, dass Sie Ihr Konto dauerhaft löschen möchten.",
         "password": "Passwort",
-        "cancel": "Abbrechen"
+        "cancel": "Abbrechen",
+        "notificationPreferences": "Benachrichtigungseinstellungen",
+        "notificationPreferencesDescription": "Wähle, wie du über Aktivitäten auf der Plattform benachrichtigt werden möchtest.",
+        "emailOnMessage": "Benachrichtige mich per E-Mail, wenn ich eine Nachricht erhalte",
+        "emailOnMessageHint": "Deaktiviere dies, um neue Nachrichten nur in der App zu sehen."
     },
     "borrowRequests": {
         "requestToBorrow": "Ausleihe anfragen",
@@ -229,28 +267,106 @@
         "cancel": "Abbrechen",
         "verifyItemHandoverTitle": "Übergabe bestätigen",
         "handoverCode": "Übergabecode",
-        "verifyCode": "Code verifizieren"
+        "verifyCode": "Code verifizieren",
+        "returnByLabel": "Gegenstand zurückgeben bis",
+        "returnByHelp": "Wähle, wann du den Gegenstand zurückgeben möchtest.",
+        "requestedReturnDate": "Gewünschtes Rückgabedatum",
+        "proposedReturnDate": "Vorgeschlagenes Rückgabedatum",
+        "agreedReturnDate": "Vereinbartes Rückgabedatum",
+        "proposeShorter": "Kürzeren Zeitraum vorschlagen",
+        "proposeShorterTitle": "Früheres Rückgabedatum vorschlagen",
+        "proposeShorterInfo": "Du kannst ein früheres Rückgabedatum als angefragt vorschlagen. Der Ausleiher muss vor der Übergabe zustimmen.",
+        "proposeDate": "Vorschlag senden",
+        "newReturnDate": "Neues Rückgabedatum",
+        "acceptDate": "Datum akzeptieren",
+        "declineRequest": "Ablehnen",
+        "counteredInfoBorrower": "{{name}} hat ein früheres Rückgabedatum vorgeschlagen. Akzeptiere es, um fortzufahren, oder lehne die Anfrage ab.",
+        "counteredInfoLender": "Du hast ein früheres Rückgabedatum vorgeschlagen. Warte auf die Zustimmung des Ausleihers.",
+        "statusCountered": "Warte auf Ausleiher",
+        "dueBack": "Rückgabe bis {{date}}"
     },
     "navigation": {
         "home": "Startseite",
+        "dashboard": "Übersicht",
+        "browseItems": "Gegenstände durchsuchen",
         "items": "Gegenstände",
         "myItems": "Meine Gegenstände",
+        "myListings": "Meine Einträge",
         "addNewItem": "Neuen Gegenstand hinzufügen",
+        "listItem": "Gegenstand einstellen",
         "groups": "Gruppen",
         "myGroups": "Meine Gruppen",
         "findGroups": "Gruppen finden",
         "createNewGroup": "Neue Gruppe erstellen",
         "lendings": "Ausleihen",
         "myLendings": "Meine Ausleihen",
+        "borrowed": "Ausgeliehen",
         "borrowRequests": "Leihanfragen",
+        "requests": "Anfragen",
         "myRequests": "Meine Anfragen",
-        "profileSettings": "Profileinstellungen"
+        "messages": "Nachrichten",
+        "profileSettings": "Profileinstellungen",
+        "settings": "Einstellungen",
+        "sectionOverview": "Übersicht",
+        "sectionMyStuff": "Meine Sachen",
+        "sectionCommunity": "Gemeinschaft",
+        "openMenu": "Menü öffnen",
+        "logout": "Abmelden"
     },
     "groupItemSearch": {
         "searchPlaceholder": "Suche nach Gegenständen in deinen Gruppen...",
         "notApprovedTitle": "Suche nicht verfügbar",
         "notApprovedMessage": "Du wirst in der Lage sein, in allen deinen genehmigten Gruppen nach Gegenständen zu suchen, sobald du ein genehmigtes Mitglied in mindestens einer Gruppe wirst.",
         "joinGroupToUseSearch": "Tritt einer Gruppe bei, um die Suche zu nutzen"
+    },
+    "search": {
+        "trigger": "Gegenstände, Gruppen, Personen suchen...",
+        "placeholder": "Suche nach Gegenständen, Gruppen und Personen in deinen Gruppen",
+        "title": "Suchen",
+        "items": "Gegenstände",
+        "groups": "Gruppen",
+        "people": "Personen",
+        "noResults": "Keine Ergebnisse für \"{{query}}\"",
+        "startTyping": "Beginne zu tippen, um in deinen Gruppen zu suchen",
+        "searching": "Wird gesucht...",
+        "close": "Schließen",
+        "escToClose": "Esc drücken zum Schließen",
+        "requestToBorrow": "Ausleihen anfragen",
+        "openGroup": "Gruppe öffnen",
+        "viewProfile": "Profil ansehen",
+        "member": "Mitglied",
+        "membersCount": "{{count}} Mitglieder",
+        "available": "Verfügbar",
+        "unavailable": "Nicht verfügbar"
+    },
+    "messages": {
+        "title": "Nachrichten",
+        "conversations": "Unterhaltungen",
+        "noConversations": "Noch keine Unterhaltungen",
+        "noConversationsHint": "Starte eine Unterhaltung über ein Profil oder eine Leihanfrage.",
+        "typeMessage": "Nachricht eingeben...",
+        "send": "Senden",
+        "backToMessages": "Zurück zu Nachrichten",
+        "you": "Du",
+        "messageUser": "Nachricht an {{name}}",
+        "emptyThread": "Noch keine Nachrichten. Sag Hallo!",
+        "newMessage": "Neue Nachricht",
+        "openConversation": "Unterhaltung öffnen"
+    },
+    "onboarding": {
+        "welcome": "Willkommen bei Aconomy, {{name}}!",
+        "subtitle": "Lass uns dich einrichten. Teilen funktioniert in drei einfachen Schritten.",
+        "step1Title": "Tritt einer Gruppe bei oder erstelle eine",
+        "step1Desc": "Gruppen sind Gemeinschaften, in denen du Gegenstände mit Menschen teilst, denen du vertraust.",
+        "step1Cta": "Gruppen finden",
+        "step1CtaAlt": "Gruppe erstellen",
+        "step2Title": "Stelle deinen ersten Gegenstand ein",
+        "step2Desc": "Füge etwas hinzu, das du gerne an deine Gruppenmitglieder verleihst.",
+        "step2Cta": "Gegenstand einstellen",
+        "step3Title": "Leihe aus, was du brauchst",
+        "step3Desc": "Durchstöbere die in deinen Gruppen geteilten Gegenstände und sende eine Leihanfrage.",
+        "step3Cta": "Gegenstände durchsuchen",
+        "stepLabel": "Schritt {{number}}"
     },
     "welcome": {
         "heroTitle": "Ressourcen teilen, Gemeinschaft aufbauen",
@@ -274,6 +390,9 @@
         "footer": {
             "tagline": "Aconomy - Alternative Wirtschaftsplattform",
             "poweredBy": "Betrieben mit Laravel v{{laravel}} (PHP v{{php}})"
+        },
+        "download": {
+            "fromGithub": "Betreibe selbst eine Instanz!"
         }
     }
 }

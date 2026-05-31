@@ -26,6 +26,8 @@ import {
     Person as PersonIcon,
     Category as CategoryIcon,
 } from '@mui/icons-material';
+import { Event as EventIcon } from '@mui/icons-material';
+import { format, parseISO } from 'date-fns';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import GlassPaper from '@/Components/GlassPaper';
 import { lightTokens } from '@/lightTheme';
@@ -41,6 +43,8 @@ const getStatusIcon = (status) => {
             return <CancelIcon color="error" />;
         case 'completed':
             return <CheckCircleIcon color="success" />;
+        case 'countered':
+            return <PendingIcon color="info" />;
         default:
             return <PendingIcon />;
     }
@@ -57,8 +61,29 @@ const getStatusColor = (status) => {
             return 'error';
         case 'completed':
             return 'success';
+        case 'countered':
+            return 'info';
         default:
             return 'default';
+    }
+};
+
+const statusLabel = (t, status) => {
+    if (status === 'countered') {
+        return t('borrowRequests.statusCountered');
+    }
+    return t(`borrowRequests.status.${status}`);
+};
+
+const dueDateFor = (request) => {
+    const value = request.agreed_due_at || request.proposed_due_at || request.requested_due_at;
+    if (!value) {
+        return null;
+    }
+    try {
+        return format(parseISO(value), 'PP');
+    } catch {
+        return null;
     }
 };
 
@@ -126,7 +151,7 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                                 </Typography>
                                                 <Chip
                                                     icon={getStatusIcon(request.status)}
-                                                    label={t(`borrowRequests.status.${request.status}`)}
+                                                    label={statusLabel(t, request.status)}
                                                     color={getStatusColor(request.status)}
                                                     size="small"
                                                 />
@@ -138,6 +163,15 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                                     {t('borrowRequests.owner', { name: request.lender.name })}
                                                 </Typography>
                                             </Box>
+
+                                            {dueDateFor(request) && (
+                                                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                                                    <EventIcon fontSize="small" sx={{ mr: 1 }} />
+                                                    <Typography variant="body2" color="text.secondary">
+                                                        {t('borrowRequests.dueBack', { date: dueDateFor(request) })}
+                                                    </Typography>
+                                                </Box>
+                                            )}
 
                                             {request.message && (
                                                 <Box sx={{ 
@@ -210,7 +244,7 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                                 </Typography>
                                                 <Chip
                                                     icon={getStatusIcon(request.status)}
-                                                    label={t(`borrowRequests.status.${request.status}`)}
+                                                    label={statusLabel(t, request.status)}
                                                     color={getStatusColor(request.status)}
                                                     size="small"
                                                 />
@@ -222,6 +256,15 @@ export default function Index({ outgoingRequests, incomingRequests, auth }) {
                                                     {t('borrowRequests.requestedBy', { name: request.borrower.name })}
                                                 </Typography>
                                             </Box>
+
+                                            {dueDateFor(request) && (
+                                                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                                                    <EventIcon fontSize="small" sx={{ mr: 1 }} />
+                                                    <Typography variant="body2" color="text.secondary">
+                                                        {t('borrowRequests.dueBack', { date: dueDateFor(request) })}
+                                                    </Typography>
+                                                </Box>
+                                            )}
 
                                             {request.message && (
                                                 <Box sx={{ 
