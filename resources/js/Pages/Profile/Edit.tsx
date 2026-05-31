@@ -6,6 +6,7 @@ import GlassPaper from '@/Components/GlassPaper';
 import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
+import NotificationPreferencesForm from './Partials/NotificationPreferencesForm';
 
 export default function Edit({ mustVerifyEmail, status }) {
     const { t } = useTranslation();
@@ -39,6 +40,10 @@ export default function Edit({ mustVerifyEmail, status }) {
                             status={status}
                             className="max-w-xl"
                         />
+                    </GlassPaper>
+
+                    <GlassPaper sx={{ p: { xs: 2, sm: 4 } }}>
+                        <NotificationPreferencesForm className="max-w-xl" />
                     </GlassPaper>
 
                     <GlassPaper sx={{ p: { xs: 2, sm: 4 } }}>

@@ -84,6 +84,56 @@ npm run dev
 php artisan serve
 ```
 
+> **Note:** This project ships with [Laravel Sail](https://laravel.com/docs/12.x/sail). If you develop inside the Docker environment, start the stack with `./vendor/bin/sail up -d` and prefix the commands below with `./vendor/bin/sail` (e.g. `./vendor/bin/sail artisan scout:import ...`). The `mysql`, `redis`, `meilisearch`, and `laravel-echo-server` services are all defined in `docker-compose.yml`.
+
+## 🔍 Search Indexing (Meilisearch)
+
+Search is powered by [Laravel Scout](https://laravel.com/docs/12.x/scout) with the [Meilisearch](https://www.meilisearch.com/) driver. The `Item` and `Group` models are searchable.
+
+1. Make sure the Meilisearch service is running. With Sail it starts automatically (`./vendor/bin/sail up -d`); otherwise run your own Meilisearch instance.
+
+2. Configure Scout to use Meilisearch in your `.env`:
+```bash
+SCOUT_DRIVER=meilisearch
+MEILISEARCH_HOST=http://127.0.0.1:7700
+# Set this if your Meilisearch instance requires a key
+MEILISEARCH_KEY=
+```
+
+3. Import (index) existing records into Meilisearch:
+```bash
+php artisan scout:import "App\Models\Item"
+php artisan scout:import "App\Models\Group"
+```
+
+New, updated, and deleted records are synced to the index automatically. To wipe and rebuild an index, use `php artisan scout:flush "App\Models\Item"` followed by `scout:import`.
+
+## 🔌 Realtime / WebSocket Server
+
+Realtime notifications and messaging use [Laravel Echo](https://laravel.com/docs/12.x/broadcasting) over a Socket.IO server (`laravel-echo-server`) listening on port `6001`, backed by Redis.
+
+1. Configure broadcasting in your `.env`:
+```bash
+BROADCAST_CONNECTION=redis
+REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+```
+
+2. Start the WebSocket server.
+
+   - **With Sail / Docker:** the `laravel-echo-server` service starts automatically with `./vendor/bin/sail up -d`.
+   - **Locally:** run the bundled npm script:
+```bash
+npm run echo-server
+```
+
+3. (Optional) Process broadcast and notification jobs with a queue worker:
+```bash
+php artisan queue:work
+```
+
+The client connects to the server via the configuration in `resources/js/bootstrap.js` (host `:6001`). See `ECHO_SERVER_SETUP.md` for troubleshooting tips.
+
 ## 🧪 Testing
 
 ```bash

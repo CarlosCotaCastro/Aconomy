@@ -27,6 +27,29 @@ import {
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { lightTokens } from '@/lightTheme';
+import { format, parseISO } from 'date-fns';
+
+function formatDate(value) {
+    if (!value) {
+        return null;
+    }
+    try {
+        return format(parseISO(value), 'PP');
+    } catch {
+        return null;
+    }
+}
+
+function toInputDate(value) {
+    if (!value) {
+        return '';
+    }
+    try {
+        return parseISO(value).toISOString().slice(0, 10);
+    } catch {
+        return '';
+    }
+}
 
 export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
     const { t } = useTranslation();
@@ -34,6 +57,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
     const [openQrDialog, setOpenQrDialog] = useState(false);
     const [openDenyDialog, setOpenDenyDialog] = useState(false);
     const [openVerifyDialog, setOpenVerifyDialog] = useState(false);
+    const [openCounterDialog, setOpenCounterDialog] = useState(false);
 
     const { data: approveData, post: approvePost, processing: approveProcessing } = useForm({});
     const { data: denyData, setData: setDenyData, post: denyPost, processing: denyProcessing } = useForm({
@@ -42,6 +66,11 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
     const { data: verifyData, setData: setVerifyData, post: verifyPost, processing: verifyProcessing } = useForm({
         code: '',
     });
+    const { data: counterData, setData: setCounterData, post: counterPost, processing: counterProcessing } = useForm({
+        proposed_due_at: toInputDate(borrowRequest.requested_due_at),
+    });
+    const { post: acceptCounterPost, processing: acceptCounterProcessing } = useForm({});
+    const { post: declineCounterPost, processing: declineCounterProcessing } = useForm({});
 
     const handleApprove = () => {
         approvePost(route('borrow-requests.approve', borrowRequest.id));
@@ -57,6 +86,19 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
         setOpenVerifyDialog(false);
     };
 
+    const handleCounter = () => {
+        counterPost(route('borrow-requests.counter', borrowRequest.id));
+        setOpenCounterDialog(false);
+    };
+
+    const handleAcceptCounter = () => {
+        acceptCounterPost(route('borrow-requests.accept-counter', borrowRequest.id));
+    };
+
+    const handleDeclineCounter = () => {
+        declineCounterPost(route('borrow-requests.decline-counter', borrowRequest.id));
+    };
+
     // Helper function to get status chip
     const getStatusChip = () => {
         switch(borrowRequest.status) {
@@ -68,6 +110,8 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                 return <Chip icon={<CancelIcon />} label={t('borrowRequests.status.denied')} color="error" />;
             case 'completed':
                 return <Chip icon={<CheckCircleIcon />} label={t('borrowRequests.status.completed')} color="success" />;
+            case 'countered':
+                return <Chip icon={<ScheduleIcon />} label={t('borrowRequests.statusCountered')} color="info" />;
             default:
                 return <Chip label={borrowRequest.status} />;
         }
@@ -153,6 +197,28 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                                 </Grid>
                             </Grid>
 
+                            <Divider sx={{ my: 2 }} />
+
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                <ScheduleIcon fontSize="small" color="action" />
+                                <Box>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {borrowRequest.agreed_due_at
+                                            ? t('borrowRequests.agreedReturnDate')
+                                            : borrowRequest.proposed_due_at
+                                                ? t('borrowRequests.proposedReturnDate')
+                                                : t('borrowRequests.requestedReturnDate')}
+                                    </Typography>
+                                    <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                                        {formatDate(
+                                            borrowRequest.agreed_due_at
+                                            || borrowRequest.proposed_due_at
+                                            || borrowRequest.requested_due_at,
+                                        )}
+                                    </Typography>
+                                </Box>
+                            </Box>
+
                             {borrowRequest.message && (
                                 <Box sx={{ mt: 3 }}>
                                     <Typography variant="subtitle2" gutterBottom>
@@ -217,12 +283,59 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                                             {t('borrowRequests.denyRequest')}
                                         </Button>
                                     </Box>
+
+                                    <Button
+                                        variant="text"
+                                        color="primary"
+                                        onClick={() => setOpenCounterDialog(true)}
+                                        startIcon={<ScheduleIcon />}
+                                        sx={{ mt: 1.5 }}
+                                        fullWidth
+                                    >
+                                        {t('borrowRequests.proposeShorter')}
+                                    </Button>
                                 </Box>
                             )}
 
                             {borrowRequest.status === 'pending' && isBorrower && (
                                 <Alert severity="info">
                                     {t('borrowRequests.pendingRequestInfoBorrower')}
+                                </Alert>
+                            )}
+
+                            {borrowRequest.status === 'countered' && isBorrower && (
+                                <Box sx={{ mt: 2 }}>
+                                    <Alert severity="info" sx={{ mb: 3 }}>
+                                        {t('borrowRequests.counteredInfoBorrower', { name: borrowRequest.lender.name })}
+                                    </Alert>
+                                    <Box sx={{ display: 'flex', gap: 2 }}>
+                                        <Button
+                                            variant="contained"
+                                            color="success"
+                                            onClick={handleAcceptCounter}
+                                            disabled={acceptCounterProcessing}
+                                            startIcon={<CheckCircleIcon />}
+                                            fullWidth
+                                        >
+                                            {t('borrowRequests.acceptDate')}
+                                        </Button>
+                                        <Button
+                                            variant="outlined"
+                                            color="error"
+                                            onClick={handleDeclineCounter}
+                                            disabled={declineCounterProcessing}
+                                            startIcon={<CancelIcon />}
+                                            fullWidth
+                                        >
+                                            {t('borrowRequests.declineRequest')}
+                                        </Button>
+                                    </Box>
+                                </Box>
+                            )}
+
+                            {borrowRequest.status === 'countered' && isLender && (
+                                <Alert severity="info">
+                                    {t('borrowRequests.counteredInfoLender')}
                                 </Alert>
                             )}
 
@@ -419,6 +532,47 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                         style: { textTransform: 'uppercase', letterSpacing: 3 },
                         maxLength: 6
                     }}
+                />
+            </GlassDialog>
+
+            {/* Counter (shorter period) Dialog */}
+            <GlassDialog
+                open={openCounterDialog}
+                onClose={() => setOpenCounterDialog(false)}
+                title={t('borrowRequests.proposeShorterTitle')}
+                actions={
+                    <>
+                        <Button onClick={() => setOpenCounterDialog(false)}>
+                            {t('borrowRequests.cancel')}
+                        </Button>
+                        <Button
+                            onClick={handleCounter}
+                            color="primary"
+                            disabled={counterProcessing || !counterData.proposed_due_at}
+                        >
+                            {t('borrowRequests.proposeDate')}
+                        </Button>
+                    </>
+                }
+            >
+                <DialogContentText sx={{ mb: 2 }}>
+                    {t('borrowRequests.proposeShorterInfo')}
+                </DialogContentText>
+
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                    {t('borrowRequests.requestedReturnDate')}: {formatDate(borrowRequest.requested_due_at)}
+                </Typography>
+
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    type="date"
+                    label={t('borrowRequests.newReturnDate')}
+                    fullWidth
+                    value={counterData.proposed_due_at}
+                    onChange={(e) => setCounterData('proposed_due_at', e.target.value)}
+                    InputLabelProps={{ shrink: true }}
+                    inputProps={{ max: toInputDate(borrowRequest.requested_due_at) }}
                 />
             </GlassDialog>
         </AuthenticatedLayout>

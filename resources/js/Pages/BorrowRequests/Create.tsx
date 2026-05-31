@@ -20,12 +20,23 @@ import {
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import GlassPaper from '@/Components/GlassPaper';
 
+function toInputDate(date) {
+    return date.toISOString().slice(0, 10);
+}
+
 export default function Create({ item, auth }) {
     const { t } = useTranslation();
     const theme = useTheme();
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const defaultDue = new Date();
+    defaultDue.setDate(defaultDue.getDate() + 14);
+
     const { data, setData, post, processing, errors } = useForm({
         item_id: item.id,
         message: '',
+        requested_due_at: toInputDate(defaultDue),
     });
 
     const handleSubmit = (e) => {
@@ -110,6 +121,19 @@ export default function Create({ item, auth }) {
                             </Box>
                             
                             <Box component="form" onSubmit={handleSubmit}>
+                                <TextField
+                                    fullWidth
+                                    type="date"
+                                    label={t('borrowRequests.returnByLabel')}
+                                    variant="outlined"
+                                    value={data.requested_due_at}
+                                    onChange={(e) => setData('requested_due_at', e.target.value)}
+                                    error={!!errors.requested_due_at}
+                                    helperText={errors.requested_due_at || t('borrowRequests.returnByHelp')}
+                                    InputLabelProps={{ shrink: true }}
+                                    inputProps={{ min: toInputDate(tomorrow) }}
+                                    sx={{ mb: 3 }}
+                                />
                                 <TextField
                                     fullWidth
                                     multiline

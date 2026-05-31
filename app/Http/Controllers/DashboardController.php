@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BorrowRequest;
 use App\Models\Group;
 use App\Models\Item;
 use App\Models\Lending;
@@ -24,7 +25,7 @@ class DashboardController extends Controller
                 $query->where('user_id', $user->id);
             })
                 ->with(['users' => function ($query) {
-                    $query->select('users.id', 'users.name', 'group_user.approved');
+                    $query->select('users.id', 'users.name', 'users.profile_image_path', 'group_user.approved');
                 }])
                 ->get(),
             'lendings' => Lending::where('lender_id', $user->id)
@@ -33,6 +34,21 @@ class DashboardController extends Controller
             'borrowings' => Lending::where('borrower_id', $user->id)
                 ->with(['item', 'lender'])
                 ->get(),
+            'incomingRequests' => BorrowRequest::where('lender_id', $user->id)
+                ->where('status', 'pending')
+                ->with(['item', 'borrower'])
+                ->latest()
+                ->get(),
+            'recentActivity' => $user->notifications()
+                ->latest()
+                ->take(6)
+                ->get()
+                ->map(fn ($notification) => [
+                    'id' => $notification->id,
+                    'data' => $notification->data,
+                    'read_at' => $notification->read_at,
+                    'created_at' => $notification->created_at->toIso8601String(),
+                ]),
         ]);
     }
 }
