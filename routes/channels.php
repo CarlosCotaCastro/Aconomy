@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Conversation;
 use App\Models\Group;
 use App\Models\User;
 use Illuminate\Support\Facades\Broadcast;
@@ -18,6 +19,13 @@ use Illuminate\Support\Facades\Broadcast;
 // User private channel
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
+});
+
+// Direct message conversation channel
+Broadcast::channel('conversation.{conversationId}', function (User $user, int $conversationId) {
+    $conversation = Conversation::find($conversationId);
+
+    return $conversation?->hasParticipant($user->id) ?? false;
 });
 
 // Group private channel

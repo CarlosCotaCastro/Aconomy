@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Notifications\GroupJoinRequestNotification;
+use App\Services\ItemGroupSyncService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class GroupUserController extends Controller
 {
+    public function __construct(private ItemGroupSyncService $itemGroupSync) {}
+
     public function index()
     {
         //
@@ -88,6 +91,8 @@ class GroupUserController extends Controller
             return redirect()->route('groups.index')
                 ->with('error', 'You are not a member of this group.');
         }
+
+        $this->itemGroupSync->detachUserItemsFromGroup($user, $group);
 
         $group->users()->detach($user->id);
 

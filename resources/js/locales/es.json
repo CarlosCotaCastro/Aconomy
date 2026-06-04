@@ -269,6 +269,7 @@
         "denyBorrowRequestTitle": "Denegar Solicitud de Préstamo",
         "denyBorrowRequestInfo": "¿Estás seguro de que deseas denegar esta solicitud? Opcionalmente puedes proporcionar una razón.",
         "reason": "Razón (Opcional)",
+        "cancel": "Cancelar",
         "verifyItemHandoverTitle": "Verificar Entrega",
         "handoverCode": "Código de Entrega",
         "verifyCode": "Verificar Código",
@@ -335,6 +336,7 @@
         "searching": "Buscando...",
         "close": "Cerrar",
         "escToClose": "Pulsa Esc para cerrar",
+        "keyboardHint": "↑↓ para navegar · Enter para abrir · Esc para cerrar",
         "requestToBorrow": "Solicitar préstamo",
         "openGroup": "Abrir grupo",
         "viewProfile": "Ver perfil",
@@ -355,7 +357,10 @@
         "messageUser": "Enviar mensaje a {{name}}",
         "emptyThread": "Aún no hay mensajes. ¡Saluda!",
         "newMessage": "Nuevo mensaje",
-        "openConversation": "Abrir conversación"
+        "openConversation": "Abrir conversación",
+        "typing": "{{name}} está escribiendo...",
+        "sendFailed": "No se pudo enviar el mensaje. Inténtalo de nuevo.",
+        "connectionFailed": "Actualizaciones en vivo no disponibles. Recarga la página o comprueba el servidor Echo."
     },
     "onboarding": {
         "welcome": "¡Bienvenido a Aconomy, {{name}}!",

@@ -2,6 +2,7 @@ export default function ApplicationLogo(props) {
     return (
         <div style={{
             fontSize: props.fontSize ?? "2.5rem",
+            fontFamily: "'Space Grotesk', sans-serif",
             fontWeight: 700,
             marginBottom: "0.5rem",
             letterSpacing: "-0.04em",

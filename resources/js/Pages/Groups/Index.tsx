@@ -30,6 +30,7 @@ import { useTranslation } from 'react-i18next';
 import GlassPaper from '@/Components/GlassPaper';
 import GroupAvatar from '@/Components/GroupAvatar';
 import GroupBanner from '@/Components/GroupBanner';
+import { isPivotApproved } from '@/utils/groupMembership';
 import debounce from 'lodash/debounce';
 
 export default function Index({ groups, auth, filters = {} }) {
@@ -215,10 +216,12 @@ export default function Index({ groups, auth, filters = {} }) {
                     <Grid container spacing={3}>
                 {groups.data && groups.data.map((group) => {
                     // Count approved and pending members
-                    const approvedMembers = group.users.filter(u => u.pivot.approved).length;
-                    const pendingMembers = group.users.filter(u => !u.pivot.approved).length;
+                    const approvedMembers = group.users.filter(u => isPivotApproved(u.pivot.approved)).length;
+                    const pendingMembers = group.users.filter(u => !isPivotApproved(u.pivot.approved)).length;
                     const isUserInGroup = group.users.some(u => u.id === auth.user.id);
-                    const isUserApproved = group.users.find(u => u.id === auth.user.id)?.pivot.approved;
+                    const isUserApproved = isPivotApproved(
+                        group.users.find(u => u.id === auth.user.id)?.pivot.approved,
+                    );
 
                     return (
                         <Grid size={{xs: 12}} key={group.id}>

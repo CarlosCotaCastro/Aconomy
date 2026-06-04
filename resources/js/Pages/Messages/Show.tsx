@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { Link, Head, useForm } from '@inertiajs/react';
+import { useEffect, useRef, useState } from 'react';
+import { Link, Head } from '@inertiajs/react';
 import {
     Box,
     Typography,
@@ -17,31 +17,86 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import GlassPaper from '@/Components/GlassPaper';
 import UserAvatar from '@/Components/UserAvatar.jsx';
 import { lightTokens } from '@/lightTheme';
+import { useConversationRealtime } from '@/hooks/useConversationRealtime';
 
-export default function Show({ conversation, messages = [], auth }) {
+function appendMessageIfNew(messages, incoming) {
+    if (messages.some((m) => m.id === incoming.id)) {
+        return messages;
+    }
+
+    return [...messages, incoming];
+}
+
+export default function Show({ conversation, messages: initialMessages = [], auth }) {
     const { t } = useTranslation();
     const theme = useTheme();
     const isDark = theme.palette.mode === 'dark';
     const bottomRef = useRef(null);
 
-    const { data, setData, post, processing, reset } = useForm({
-        conversation_id: conversation.id,
-        body: '',
-    });
+    const [messages, setMessages] = useState(initialMessages);
+    const [body, setBody] = useState('');
+    const [sending, setSending] = useState(false);
+    const [sendError, setSendError] = useState(null);
+    const [connectionError, setConnectionError] = useState(false);
+    const [typingUser, setTypingUser] = useState(null);
+
+    useEffect(() => {
+        setMessages(initialMessages);
+    }, [conversation.id]);
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages.length]);
+    }, [messages.length, typingUser]);
 
-    const submit = (e) => {
+    const { clearTypingIndicator } = useConversationRealtime({
+        conversationId: conversation.id,
+        currentUserId: auth.user.id,
+        currentUserName: auth.user.name,
+        body,
+        onMessage: (message) => {
+            setMessages((prev) => appendMessageIfNew(prev, message));
+            setConnectionError(false);
+        },
+        onTyping: setTypingUser,
+        onSubscriptionFailed: () => setConnectionError(true),
+    });
+
+    const submit = async (e) => {
         e.preventDefault();
-        if (!data.body.trim()) {
+        const trimmed = body.trim();
+        if (!trimmed || sending) {
             return;
         }
-        post(route('messages.store'), {
-            preserveScroll: true,
-            onSuccess: () => reset('body'),
-        });
+
+        setSending(true);
+        setSendError(null);
+        clearTypingIndicator();
+
+        try {
+            const { data } = await window.axios.post(
+                route('messages.store'),
+                {
+                    conversation_id: conversation.id,
+                    body: trimmed,
+                },
+                {
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                },
+            );
+
+            setMessages((prev) => appendMessageIfNew(prev, data.message));
+            setBody('');
+        } catch (error) {
+            const message = error.response?.data?.message
+                ?? error.response?.data?.errors?.body?.[0]
+                ?? t('messages.sendFailed');
+            setSendError(message);
+        } finally {
+            setSending(false);
+        }
     };
 
     return (
@@ -101,6 +156,28 @@ export default function Show({ conversation, messages = [], auth }) {
                     <div ref={bottomRef} />
                 </Box>
 
+                {connectionError && (
+                    <Typography variant="caption" color="warning.main" sx={{ px: 2, pb: 0.5 }}>
+                        {t('messages.connectionFailed')}
+                    </Typography>
+                )}
+
+                {typingUser && (
+                    <Typography
+                        variant="caption"
+                        color="text.secondary"
+                        sx={{ px: 2, pb: 0.5, fontStyle: 'italic' }}
+                    >
+                        {t('messages.typing', { name: typingUser.name })}
+                    </Typography>
+                )}
+
+                {sendError && (
+                    <Typography variant="caption" color="error" sx={{ px: 2, pb: 0.5 }}>
+                        {sendError}
+                    </Typography>
+                )}
+
                 <Box
                     component="form"
                     onSubmit={submit}
@@ -113,12 +190,14 @@ export default function Show({ conversation, messages = [], auth }) {
                     }}
                 >
                     <InputBase
-                        value={data.body}
-                        onChange={(e) => setData('body', e.target.value)}
+                        value={body}
+                        onChange={(e) => setBody(e.target.value)}
+                        onBlur={clearTypingIndicator}
                         placeholder={t('messages.typeMessage')}
                         fullWidth
                         multiline
                         maxRows={4}
+                        disabled={sending}
                         sx={{
                             px: 2,
                             py: 1,
@@ -132,7 +211,7 @@ export default function Show({ conversation, messages = [], auth }) {
                             }
                         }}
                     />
-                    <IconButton type="submit" disabled={processing || !data.body.trim()} color="primary" aria-label={t('messages.send')}>
+                    <IconButton type="submit" disabled={sending || !body.trim()} color="primary" aria-label={t('messages.send')}>
                         <SendIcon />
                     </IconButton>
                 </Box>

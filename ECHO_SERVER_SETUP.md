@@ -1,88 +1,60 @@
-# Laravel Echo Server Setup
+# Laravel Reverb (WebSockets)
 
-This document explains how to set up and run the Laravel Echo Server to resolve connection errors to `http://localhost:6001/socket.io/...` in the browser console.
+This application uses [Laravel Reverb](https://reverb.laravel.com) for real-time messaging and notifications. Reverb replaces the legacy `laravel-echo-server` + Socket.IO stack.
 
-## How to Start the Echo Server
+## Requirements
 
-### Option 1: Using Docker (Recommended)
+- `BROADCAST_CONNECTION=reverb` in `.env`
+- Reverb app credentials (`REVERB_APP_*`) and Vite vars (`VITE_REVERB_*`)
+- Reverb server running on port **8080** (default)
 
-The `docker-compose.yml` file has been updated to include the Laravel Echo Server service. To start it:
+## Start with Sail
 
-1. Copy the updated `.env.example.updated` to `.env` if you haven't already set up your environment:
-   ```bash
-   cp .env.example.updated .env
-   ```
+```bash
+./vendor/bin/sail up -d
+```
 
-2. Make sure `BROADCAST_DRIVER=redis` is set in your `.env` file.
+The `reverb` service in `docker-compose.yml` runs:
 
-3. Restart all your Docker containers:
-   ```bash
-   ./vendor/bin/sail down
-   ./vendor/bin/sail up -d
-   ```
+```bash
+php artisan reverb:start --host=0.0.0.0 --port=8080
+```
 
-### Option 2: Running Locally (Outside Docker)
+## Start frontend assets
 
-If you're not using Docker:
+```bash
+./vendor/bin/sail npm run dev
+```
 
-1. Install Laravel Echo Server globally:
-   ```bash
-   npm install -g laravel-echo-server
-   ```
+## Verify
 
-2. Start the Laravel Echo Server:
-   ```bash
-   laravel-echo-server start
-   ```
+1. Browser console: `Reverb WebSocket connected`
+2. Open a chat in two browsers — messages appear without refresh
+3. `POST /broadcasting/auth` returns **200** when subscribing to a conversation
 
-## Verifying It's Working
+## Environment (Sail)
 
-1. Check that the Echo Server is running:
-   ```bash
-   docker-compose ps
-   ```
-   
-   You should see the `laravel-echo-server` container running.
+PHP broadcasts events to Reverb over HTTP from the `laravel.test` container. The browser connects over WebSockets from your machine. Use **two hosts**:
 
-2. Open your browser console and you should no longer see connection errors to `http://localhost:6001`.
+```env
+REVERB_HOST=reverb          # server → Reverb container on the Sail network
+VITE_REVERB_HOST=localhost  # browser → published port on your machine
+```
+
+Do not set both to `localhost` in Sail — Laravel will hit `localhost:8080` inside its own container and fail with `cURL error 7`.
+
+After changing `VITE_REVERB_*`, restart Vite: `./vendor/bin/sail npm run dev`.
 
 ## Troubleshooting
 
-If you still experience issues:
+- **`cURL error 7` / Failed to connect to localhost:8080 when posting**: set `REVERB_HOST=reverb` (not `localhost`) while keeping `VITE_REVERB_HOST=localhost`
+- **Connection refused on port 8080**: `./vendor/bin/sail ps` — ensure `reverb` container is up
+- **403 on `/broadcasting/auth`**: hard refresh; CSRF is synced via `CsrfTokenSync`
+- **Events not received**: confirm `BROADCAST_CONNECTION=reverb` (not `redis` alone)
 
-1. Make sure Redis is running (as it's used by the Echo Server):
-   ```bash
-   docker-compose exec redis redis-cli ping
-   ```
-   
-   It should respond with "PONG".
+## Local URLs
 
-2. Check the Laravel Echo Server logs:
-   ```bash
-   docker-compose logs laravel-echo-server
-   ```
-
-3. Ensure your app's broadcasting configuration is correct:
-   - `BROADCAST_DRIVER=redis` in `.env`
-   - Broadcasting channels are defined in `routes/channels.php`
-
-4. If you made changes to the Echo Server configuration, restart it:
-   ```bash
-   docker-compose restart laravel-echo-server
-   ```
-
-## Alternative Solution: Pusher
-
-If you continue to have issues with the Laravel Echo Server, consider using Pusher as an alternative:
-
-1. Create a free Pusher account at [https://pusher.com/](https://pusher.com/)
-2. Get your Pusher app credentials
-3. Update your `.env` file:
-   ```
-   BROADCAST_DRIVER=pusher
-   PUSHER_APP_ID=your_app_id
-   PUSHER_APP_KEY=your_app_key
-   PUSHER_APP_SECRET=your_app_secret
-   PUSHER_APP_CLUSTER=your_app_cluster
-   ```
-4. Update your `resources/js/bootstrap.js` to use Pusher instead of Socket.io
+| Service | URL |
+|---------|-----|
+| App | `http://localhost` |
+| Reverb WebSocket | `ws://localhost:8080` |

@@ -16,13 +16,16 @@ import {
 import GlassPaper from '@/Components/GlassPaper';
 import GroupBanner from '@/Components/GroupBanner';
 import { Link, useForm } from '@inertiajs/react';
+import { isPivotApproved } from '@/utils/groupMembership';
 
 export default function GroupTeaser({ group, user }: any) {
     // Count approved and pending members
-    const approvedMembers = group.users.filter((u: any) => u.pivot.approved).length;
-    const pendingMembers = group.users.filter((u: any) => !u.pivot.approved).length;
+    const approvedMembers = group.users.filter((u: any) => isPivotApproved(u.pivot.approved)).length;
+    const pendingMembers = group.users.filter((u: any) => !isPivotApproved(u.pivot.approved)).length;
     const isUserInGroup = group.users.some((u: any) => u.id === user.id);
-    const isUserApproved = group.users.find((u: any) => u.id === user.id)?.pivot.approved;
+    const isUserApproved = isPivotApproved(
+        group.users.find((u: any) => u.id === user.id)?.pivot.approved,
+    );
 
     const theme = useTheme();
 

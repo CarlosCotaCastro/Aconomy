@@ -336,6 +336,7 @@
         "searching": "Wird gesucht...",
         "close": "Schließen",
         "escToClose": "Esc drücken zum Schließen",
+        "keyboardHint": "↑↓ navigieren · Enter öffnen · Esc schließen",
         "requestToBorrow": "Ausleihen anfragen",
         "openGroup": "Gruppe öffnen",
         "viewProfile": "Profil ansehen",
@@ -356,7 +357,10 @@
         "messageUser": "Nachricht an {{name}}",
         "emptyThread": "Noch keine Nachrichten. Sag Hallo!",
         "newMessage": "Neue Nachricht",
-        "openConversation": "Unterhaltung öffnen"
+        "openConversation": "Unterhaltung öffnen",
+        "typing": "{{name}} schreibt...",
+        "sendFailed": "Nachricht konnte nicht gesendet werden. Bitte versuche es erneut.",
+        "connectionFailed": "Live-Updates nicht verfügbar. Seite neu laden oder Echo-Server prüfen."
     },
     "onboarding": {
         "welcome": "Willkommen bei Aconomy, {{name}}!",
@@ -393,8 +397,7 @@
             }
         },
         "footer": {
-            "tagline": "Aconomy - Alternative Wirtschaftsplattform",
-            "poweredBy": "Betrieben mit Laravel v{{laravel}} (PHP v{{php}})"
+            "tagline": "Aconomy - Alternative Wirtschaftsplattform"
         },
         "download": {
             "fromGithub": "Betreibe selbst eine Instanz!"

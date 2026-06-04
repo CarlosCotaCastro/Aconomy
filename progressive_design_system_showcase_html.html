@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Progressive Sharing Platform — Design System Showcase</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f8f4ee;
+      --bg-2: #efe7dc;
+      --surface: rgba(255,255,255,0.74);
+      --surface-solid: #ffffff;
+      --border: rgba(20,20,20,0.08);
+      --text: #171717;
+      --muted: #66645f;
+
+      --orange-1: #ffb36b;
+      --orange-2: #ff8a4c;
+      --orange-3: #ff784f;
+
+      --indigo: #5b6cff;
+      --lavender: #9d7dff;
+      --green: #7eb487;
+      --rose: #ff7fa8;
+      --yellow: #f1c15f;
+
+      --shadow: 0 18px 40px rgba(0,0,0,0.08);
+      --hover-shadow: 0 24px 50px rgba(0,0,0,0.12);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(91,108,255,0.12), transparent 24%),
+        radial-gradient(circle at bottom right, rgba(255,147,106,0.14), transparent 24%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      padding: 48px;
+    }
+
+    .page {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      margin-bottom: 72px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.6);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(72px, 10vw, 128px);
+      line-height: 0.9;
+      letter-spacing: -0.09em;
+      max-width: 900px;
+      margin-bottom: 24px;
+    }
+
+    .hero p {
+      max-width: 680px;
+      color: var(--muted);
+      font-size: 22px;
+      line-height: 1.7;
+    }
+
+    .section {
+      margin-bottom: 88px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+
+    .section-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 44px;
+      letter-spacing: -0.07em;
+    }
+
+    .section-header span {
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .colors {
+      grid-column: span 12;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 18px;
+    }
+
+    .color {
+      border-radius: 24px;
+      overflow: hidden;
+      background: white;
+      border: 1px solid rgba(20,20,20,0.06);
+    }
+
+    .swatch {
+      height: 120px;
+    }
+
+    .color-meta {
+      padding: 16px;
+    }
+
+    .color-meta strong {
+      display: block;
+      margin-bottom: 6px;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .color-meta span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .typography {
+      grid-column: span 7;
+    }
+
+    .components {
+      grid-column: span 5;
+    }
+
+    .ty-hero {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 92px;
+      line-height: 0.92;
+      letter-spacing: -0.09em;
+      margin-bottom: 24px;
+    }
+
+    .ty-h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 44px;
+      letter-spacing: -0.07em;
+      margin-bottom: 20px;
+    }
+
+    .ty-body {
+      font-size: 20px;
+      line-height: 1.7;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .ty-small {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .button-row {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 18px;
+      padding: 16px 24px;
+      font-size: 15px;
+      font-weight: 600;
+      transition: 180ms ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(
+        135deg,
+        var(--orange-1) 0%,
+        var(--orange-2) 55%,
+        var(--orange-3) 100%
+      );
+
+      color: white;
+      box-shadow: 0 12px 28px rgba(255,138,76,0.28);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px) scale(1.01);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.6);
+      border: 1px solid rgba(20,20,20,0.08);
+      color: var(--text);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+    }
+
+    .chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .chip {
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      border: 1px solid rgba(20,20,20,0.05);
+    }
+
+    .chip-indigo {
+      background: rgba(91,108,255,0.10);
+    }
+
+    .chip-orange {
+      background: rgba(255,138,76,0.12);
+    }
+
+    .chip-rose {
+      background: rgba(255,127,168,0.12);
+    }
+
+    .chip-green {
+      background: rgba(126,180,135,0.12);
+    }
+
+    .cards-grid {
+      grid-column: span 12;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .share-card {
+      background: rgba(255,255,255,0.78);
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(20,20,20,0.06);
+      box-shadow: var(--shadow);
+      transition: 220ms ease;
+    }
+
+    .share-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--hover-shadow);
+    }
+
+    .share-image {
+      height: 260px;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .share-content {
+      padding: 24px;
+    }
+
+    .share-content h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 30px;
+      letter-spacing: -0.05em;
+      margin-bottom: 12px;
+    }
+
+    .share-content p {
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .stats-grid {
+      grid-column: span 12;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.65);
+      border-radius: 24px;
+      padding: 28px;
+      border: 1px solid rgba(20,20,20,0.06);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 54px;
+      line-height: 1;
+      margin-bottom: 10px;
+      font-family: 'Space Grotesk', sans-serif;
+      letter-spacing: -0.08em;
+    }
+
+    .stat span {
+      color: var(--muted);
+    }
+
+    .nav-preview {
+      grid-column: span 12;
+      background: rgba(255,255,255,0.55);
+      border-radius: 28px;
+      border: 1px solid rgba(20,20,20,0.06);
+      padding: 22px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 24px;
+      letter-spacing: -0.05em;
+    }
+
+    .logo-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--orange-1), var(--orange-3));
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 1100px) {
+      .colors,
+      .cards-grid,
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .typography,
+      .components {
+        grid-column: span 12;
+      }
+
+      h1 {
+        font-size: 72px;
+      }
+
+      .ty-hero {
+        font-size: 64px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <section class="hero">
+      <div class="eyebrow">✦ Progressive sharing platform</div>
+
+      <h1>Borrow. Share. Repeat.</h1>
+
+      <p>
+        Ein visuelles System für moderne Community-Plattformen — warm, progressiv,
+        editorial und menschenzentriert.
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Navigation</h2>
+        <span>Minimal, ruhig, weich</span>
+      </div>
+
+      <div class="grid">
+        <div class="nav-preview">
+          <div class="logo">
+            <div class="logo-mark"></div>
+            FluxShare
+          </div>
+
+          <div class="nav-links">
+            <span>Explore</span>
+            <span>Community</span>
+            <span>Shared</span>
+            <span>Profile</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Color System</h2>
+        <span>Warm & progressive</span>
+      </div>
+
+      <div class="colors">
+        <div class="color">
+          <div class="swatch" style="background:#ffb36b"></div>
+          <div class="color-meta">
+            <strong>Soft Apricot</strong>
+            <span>#FFB36B</span>
+          </div>
+        </div>
+
+        <div class="color">
+          <div class="swatch" style="background:#ff8a4c"></div>
+          <div class="color-meta">
+            <strong>Warm Orange</strong>
+            <span>#FF8A4C</span>
+          </div>
+        </div>
+
+        <div class="color">
+          <div class="swatch" style="background:#ff784f"></div>
+          <div class="color-meta">
+            <strong>Deep Coral</strong>
+            <span>#FF784F</span>
+          </div>
+        </div>
+
+        <div class="color">
+          <div class="swatch" style="background:#5b6cff"></div>
+          <div class="color-meta">
+            <strong>Indigo</strong>
+            <span>#5B6CFF</span>
+          </div>
+        </div>
+
+        <div class="color">
+          <div class="swatch" style="background:#9d7dff"></div>
+          <div class="color-meta">
+            <strong>Lavender</strong>
+            <span>#9D7DFF</span>
+          </div>
+        </div>
+
+        <div class="color">
+          <div class="swatch" style="background:#7eb487"></div>
+          <div class="color-meta">
+            <strong>Sage Green</strong>
+            <span>#7EB487</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Typography & Components</h2>
+        <span>Editorial UI system</span>
+      </div>
+
+      <div class="grid">
+        <div class="card typography">
+          <div class="ty-hero">Own less. Access more.</div>
+
+          <div class="ty-h2">Strong editorial hierarchy.</div>
+
+          <div class="ty-body">
+            Große Typografie kombiniert mit ruhigen Layouts und weichen Oberflächen.
+            Das System priorisiert Lesbarkeit, Präsenz und emotionalen Charakter.
+          </div>
+
+          <div class="ty-small">
+            Space Grotesk + Inter
+          </div>
+        </div>
+
+        <div class="card components">
+          <div class="button-row">
+            <button class="btn btn-primary">Primary Button</button>
+            <button class="btn btn-secondary">Secondary</button>
+            <button class="btn btn-ghost">Ghost</button>
+          </div>
+
+          <div class="chip-row">
+            <div class="chip chip-indigo">Community</div>
+            <div class="chip chip-orange">Circular</div>
+            <div class="chip chip-green">Local</div>
+            <div class="chip chip-rose">Shared</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Cards</h2>
+        <span>Soft depth & spacious layouts</span>
+      </div>
+
+      <div class="cards-grid">
+        <div class="share-card">
+          <div class="share-image" style="background-image:url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop')"></div>
+
+          <div class="share-content">
+            <h3>Creative Studio</h3>
+            <p>
+              Flexible creator workspace inklusive Licht, Audio und Community-Zugang.
+            </p>
+
+            <div class="meta">
+              <span>Berlin</span>
+              <span>48 Requests</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="share-card">
+          <div class="share-image" style="background-image:url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1200&auto=format&fit=crop')"></div>
+
+          <div class="share-content">
+            <h3>Camera Kit</h3>
+            <p>
+              Hochwertige Foto- und Videoausrüstung gemeinschaftlich nutzbar.
+            </p>
+
+            <div class="meta">
+              <span>Hamburg</span>
+              <span>92 Requests</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="share-card">
+          <div class="share-image" style="background-image:url('https://images.unsplash.com/photo-1529429617124-aee711a5ac1c?q=80&w=1200&auto=format&fit=crop')"></div>
+
+          <div class="share-content">
+            <h3>City Bikes</h3>
+            <p>
+              Fahrräder und urbane Mobilität direkt aus deiner Nachbarschaft.
+            </p>
+
+            <div class="meta">
+              <span>Köln</span>
+              <span>31 Requests</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2>Stats</h2>
+        <span>Editorial metrics</span>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat">
+          <strong>12k+</strong>
+          <span>Shared items</span>
+        </div>
+
+        <div class="stat">
+          <strong>71%</strong>
+          <span>CO₂ saved</span>
+        </div>
+
+        <div class="stat">
+          <strong>4.9</strong>
+          <span>Community rating</span>
+        </div>
+
+        <div class="stat">
+          <strong>184</strong>
+          <span>Active today</span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>

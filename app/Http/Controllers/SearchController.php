@@ -32,7 +32,7 @@ class SearchController extends Controller
     }
 
     /**
-     * Items in the user's approved groups, excluding their own.
+     * Items in the user's approved groups, including their own.
      *
      * @param  \Illuminate\Support\Collection<int, int>  $approvedGroupIds
      * @return array<int, array<string, mixed>>
@@ -44,8 +44,8 @@ class SearchController extends Controller
         }
 
         // Use Scout for relevance matching on the name, then constrain group
-        // membership and ownership against the real relations so the behaviour
-        // is identical across search engines.
+        // membership against the real relations so the behaviour is identical
+        // across search engines.
         $candidateIds = Item::search($query)->take(50)->keys();
 
         if ($candidateIds->isEmpty()) {
@@ -54,7 +54,6 @@ class SearchController extends Controller
 
         $items = Item::with('user')
             ->whereIn('items.id', $candidateIds->all())
-            ->where('user_id', '!=', $user->id)
             ->whereHas('groups', function ($q) use ($approvedGroupIds) {
                 $q->whereIn('groups.id', $approvedGroupIds->all());
             })
@@ -64,6 +63,7 @@ class SearchController extends Controller
         return $items->map(fn (Item $item) => [
             'id' => $item->id,
             'name' => $item->name,
+            'is_own' => $item->user_id === $user->id,
             'available' => $item->isAvailable(),
             'image' => $item->image_path ? '/storage/'.$item->image_path : null,
             'owner' => [
