@@ -30,6 +30,7 @@ import {
 import axios from 'axios';
 import { usePage } from '@inertiajs/react';
 import { lightTokens } from '@/lightTheme';
+import { headerPopoutMenuProps } from '@/theme/headerPopoutMenu';
 
 // Helper function to get icon for notification types
 const getNotificationIcon = (type) => {
@@ -223,14 +224,15 @@ export default function NotificationMenu() {
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleClose}
+                {...headerPopoutMenuProps}
                 slotProps={{
+                    ...headerPopoutMenuProps.slotProps,
                     paper: {
+                        ...headerPopoutMenuProps.slotProps?.paper,
                         elevation: 2,
                         sx: {
                             width: 380,
                             maxWidth: '100%',
-                            mt: 1.5,
-                            borderRadius: isDark ? 2 : '28px',
                             maxHeight: 'calc(100vh - 100px)',
                             overflow: 'auto',
                             ...(isDark ? {} : {
@@ -239,11 +241,9 @@ export default function NotificationMenu() {
                                 border: `1px solid ${lightTokens.border}`,
                                 boxShadow: lightTokens.shadow,
                             }),
-                        }
-                    }
+                        },
+                    },
                 }}
-                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
                 <MenuList>
                     <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>

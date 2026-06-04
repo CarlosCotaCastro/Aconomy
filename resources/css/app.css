@@ -54,29 +54,23 @@
   :root {
       --bg-primary: #0a0a0f;
       --bg-accent: rgba(255, 0, 150, 0.15);
-
-      --primary-gradient: linear-gradient(135deg, #4a9eff 0%, #7b2cbf 100%);
-      --primary-gradient-hover: linear-gradient(135deg, #7b2cbf 0%, #4a9eff 100%);
-      --primary-shadow: 0 8px 25px rgba(74, 158, 255, 0.3);
   }
 }
 
-/* Light theme typography: Inter body + Space Grotesk headings.
-   Scoped to light mode to leave the dark theme untouched. The `body.font-sans`
-   selector outranks Tailwind's `.font-sans` utility so the override applies. */
-@media (prefers-color-scheme: light) {
-  body.font-sans,
-  body.font-sans input,
-  body.font-sans textarea,
-  body.font-sans button,
-  body.font-sans select {
-    font-family: 'Inter', sans-serif;
-  }
+/* Typography: Inter body + Space Grotesk headings (shared by light & dark).
+   The `body.font-sans` selector outranks Tailwind's `.font-sans` utility so
+   the override applies. */
+body.font-sans,
+body.font-sans input,
+body.font-sans textarea,
+body.font-sans button,
+body.font-sans select {
+  font-family: 'Inter', sans-serif;
+}
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', sans-serif;
-    letter-spacing: -0.04em;
-  }
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: -0.04em;
 }
 
 /* Warm light background for authenticated pages */

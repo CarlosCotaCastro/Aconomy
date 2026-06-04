@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, Menu, MenuItem } from '@mui/material';
 import { useState } from 'react';
 import { Language as LanguageIcon } from '@mui/icons-material';
+import { headerPopoutMenuProps } from '@/theme/headerPopoutMenu';
 
 const languages = [
     { code: 'en', name: 'English' },
@@ -42,6 +43,7 @@ export default function LanguageSwitcher() {
                 open={open}
                 onClose={handleClose}
                 onClick={handleClose}
+                {...headerPopoutMenuProps}
             >
                 {languages.map((language) => (
                     <MenuItem
