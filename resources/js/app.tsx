@@ -23,9 +23,9 @@ function ThemeWrapper({ App, props }) {
                 paper: prefersDarkMode ? '#1a1a1f' : lightTokens.surfaceSolid
             },
             primary: {
-                main: prefersDarkMode ? '#1976d2' : lightTokens.orange2,
-                light: prefersDarkMode ? '#1976d2' : lightTokens.orange1,
-                dark: prefersDarkMode ? '#1976d2' : lightTokens.orange3,
+                main: lightTokens.orange2,
+                light: lightTokens.orange1,
+                dark: lightTokens.orange3,
                 contrastText: '#ffffff',
             },
             secondary: {
@@ -53,33 +53,33 @@ function ThemeWrapper({ App, props }) {
             })
         },
         shape: {
-            borderRadius: prefersDarkMode ? 4 : 18,
+            borderRadius: 4,
         },
-        ...(prefersDarkMode ? {} : {
-            typography: {
-                fontFamily: "'Inter', sans-serif",
-                h1: { fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.07em', fontWeight: 700 },
-                h2: { fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.07em', fontWeight: 700 },
-                h3: { fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.06em', fontWeight: 700 },
-                h4: { fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.05em', fontWeight: 700 },
-                h5: { fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.04em', fontWeight: 700 },
-                h6: { fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.03em', fontWeight: 700 },
-                button: { textTransform: 'none', fontWeight: 600 },
-            },
-            components: {
-                MuiButton: {
-                    styleOverrides: {
-                        root: {
-                            borderRadius: 18,
-                            textTransform: 'none',
-                            fontWeight: 600,
-                        },
+        // Fonts are shared across both themes (light + dark).
+        typography: {
+            fontFamily: "'Inter', sans-serif",
+            h1: { fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.07em', fontWeight: 700 },
+            h2: { fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.07em', fontWeight: 700 },
+            h3: { fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.06em', fontWeight: 700 },
+            h4: { fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.05em', fontWeight: 700 },
+            h5: { fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.04em', fontWeight: 700 },
+            h6: { fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.03em', fontWeight: 700 },
+        },
+        components: {
+            MuiButton: {
+                styleOverrides: {
+                    root: {
+                        borderRadius: 18,
+                        textTransform: 'none',
+                        fontWeight: 600,
                     },
                 },
+            },
+            ...(prefersDarkMode ? {} : {
                 MuiPaper: {
                     styleOverrides: {
                         rounded: {
-                            borderRadius: 28,
+                            borderRadius: 12,
                         },
                     },
                 },
@@ -90,8 +90,8 @@ function ThemeWrapper({ App, props }) {
                         },
                     },
                 },
-            },
-        }),
+            }),
+        },
     }), [prefersDarkMode]);
 
     return <ThemeProvider theme={theme}><App {...props} /></ThemeProvider>;

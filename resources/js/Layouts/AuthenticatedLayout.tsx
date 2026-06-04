@@ -32,6 +32,7 @@ import Sidebar, { SIDEBAR_WIDTH } from '@/Components/Sidebar';
 import GlobalSearchOverlay from '@/Components/GlobalSearchOverlay';
 import { useTranslation } from 'react-i18next';
 import { lightTokens } from '@/lightTheme';
+import { headerPopoutMenuProps } from '@/theme/headerPopoutMenu';
 
 export default function AuthenticatedLayout({ user, header, children }) {
     const { t } = useTranslation();
@@ -216,15 +217,21 @@ export default function AuthenticatedLayout({ user, header, children }) {
                                 id="account-menu"
                                 open={Boolean(userAnchorEl)}
                                 onClose={() => setUserAnchorEl(null)}
-                                PaperProps={{ elevation: 2, sx: { mt: 1.5, width: 220, borderRadius: 2 } }}
-                                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                {...headerPopoutMenuProps}
+                                slotProps={{
+                                    ...headerPopoutMenuProps.slotProps,
+                                    paper: {
+                                        ...headerPopoutMenuProps.slotProps?.paper,
+                                        elevation: 2,
+                                        sx: { width: 220 },
+                                    },
+                                }}
                             >
                                 <MenuItem
                                     onClick={() => setUserAnchorEl(null)}
                                     component={Link}
                                     href={route('profile.edit')}
-                                    sx={{ borderRadius: 1, mx: 0.5 }}
+                                    sx={{ borderRadius: 4, mx: 0.5 }}
                                 >
                                     <ListItemIcon>
                                         <SettingsIcon fontSize="small" color="primary" />

@@ -11,6 +11,7 @@ import {
     ListItemAvatar,
     ListItemText,
     Divider,
+    Stack,
     useTheme,
 } from '@mui/material';
 import {
@@ -28,7 +29,7 @@ import { useTranslation } from 'react-i18next';
 import GroupMemberList from "@/Pages/Groups/Partials/GroupMemberList";
 import RecentItemsGrid from "@/Pages/Groups/Partials/RecentItemsGrid.jsx";
 
-export default function Show({group, recentItems, auth, isGroupCreator}) {
+export default function Show({group, recentItems, auth, isGroupCreator, canViewMembers, approvedMembersCount}) {
     const { t } = useTranslation();
     const theme = useTheme();
     const {post, processing} = useForm();
@@ -87,8 +88,11 @@ export default function Show({group, recentItems, auth, isGroupCreator}) {
 
             <Grid container spacing={3}>
                 <Grid size={3}>
+                    <Stack spacing={3}>
                     <GroupMemberList
                         approvedMembers={approvedMembers}
+                        canViewMembers={canViewMembers}
+                        memberCount={approvedMembersCount}
                     />
 
                     {isUserApproved && pendingMembers.length > 0 && (
@@ -169,6 +173,7 @@ export default function Show({group, recentItems, auth, isGroupCreator}) {
                             </Button>
                         </GlassPaper>
                     )}
+                    </Stack>
                 </Grid>
 
                 <Grid size={9}>

@@ -13,10 +13,11 @@ import { useTranslation } from 'react-i18next';
 import UserAvatar from '@/Components/UserAvatar';
 import { lightTokens } from '@/lightTheme';
 
-export default function GroupMemberList({approvedMembers}) {
+export default function GroupMemberList({approvedMembers, canViewMembers = true, memberCount = 0}) {
     const { t } = useTranslation();
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
+    const displayCount = canViewMembers ? approvedMembers.length : memberCount;
 
     return (
         <Card sx={{
@@ -32,7 +33,7 @@ export default function GroupMemberList({approvedMembers}) {
         }}>
             <CardContent>
                 <Typography variant="h6" gutterBottom>
-                    {t('groups.membersTitle', { count: approvedMembers.length })}
+                    {t('groups.membersTitle', { count: displayCount })}
                 </Typography>
                 <Divider sx={{
                     mb: 2,
@@ -41,41 +42,47 @@ export default function GroupMemberList({approvedMembers}) {
                         : lightTokens.border,
                 }}/>
 
-                <List>
-                    {approvedMembers.map(user => (
-                        <ListItem 
-                            key={user.id}
-                            sx={{
-                                borderRadius: 1,
-                                transition: 'background-color 0.2s ease',
-                                '&:hover': {
-                                    backgroundColor: (theme) => theme.palette.mode === 'dark' 
-                                        ? 'rgba(255, 255, 255, 0.05)'
-                                        : 'rgba(20, 20, 20, 0.04)',
-                                }
-                            }}
-                        >
-                            <ListItemAvatar>
-                                <UserAvatar user={user} size={40} />
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={user.name}
-                                secondary={user.email}
-                                primaryTypographyProps={{
-                                    color: (theme) => theme.palette.mode === 'dark' ? 'text.primary' : 'text.primary'
+                {canViewMembers ? (
+                    <List>
+                        {approvedMembers.map(user => (
+                            <ListItem 
+                                key={user.id}
+                                sx={{
+                                    borderRadius: 1,
+                                    transition: 'background-color 0.2s ease',
+                                    '&:hover': {
+                                        backgroundColor: (theme) => theme.palette.mode === 'dark' 
+                                            ? 'rgba(255, 255, 255, 0.05)'
+                                            : 'rgba(20, 20, 20, 0.04)',
+                                    }
                                 }}
-                                secondaryTypographyProps={{
-                                    color: (theme) => theme.palette.mode === 'dark' ? 'text.secondary' : 'text.secondary'
-                                }}
-                            />
-                        </ListItem>
-                    ))}
-                    {approvedMembers.length === 0 && (
-                        <Typography color="text.secondary">
-                            {t('groups.noMembers')}
-                        </Typography>
-                    )}
-                </List>
+                            >
+                                <ListItemAvatar>
+                                    <UserAvatar user={user} size={40} />
+                                </ListItemAvatar>
+                                <ListItemText
+                                    primary={user.name}
+                                    secondary={user.email}
+                                    primaryTypographyProps={{
+                                        color: (theme) => theme.palette.mode === 'dark' ? 'text.primary' : 'text.primary'
+                                    }}
+                                    secondaryTypographyProps={{
+                                        color: (theme) => theme.palette.mode === 'dark' ? 'text.secondary' : 'text.secondary'
+                                    }}
+                                />
+                            </ListItem>
+                        ))}
+                        {approvedMembers.length === 0 && (
+                            <Typography color="text.secondary">
+                                {t('groups.noMembers')}
+                            </Typography>
+                        )}
+                    </List>
+                ) : (
+                    <Typography color="text.secondary">
+                        {t('groups.approvedMembers', { count: memberCount })}
+                    </Typography>
+                )}
             </CardContent>
         </Card>
     );
