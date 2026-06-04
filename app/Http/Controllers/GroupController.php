@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\User;
+use App\Services\ItemGroupSyncService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -11,6 +12,8 @@ use Inertia\Inertia;
 
 class GroupController extends Controller
 {
+    public function __construct(private ItemGroupSyncService $itemGroupSync) {}
+
     /**
      * Display a listing of the resource.
      */
@@ -100,7 +103,10 @@ class GroupController extends Controller
         }
 
         $group = Group::create($groupData);
-        $group->users()->attach(Auth::user()->id, ['approved' => true]);
+        $creator = Auth::user();
+        $group->users()->attach($creator->id, ['approved' => true]);
+
+        $this->itemGroupSync->attachUserItemsToGroup($creator, $group);
 
         return redirect()->route('groups.index')->with('message', 'Group created successfully.');
     }
@@ -110,23 +116,51 @@ class GroupController extends Controller
      */
     public function show(Group $group)
     {
-        $group->load(['users' => function ($query) {
-            $query->select('users.id', 'users.name', 'users.email', 'users.profile_image_path', 'group_user.approved', 'group_user.created_at');
-        }]);
+        $userSelect = ['users.id', 'users.name', 'users.email', 'users.profile_image_path', 'group_user.approved', 'group_user.created_at'];
+
+        $isApprovedMember = $group->users()
+            ->where('users.id', Auth::id())
+            ->wherePivot('approved', true)
+            ->exists();
+
+        $approvedMembersCount = $group->users()->wherePivot('approved', true)->count();
+
+        if ($isApprovedMember) {
+            $group->load(['users' => function ($query) use ($userSelect) {
+                $query->select($userSelect);
+            }]);
+        } else {
+            $currentMembership = $group->users()
+                ->where('users.id', Auth::id())
+                ->select($userSelect)
+                ->first();
+
+            $group->setRelation('users', $currentMembership ? collect([$currentMembership]) : collect([]));
+        }
 
         // Get the 12 most recent items in the group
-        $recentItems = $group->items()
-            ->with(['user' => function ($query) {
-                $query->select('id', 'name', 'profile_image_path');
-            }])
-            ->latest()
-            ->take(12)
-            ->get()
-            ->map(function ($item) {
-                $item->is_available = $item->isAvailable();
+        $recentItemsQuery = $group->items()->latest()->take(12);
 
-                return $item;
-            });
+        if ($isApprovedMember) {
+            $recentItems = $recentItemsQuery
+                ->with(['user' => function ($query) {
+                    $query->select('id', 'name', 'profile_image_path');
+                }])
+                ->get()
+                ->map(function ($item) {
+                    $item->is_available = $item->isAvailable();
+
+                    return $item;
+                });
+        } else {
+            $recentItems = $recentItemsQuery
+                ->get(['id', 'name', 'description', 'image_path', 'user_id', 'created_at', 'updated_at'])
+                ->map(function ($item) {
+                    $item->is_available = $item->isAvailable();
+
+                    return $item;
+                });
+        }
 
         // Determine if the current user is the group creator (first approved member)
         $groupCreator = $group->users()
@@ -140,6 +174,8 @@ class GroupController extends Controller
             'group' => $group,
             'recentItems' => $recentItems,
             'isGroupCreator' => $isGroupCreator,
+            'canViewMembers' => $isApprovedMember,
+            'approvedMembersCount' => $approvedMembersCount,
             'auth' => [
                 'user' => Auth::user(),
             ],
@@ -306,6 +342,8 @@ class GroupController extends Controller
         $this->authorize('approveMembers', $group);
 
         $group->users()->updateExistingPivot($user->id, ['approved' => true]);
+
+        $this->itemGroupSync->attachUserItemsToGroup($user, $group);
 
         // Send notification to the approved user
         $user->notify(new \App\Notifications\GroupJoinRequestApprovedNotification($group, Auth::user()));

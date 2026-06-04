@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link, useForm } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -13,7 +13,9 @@ import {
     Divider,
     DialogContentText,
     CircularProgress,
-    useTheme
+    useTheme,
+    InputAdornment,
+    IconButton,
 } from '@mui/material';
 import GlassPaper from '@/Components/GlassPaper';
 import GlassDialog from '@/Components/GlassDialog';
@@ -23,7 +25,8 @@ import {
     CheckCircle as CheckCircleIcon,
     Cancel as CancelIcon,
     QrCode2 as QrCodeIcon,
-    Schedule as ScheduleIcon
+    Schedule as ScheduleIcon,
+    Event as EventIcon,
 } from '@mui/icons-material';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { lightTokens } from '@/lightTheme';
@@ -58,6 +61,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
     const [openDenyDialog, setOpenDenyDialog] = useState(false);
     const [openVerifyDialog, setOpenVerifyDialog] = useState(false);
     const [openCounterDialog, setOpenCounterDialog] = useState(false);
+    const counterDateInputRef = useRef<HTMLInputElement>(null);
 
     const { data: approveData, post: approvePost, processing: approveProcessing } = useForm({});
     const { data: denyData, setData: setDenyData, post: denyPost, processing: denyProcessing } = useForm({
@@ -547,6 +551,7 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                         </Button>
                         <Button
                             onClick={handleCounter}
+                            variant="contained"
                             color="primary"
                             disabled={counterProcessing || !counterData.proposed_due_at}
                         >
@@ -572,7 +577,36 @@ export default function Show({ borrowRequest, qrCode, codeExpiresAt, auth }) {
                     value={counterData.proposed_due_at}
                     onChange={(e) => setCounterData('proposed_due_at', e.target.value)}
                     InputLabelProps={{ shrink: true }}
+                    inputRef={counterDateInputRef}
                     inputProps={{ max: toInputDate(borrowRequest.requested_due_at) }}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    edge="end"
+                                    aria-label={t('borrowRequests.newReturnDate')}
+                                    onClick={() => {
+                                        const input = counterDateInputRef.current;
+                                        if (input?.showPicker) {
+                                            input.showPicker();
+                                        } else {
+                                            input?.focus();
+                                        }
+                                    }}
+                                    tabIndex={-1}
+                                >
+                                    <EventIcon />
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                    sx={{
+                        '& input[type="date"]::-webkit-calendar-picker-indicator': {
+                            opacity: theme.palette.mode === 'dark' ? 0.85 : 0.7,
+                            filter: theme.palette.mode === 'dark' ? 'invert(1)' : 'none',
+                            cursor: 'pointer',
+                        },
+                    }}
                 />
             </GlassDialog>
         </AuthenticatedLayout>

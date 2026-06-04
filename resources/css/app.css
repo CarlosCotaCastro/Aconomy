@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@media (prefers-color-scheme: dark) {
+  .MuiOutlinedInput-input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 0.85;
+    cursor: pointer;
+  }
+}
+
 /* Self-hosted fonts (GDPR compliant — no requests to Google).
    Variable fonts: one file per subset covers the full weight range. */
 @font-face {
@@ -237,7 +246,7 @@ h1, h2, h3, h4, h5, h6 {
 .feature-icon {
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, #007bff, #ff0096);
+  background: linear-gradient(135deg, #ffb36b 0%, #ff8a4c 55%, #ff784f 100%);
   border-radius: 16px;
   display: flex;
   align-items: center;

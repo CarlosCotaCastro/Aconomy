@@ -67,7 +67,7 @@ class GlobalSearchTest extends TestCase
         $this->assertNotContains('Group Mate Stranger', $names);
     }
 
-    public function test_items_in_shared_groups_are_returned_excluding_own(): void
+    public function test_items_in_shared_groups_include_own_items(): void
     {
         $user = User::factory()->create();
         $owner = User::factory()->create();
@@ -86,9 +86,14 @@ class GlobalSearchTest extends TestCase
             ->getJson(route('search.global', ['q' => 'Cordless']))
             ->assertOk();
 
-        $names = collect($response->json('items'))->pluck('name');
+        $items = collect($response->json('items'));
+        $names = $items->pluck('name');
         $this->assertContains('Cordless Drill', $names);
-        $this->assertNotContains('Cordless Drill Mine', $names);
+        $this->assertContains('Cordless Drill Mine', $names);
+
+        $own = $items->firstWhere('name', 'Cordless Drill Mine');
+        $this->assertTrue($own['is_own']);
+        $this->assertFalse($items->firstWhere('name', 'Cordless Drill')['is_own']);
     }
 
     public function test_people_search_excludes_unapproved_members(): void

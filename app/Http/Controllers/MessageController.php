@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\MessageSent;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\User;
 use App\Notifications\NewMessageNotification;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -70,7 +72,7 @@ class MessageController extends Controller
     /**
      * Send a message within a conversation.
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse|\Illuminate\Http\RedirectResponse
     {
         $user = Auth::user();
 
@@ -88,10 +90,20 @@ class MessageController extends Controller
             'body' => $validated['body'],
         ]);
 
+        $message->load('sender:id,name,profile_image_path');
+
         $conversation->update(['last_message_at' => now()]);
 
         $recipient = $conversation->otherParticipant($user);
         $recipient->notify(new NewMessageNotification($message, $user));
+
+        broadcast(new MessageSent($message))->toOthers();
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => $this->transformMessage($message),
+            ], 201);
+        }
 
         return redirect()->route('messages.show', $conversation);
     }
@@ -110,6 +122,21 @@ class MessageController extends Controller
         $conversation = Conversation::between($authUser->id, $user->id);
 
         return redirect()->route('messages.show', $conversation);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function transformMessage(Message $message): array
+    {
+        return [
+            'id' => $message->id,
+            'conversation_id' => $message->conversation_id,
+            'sender_id' => $message->sender_id,
+            'body' => $message->body,
+            'created_at' => $message->created_at->toIso8601String(),
+            'sender' => $message->sender->only(['id', 'name', 'profile_image_path']),
+        ];
     }
 
     /**

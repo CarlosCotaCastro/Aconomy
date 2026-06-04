@@ -268,6 +268,7 @@
         "denyBorrowRequestTitle": "Deny Borrow Request",
         "denyBorrowRequestInfo": "Are you sure you want to deny this request? You can optionally provide a reason.",
         "reason": "Reason (Optional)",
+        "cancel": "Cancel",
         "verifyItemHandoverTitle": "Verify Item Handover",
         "handoverCode": "Handover Code",
         "verifyCode": "Verify Code",
@@ -334,6 +335,7 @@
         "searching": "Searching...",
         "close": "Close",
         "escToClose": "Press Esc to close",
+        "keyboardHint": "↑↓ to navigate · Enter to open · Esc to close",
         "requestToBorrow": "Request to borrow",
         "openGroup": "Open group",
         "viewProfile": "View profile",
@@ -354,7 +356,10 @@
         "messageUser": "Message {{name}}",
         "emptyThread": "No messages yet. Say hello!",
         "newMessage": "New message",
-        "openConversation": "Open conversation"
+        "openConversation": "Open conversation",
+        "typing": "{{name}} is typing...",
+        "sendFailed": "Could not send message. Please try again.",
+        "connectionFailed": "Live updates unavailable. Refresh the page or check that the Echo server is running."
     },
     "onboarding": {
         "welcome": "Welcome to Aconomy, {{name}}!",

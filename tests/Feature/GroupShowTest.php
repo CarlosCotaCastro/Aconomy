@@ -19,6 +19,8 @@ class GroupShowTest extends TestCase
 
         $group->users()->attach($member->id, ['approved' => true]);
         $group->users()->attach($otherMember->id, ['approved' => true]);
+        $item = \App\Models\Item::factory()->create(['user_id' => $member->id]);
+        $item->groups()->attach($group->id);
 
         $response = $this->actingAs($member)
             ->get(route('groups.show', $group));
@@ -30,6 +32,8 @@ class GroupShowTest extends TestCase
             ->has('group.users', 2)
             ->where('group.users.0.email', 'member@example.com')
             ->where('group.users.1.email', 'other@example.com')
+            ->has('recentItems', 1)
+            ->where('recentItems.0.user.name', $member->name)
         );
     }
 
@@ -40,6 +44,8 @@ class GroupShowTest extends TestCase
         $group = Group::factory()->create();
 
         $group->users()->attach($member->id, ['approved' => true]);
+        $item = \App\Models\Item::factory()->create(['user_id' => $member->id]);
+        $item->groups()->attach($group->id);
 
         $response = $this->actingAs($visitor)
             ->get(route('groups.show', $group));
@@ -49,6 +55,8 @@ class GroupShowTest extends TestCase
             ->where('canViewMembers', false)
             ->where('approvedMembersCount', 1)
             ->has('group.users', 0)
+            ->has('recentItems', 1)
+            ->missing('recentItems.0.user')
         );
     }
 
@@ -60,6 +68,8 @@ class GroupShowTest extends TestCase
 
         $group->users()->attach($member->id, ['approved' => true]);
         $group->users()->attach($pendingUser->id, ['approved' => false]);
+        $item = \App\Models\Item::factory()->create(['user_id' => $member->id]);
+        $item->groups()->attach($group->id);
 
         $response = $this->actingAs($pendingUser)
             ->get(route('groups.show', $group));
@@ -70,6 +80,8 @@ class GroupShowTest extends TestCase
             ->where('approvedMembersCount', 1)
             ->has('group.users', 1)
             ->where('group.users.0.email', 'pending@example.com')
+            ->has('recentItems', 1)
+            ->missing('recentItems.0.user')
         );
     }
 }

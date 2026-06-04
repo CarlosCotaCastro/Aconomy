@@ -23,7 +23,12 @@ import { useTranslation } from 'react-i18next';
 import UserAvatar from '@/Components/UserAvatar.jsx';
 import { lightTokens } from '@/lightTheme';
 
-export default function RecentItemsGrid({ items, currentUserId }) {
+export default function RecentItemsGrid({
+    items,
+    currentUserId,
+    showOwner = true,
+    showBorrowActions = true,
+}) {
     const { t } = useTranslation();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -177,7 +182,7 @@ export default function RecentItemsGrid({ items, currentUserId }) {
                                         variant="body2" 
                                         color="text.secondary" 
                                         sx={{
-                                            mb: 2,
+                                            mb: showOwner ? 2 : 0,
                                             display: '-webkit-box',
                                             WebkitLineClamp: 2,
                                             WebkitBoxOrient: 'vertical',
@@ -190,31 +195,33 @@ export default function RecentItemsGrid({ items, currentUserId }) {
                                     </Typography>
                                 )}
 
-                                <Box sx={{ mb: 2 }}>
-                                    <Stack 
-                                        direction="row" 
-                                        spacing={1} 
-                                        alignItems="center"
-                                        sx={{ mb: 1 }}
-                                    >
-                                        {renderUserAvatar(item.user)}
-                                        <Typography variant="body2" color="text.secondary">
-                                            {item.user.id === currentUserId ? t('common.me') : item.user.name}
-                                        </Typography>
-                                    </Stack>
-
-                                    {!item.is_available && item.current_borrower && (
+                                {showOwner && item.user && (
+                                    <Box sx={{ mb: 2 }}>
                                         <Stack 
                                             direction="row" 
                                             spacing={1} 
                                             alignItems="center"
+                                            sx={{ mb: 1 }}
                                         >
-                                            {renderUserAvatar(item.user, 24)}
-                                            <ArrowForwardIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
-                                            {renderUserAvatar(item.current_borrower, 24)}
+                                            {renderUserAvatar(item.user)}
+                                            <Typography variant="body2" color="text.secondary">
+                                                {item.user.id === currentUserId ? t('common.me') : item.user.name}
+                                            </Typography>
                                         </Stack>
-                                    )}
-                                </Box>
+
+                                        {!item.is_available && item.current_borrower && (
+                                            <Stack 
+                                                direction="row" 
+                                                spacing={1} 
+                                                alignItems="center"
+                                            >
+                                                {renderUserAvatar(item.user, 24)}
+                                                <ArrowForwardIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
+                                                {renderUserAvatar(item.current_borrower, 24)}
+                                            </Stack>
+                                        )}
+                                    </Box>
+                                )}
 
                                 <Box sx={{ mt: 'auto' }}>
                                     <Chip
@@ -225,32 +232,34 @@ export default function RecentItemsGrid({ items, currentUserId }) {
                                 </Box>
                             </CardContent>
 
-                            <CardActions sx={{ pt: 0 }}>
-                                {item.is_available && item.user_id !== currentUserId && (
-                                    <Button
-                                        component={Link}
-                                        href={route('borrow-requests.create', { item: item.id })}
-                                        variant="contained"
-                                        color="primary"
-                                        size="small"
-                                        fullWidth
-                                    >
-                                        {t('items.requestToBorrow')}
-                                    </Button>
-                                )}
-                                {!item.is_available && item.current_borrower?.id === currentUserId && (
-                                    <Button
-                                        onClick={() => handleReturnItem(item.active_lending?.id)}
-                                        disabled={!item.active_lending?.id || processing}
-                                        variant="outlined"
-                                        color="primary"
-                                        size="small"
-                                        fullWidth
-                                    >
-                                        {t('items.returnItem')}
-                                    </Button>
-                                )}
-                            </CardActions>
+                            {showBorrowActions && (
+                                <CardActions sx={{ pt: 0 }}>
+                                    {item.is_available && item.user_id !== currentUserId && (
+                                        <Button
+                                            component={Link}
+                                            href={route('borrow-requests.create', { item: item.id })}
+                                            variant="contained"
+                                            color="primary"
+                                            size="small"
+                                            fullWidth
+                                        >
+                                            {t('items.requestToBorrow')}
+                                        </Button>
+                                    )}
+                                    {!item.is_available && item.current_borrower?.id === currentUserId && (
+                                        <Button
+                                            onClick={() => handleReturnItem(item.active_lending?.id)}
+                                            disabled={!item.active_lending?.id || processing}
+                                            variant="outlined"
+                                            color="primary"
+                                            size="small"
+                                            fullWidth
+                                        >
+                                            {t('items.returnItem')}
+                                        </Button>
+                                    )}
+                                </CardActions>
+                            )}
                         </Card>
                     </Grid>
                 ))}

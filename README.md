@@ -84,7 +84,7 @@ npm run dev
 php artisan serve
 ```
 
-> **Note:** This project ships with [Laravel Sail](https://laravel.com/docs/12.x/sail). If you develop inside the Docker environment, start the stack with `./vendor/bin/sail up -d` and prefix the commands below with `./vendor/bin/sail` (e.g. `./vendor/bin/sail artisan scout:import ...`). The `mysql`, `redis`, `meilisearch`, and `laravel-echo-server` services are all defined in `docker-compose.yml`.
+> **Note:** This project ships with [Laravel Sail](https://laravel.com/docs/12.x/sail). If you develop inside the Docker environment, start the stack with `./vendor/bin/sail up -d` and prefix the commands below with `./vendor/bin/sail` (e.g. `./vendor/bin/sail artisan scout:import ...`). The `mysql`, `redis`, `meilisearch`, and `reverb` services are all defined in `docker-compose.yml`.
 
 ## 🔍 Search Indexing (Meilisearch)
 
@@ -106,33 +106,51 @@ php artisan scout:import "App\Models\Item"
 php artisan scout:import "App\Models\Group"
 ```
 
-New, updated, and deleted records are synced to the index automatically. To wipe and rebuild an index, use `php artisan scout:flush "App\Models\Item"` followed by `scout:import`.
+New, updated, and deleted records are synced to the index automatically. Item visibility in groups is kept in sync when members are approved, leave a group, or create items/groups.
+
+**After resetting Meilisearch** (empty volume or `scout:flush`), run the full rebuild (backfills `group_item` pivots, syncs index settings, and reimports):
+
+```bash
+./vendor/bin/sail artisan search:rebuild
+```
+
+Use `--skip-backfill` if database pivots are already correct and you only need to reimport indexes:
+
+```bash
+./vendor/bin/sail artisan search:rebuild --skip-backfill
+```
+
+To wipe and rebuild manually: `php artisan scout:flush "App\Models\Item"` followed by `search:rebuild` or `scout:import`.
 
 ## 🔌 Realtime / WebSocket Server
 
-Realtime notifications and messaging use [Laravel Echo](https://laravel.com/docs/12.x/broadcasting) over a Socket.IO server (`laravel-echo-server`) listening on port `6001`, backed by Redis.
+Realtime notifications and messaging use [Laravel Echo](https://laravel.com/docs/12.x/broadcasting) with [Laravel Reverb](https://reverb.laravel.com) (Pusher protocol) on port `8080`.
 
-1. Configure broadcasting in your `.env`:
+1. Configure broadcasting in your `.env` (Reverb keys are added by `php artisan reverb:install`):
 ```bash
-BROADCAST_CONNECTION=redis
-REDIS_HOST=127.0.0.1
-REDIS_PORT=6379
+BROADCAST_CONNECTION=reverb
+REVERB_APP_ID=...
+REVERB_APP_KEY=...
+REVERB_APP_SECRET=...
+REVERB_HOST=localhost
+REVERB_PORT=8080
+REVERB_SCHEME=http
 ```
 
 2. Start the WebSocket server.
 
-   - **With Sail / Docker:** the `laravel-echo-server` service starts automatically with `./vendor/bin/sail up -d`.
-   - **Locally:** run the bundled npm script:
+   - **With Sail / Docker:** the `reverb` service starts automatically with `./vendor/bin/sail up -d`.
+   - **Locally:** run:
 ```bash
-npm run echo-server
+npm run reverb
 ```
 
-3. (Optional) Process broadcast and notification jobs with a queue worker:
+3. Rebuild frontend assets after changing `VITE_REVERB_*` variables:
 ```bash
-php artisan queue:work
+npm run dev
 ```
 
-The client connects to the server via the configuration in `resources/js/bootstrap.js` (host `:6001`). See `ECHO_SERVER_SETUP.md` for troubleshooting tips.
+The client connects via `resources/js/bootstrap.js`. See `ECHO_SERVER_SETUP.md` for troubleshooting tips.
 
 ## 🧪 Testing
 

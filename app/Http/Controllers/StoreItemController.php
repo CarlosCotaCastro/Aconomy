@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Services\ItemGroupSyncService;
 use Illuminate\Http\Request;
 
 class StoreItemController extends Controller
 {
+    public function __construct(private ItemGroupSyncService $itemGroupSync) {}
+
     /**
      * Handle the incoming request.
      */
@@ -18,16 +21,15 @@ class StoreItemController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:8096',
         ]);
 
-        $approvedGroups = auth()->user()->approvedGroups;
+        $user = $request->user();
 
         $item = Item::create([
             'name' => $validated['name'],
             'description' => $validated['description'],
-            'user_id' => auth()->id(),
+            'user_id' => $user->id,
         ]);
 
-        $item->groups()->attach($approvedGroups->pluck('id')->toArray());
-        $item->searchable();
+        $this->itemGroupSync->attachNewItemToApprovedGroups($item, $user);
 
         return redirect()->route('items.index')->with('message', 'Item created successfully.');
     }

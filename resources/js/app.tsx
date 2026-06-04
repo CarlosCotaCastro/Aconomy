@@ -9,6 +9,8 @@ import {createTheme, ThemeProvider} from "@mui/material/styles";
 import {useMediaQuery} from "@mui/material";
 import {useMemo} from 'react';
 import {lightTokens} from './lightTheme';
+import CsrfTokenSync from '@/Components/CsrfTokenSync';
+import { resolveCsrfToken, syncCsrfToken } from '@/utils/csrf';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -94,7 +96,18 @@ function ThemeWrapper({ App, props }) {
         },
     }), [prefersDarkMode]);
 
-    return <ThemeProvider theme={theme}><App {...props} /></ThemeProvider>;
+    return (
+        <ThemeProvider theme={theme}>
+            <App {...props}>
+                {({ Component, props: pageProps, key }) => (
+                    <>
+                        <CsrfTokenSync />
+                        <Component key={key} {...pageProps} />
+                    </>
+                )}
+            </App>
+        </ThemeProvider>
+    );
 }
 
 createInertiaApp({
@@ -107,21 +120,13 @@ createInertiaApp({
     setup({el, App, props}) {
         const root = createRoot(el);
 
-        // Update CSRF token in meta tag when props change
-        if (props.csrf_token) {
-            const metaTag = document.head.querySelector('meta[name="csrf-token"]');
-            if (metaTag) {
-                metaTag.content = props.csrf_token;
-            }
-            // Also update axios default header
-            if (window.axios) {
-                window.axios.defaults.headers.common['X-CSRF-TOKEN'] = props.csrf_token;
-            }
-        }
-
-        // Validate CSRF token on app start
-        if (!props.csrf_token) {
-            console.warn('CSRF token not found in props');
+        const csrfToken = resolveCsrfToken(
+            props.initialPage?.props as { csrf_token?: string } | undefined,
+        );
+        if (csrfToken) {
+            syncCsrfToken(csrfToken);
+        } else {
+            console.warn('CSRF token not found in Inertia props or meta tag');
         }
 
         root.render(<ThemeWrapper App={App} props={props} />);

@@ -23,8 +23,10 @@ export interface GroupMemberListProps {
 
 export interface RecentItemsGridProps {
     items: Item[];
+    currentUserId?: number;
     title?: string;
     showOwner?: boolean;
+    showBorrowActions?: boolean;
     maxItems?: number;
     onItemClick?: (item: Item) => void;
     loading?: boolean;

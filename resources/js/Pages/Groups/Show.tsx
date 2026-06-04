@@ -28,6 +28,7 @@ import GroupBanner from '@/Components/GroupBanner';
 import { useTranslation } from 'react-i18next';
 import GroupMemberList from "@/Pages/Groups/Partials/GroupMemberList";
 import RecentItemsGrid from "@/Pages/Groups/Partials/RecentItemsGrid.jsx";
+import { isPivotApproved } from '@/utils/groupMembership';
 
 export default function Show({group, recentItems, auth, isGroupCreator, canViewMembers, approvedMembersCount}) {
     const { t } = useTranslation();
@@ -36,9 +37,12 @@ export default function Show({group, recentItems, auth, isGroupCreator, canViewM
     const {post: joinGroup, processing: joining} = useForm();
     const {delete: leaveGroup, processing: leaving} = useForm();
 
-    const approvedMembers = group.users.filter(user => user.pivot.approved);
-    const pendingMembers = group.users.filter(user => !user.pivot.approved);
-    const isUserApproved = group.users.find(u => u.id === auth.user.id)?.pivot.approved;
+    const approvedMembers = group.users.filter(user => isPivotApproved(user.pivot.approved));
+    const pendingMembers = group.users.filter(user => !isPivotApproved(user.pivot.approved));
+    const isUserApproved = isPivotApproved(
+        group.users.find(u => u.id === auth.user.id)?.pivot.approved,
+    );
+    const isUserInGroup = group.users.some(u => u.id === auth.user.id);
 
     const handleApproveUser = (userId) => {
         post(route('groups.approve', [group.id, userId]));
@@ -137,8 +141,7 @@ export default function Show({group, recentItems, auth, isGroupCreator, canViewM
                                 </List>
                         </GlassPaper>
                     )}
-
-                    {!isUserApproved && (
+                    {!isUserInGroup && (
                         <GlassPaper>
                             <Typography variant="h6" gutterBottom>
                                 {t('groups.joinGroup')}
@@ -156,7 +159,13 @@ export default function Show({group, recentItems, auth, isGroupCreator, canViewM
                             </Button>
                         </GlassPaper>
                     )}
-
+                    {isUserInGroup && !isUserApproved && (
+                        <GlassPaper>
+                            <Typography variant="h6">
+                                {t('common.pendingApproval')}
+                            </Typography>
+                        </GlassPaper>
+                    )}
                     {isUserApproved && (
                         <GlassPaper>
                             <Typography variant="h6" gutterBottom>
@@ -179,8 +188,9 @@ export default function Show({group, recentItems, auth, isGroupCreator, canViewM
                 <Grid size={9}>
                     <RecentItemsGrid
                         items={recentItems}
-                        title={t('groups.recentItems')}
-                        showOwner={true}
+                        currentUserId={auth.user.id}
+                        showOwner={canViewMembers}
+                        showBorrowActions={canViewMembers}
                     />
                 </Grid>
             </Grid>

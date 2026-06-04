@@ -156,96 +156,98 @@ export default function AuthenticatedLayout({ user, header, children }) {
                                 </IconButton>
                             )}
 
+                            <Box sx={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'space-between', gap: 1 }}>
                             {/* Search trigger */}
-                            <Box
-                                role="button"
-                                tabIndex={0}
-                                onClick={() => setSearchOpen(true)}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        setSearchOpen(true);
-                                    }
-                                }}
-                                sx={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: 1,
-                                    flexGrow: 1,
-                                    maxWidth: 520,
-                                    px: 2,
-                                    py: 0.9,
-                                    cursor: 'pointer',
-                                    borderRadius: '999px',
-                                    color: 'text.secondary',
-                                    backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.7)',
-                                    border: isDark ? '1px solid rgba(255,255,255,0.1)' : `1px solid ${lightTokens.border}`,
-                                    '&:hover': {
-                                        backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#fff',
-                                    },
-                                }}
-                            >
-                                <SearchIcon fontSize="small" />
-                                <Typography variant="body2" noWrap sx={{ flexGrow: 1 }}>
-                                    {t('search.trigger')}
-                                </Typography>
-                            </Box>
-
-                            <Box sx={{ flexGrow: { xs: 1, md: 0 } }} />
-
-                            <Tooltip title={t('messages.title')}>
-                                <IconButton color="inherit" onClick={() => router.visit(route('messages.index'))}>
-                                    <Badge badgeContent={badges.unreadMessages || 0} color="error">
-                                        <MessageIcon />
-                                    </Badge>
-                                </IconButton>
-                            </Tooltip>
-
-                            <NotificationMenu />
-                            <LanguageSwitcher />
-
-                            <IconButton
-                                size="large"
-                                aria-label="account"
-                                aria-haspopup="true"
-                                onClick={(e) => setUserAnchorEl(e.currentTarget)}
-                                color="inherit"
-                            >
-                                <UserAvatar user={authUser} size={32} />
-                            </IconButton>
-                            <Menu
-                                anchorEl={userAnchorEl}
-                                id="account-menu"
-                                open={Boolean(userAnchorEl)}
-                                onClose={() => setUserAnchorEl(null)}
-                                {...headerPopoutMenuProps}
-                                slotProps={{
-                                    ...headerPopoutMenuProps.slotProps,
-                                    paper: {
-                                        ...headerPopoutMenuProps.slotProps?.paper,
-                                        elevation: 2,
-                                        sx: { width: 220 },
-                                    },
-                                }}
-                            >
-                                <MenuItem
-                                    onClick={() => setUserAnchorEl(null)}
-                                    component={Link}
-                                    href={route('profile.edit')}
-                                    sx={{ borderRadius: 4, mx: 0.5 }}
+                                <Box
+                                    role="button"
+                                    tabIndex={0}
+                                    onClick={() => setSearchOpen(true)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                            setSearchOpen(true);
+                                        }
+                                    }}
+                                    sx={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 1,
+                                        flexGrow: 1,
+                                        maxWidth: 520,
+                                        px: 2,
+                                        py: 0.9,
+                                        cursor: 'pointer',
+                                        borderRadius: '999px',
+                                        color: 'text.secondary',
+                                        backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.7)',
+                                        border: isDark ? '1px solid rgba(255,255,255,0.1)' : `1px solid ${lightTokens.border}`,
+                                        '&:hover': {
+                                            backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#fff',
+                                        },
+                                    }}
                                 >
-                                    <ListItemIcon>
-                                        <SettingsIcon fontSize="small" color="primary" />
-                                    </ListItemIcon>
-                                    {t('navigation.profileSettings')}
-                                </MenuItem>
-                                <Divider />
-                                <MenuItem onClick={handleLogout}>
-                                    <ListItemIcon>
-                                        <LogoutIcon fontSize="small" color="error" />
-                                    </ListItemIcon>
-                                    {t('common.logout')}
-                                </MenuItem>
-                            </Menu>
+                                    <SearchIcon fontSize="small" />
+                                    <Typography variant="body2" noWrap sx={{ flexGrow: 1 }}>
+                                        {t('search.trigger')}
+                                    </Typography>
+                                </Box>
+
+                                <Box>
+                                    <Tooltip title={t('messages.title')}>
+                                        <IconButton color="inherit" onClick={() => router.visit(route('messages.index'))}>
+                                            <Badge badgeContent={badges.unreadMessages || 0} color="error">
+                                                <MessageIcon />
+                                            </Badge>
+                                        </IconButton>
+                                    </Tooltip>
+
+                                    <NotificationMenu />
+                                    <LanguageSwitcher />
+
+                                    <IconButton
+                                        size="large"
+                                        aria-label="account"
+                                        aria-haspopup="true"
+                                        onClick={(e) => setUserAnchorEl(e.currentTarget)}
+                                        color="inherit"
+                                    >
+                                        <UserAvatar user={authUser} size={32} />
+                                    </IconButton>
+                                    <Menu
+                                        anchorEl={userAnchorEl}
+                                        id="account-menu"
+                                        open={Boolean(userAnchorEl)}
+                                        onClose={() => setUserAnchorEl(null)}
+                                        {...headerPopoutMenuProps}
+                                        slotProps={{
+                                            ...headerPopoutMenuProps.slotProps,
+                                            paper: {
+                                                ...headerPopoutMenuProps.slotProps?.paper,
+                                                elevation: 2,
+                                                sx: { width: 220 },
+                                            },
+                                        }}
+                                    >
+                                        <MenuItem
+                                            onClick={() => setUserAnchorEl(null)}
+                                            component={Link}
+                                            href={route('profile.edit')}
+                                            sx={{ borderRadius: 4, mx: 0.5 }}
+                                        >
+                                            <ListItemIcon>
+                                                <SettingsIcon fontSize="small" color="primary" />
+                                            </ListItemIcon>
+                                            {t('navigation.profileSettings')}
+                                        </MenuItem>
+                                        <Divider />
+                                        <MenuItem onClick={handleLogout}>
+                                            <ListItemIcon>
+                                                <LogoutIcon fontSize="small" color="error" />
+                                            </ListItemIcon>
+                                            {t('common.logout')}
+                                        </MenuItem>
+                                    </Menu>
+                                </Box>
+                            </Box>
                         </Toolbar>
                     </AppBar>
 

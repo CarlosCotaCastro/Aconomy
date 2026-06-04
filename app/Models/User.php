@@ -63,7 +63,9 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function approvedGroups(): BelongsToMany
     {
-        return $this->belongsToMany(Group::class)->where('approved', '=', true);
+        return $this->belongsToMany(Group::class)
+            ->wherePivot('approved', true)
+            ->withTimestamps();
     }
 
     public function lendingsAsLender()
