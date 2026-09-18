@@ -27,7 +27,7 @@ Aconomy was created with a clear vision: to help more people enjoy a better qual
 
 Aconomy is built with modern web technologies:
 
-- **Backend**: [Laravel 12](https://laravel.com/docs/12.x) - PHP Framework
+- **Backend**: [Laravel 13](https://laravel.com/docs/13.x) - PHP Framework
 - **Frontend**: [React](https://react.dev/) via [Inertia.js](https://inertiajs.com/)
 - **Authentication**: Laravel Sanctum
 - **Database**: MySQL/PostgreSQL
