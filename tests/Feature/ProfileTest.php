@@ -23,12 +23,10 @@ class ProfileTest extends TestCase
 
     public function test_profile_edit_page_is_forbidden_for_unauthenticated_users(): void
     {
-        $user = User::factory()->create();
-
         $response = $this
             ->get('/profile');
 
-        $response->assertForbidden();
+        $response->assertRedirect('/login');
     }
 
     public function test_profile_information_can_be_updated(): void

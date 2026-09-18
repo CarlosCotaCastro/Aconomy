@@ -7,7 +7,7 @@ export default function ApplicationLogo(props) {
             marginBottom: "0.5rem",
             letterSpacing: "-0.04em",
         }}>
-            <img src="/aconomy-icon.png" alt="logo" style={{
+            <img src="/icon.png" alt="logo" style={{
                 display: "inline",
                 width: "1em",
                 height: "1em",

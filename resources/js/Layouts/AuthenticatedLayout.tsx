@@ -138,7 +138,7 @@ export default function AuthenticatedLayout({ user, header, children }) {
                         position="sticky"
                         elevation={0}
                         sx={{
-                            background: isDark ? 'rgba(11,10,16,0.55)' : 'rgba(255,255,255,0.55)',
+                            background: isDark ? 'rgba(11,10,16,0.55)' : 'rgba(255,255,255,0.5)',
                             backdropFilter: 'blur(10px)',
                             borderBottom: isDark ? '1px solid rgba(255,255,255,0.08)' : `1px solid ${lightTokens.border}`,
                             color: isDark ? 'white' : 'text.primary',
@@ -178,8 +178,8 @@ export default function AuthenticatedLayout({ user, header, children }) {
                                         cursor: 'pointer',
                                         borderRadius: '999px',
                                         color: 'text.secondary',
-                                        backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.7)',
-                                        border: isDark ? '1px solid rgba(255,255,255,0.1)' : `1px solid ${lightTokens.border}`,
+                                        backgroundColor: isDark ? 'rgba(255,255,255,0.06)' : '#fff',
+                                        border: isDark ? '1px solid rgba(255,255,255,0.1)' : `1px solid #cccccc`,
                                         '&:hover': {
                                             backgroundColor: isDark ? 'rgba(255,255,255,0.1)' : '#fff',
                                         },
