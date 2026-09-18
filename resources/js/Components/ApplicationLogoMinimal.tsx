@@ -1,4 +1,7 @@
 export default function ApplicationLogoMinimal(props) {
+
+    return <img src="/icon.png" alt="logo" />;
+
     return (
         <svg
             {...props}
