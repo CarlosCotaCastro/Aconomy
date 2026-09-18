@@ -162,7 +162,7 @@ php artisan test
 
 For detailed information about the technologies used in this project:
 
-- [Laravel 12 Documentation](https://laravel.com/docs/12.x)
+- [Laravel 13 Documentation](https://laravel.com/docs/13.x)
 - [Inertia.js Documentation](https://inertiajs.com/)
 - [React Documentation](https://react.dev/)
 
